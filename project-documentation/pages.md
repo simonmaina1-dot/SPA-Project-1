@@ -14,5 +14,13 @@
 - Full view of a single project.
 - Highlights funding progress and call-to-action button.
 
+## Donate (`src/pages/Donate.jsx`)
+- Demo checkout flow for simulated funding.
+- Updates project totals and returns to details view.
+
 ## About (`src/pages/About.jsx`)
 - Short overview of architecture and app structure.
+
+## Admin Dashboard (`src/pages/AdminDashboard.jsx`)
+- Password-protected admin view with platform metrics.
+- Includes a review queue and recent activity feed.

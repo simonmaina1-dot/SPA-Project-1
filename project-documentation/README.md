@@ -21,7 +21,9 @@ React Context for shared state (projects and toast notifications).
 - `/` Home page with search, filtering, and featured projects.
 - `/add` Add Project form.
 - `/projects/:projectId` Project details view.
+- `/donate/:projectId` Demo checkout flow.
 - `/about` Architecture overview.
+- `/admin` Admin dashboard (password protected).
 
 ## Running the App
 ```bash
@@ -34,5 +36,6 @@ npm run dev
 - `src/App.jsx` route definitions and app shell.
 - `src/context/ProjectsContext.jsx` project state and helpers.
 - `src/context/ToastContext.jsx` toast notification state.
+- `src/context/AuthContext.jsx` admin authentication state.
 - `src/index.css` global design system.
 - `src/App.css` component and layout styling.
