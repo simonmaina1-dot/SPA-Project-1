@@ -68,18 +68,6 @@ export default function AddProject() {
             />
           </label>
 
-          <label className="form-field form-field-wide">
-            <span className="form-label">Project description</span>
-            <textarea
-              name="description"
-              value={values.description}
-              onChange={handleChange}
-              rows="4"
-              placeholder="What will the donation fund?"
-              required
-            />
-          </label>
-
           <label className="form-field">
             <span className="form-label">Category</span>
             <select name="category" value={values.category} onChange={handleChange}>
@@ -92,6 +80,18 @@ export default function AddProject() {
               <option value="sports">Sports & Recreation</option>
               <option value="other">Other</option>
             </select>
+          </label>
+
+          <label className="form-field form-field-wide">
+            <span className="form-label">Project description</span>
+            <textarea
+              name="description"
+              value={values.description}
+              onChange={handleChange}
+              rows="4"
+              placeholder="What will the donation fund?"
+              required
+            />
           </label>
         </div>
 
