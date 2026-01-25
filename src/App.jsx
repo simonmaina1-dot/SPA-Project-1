@@ -4,6 +4,8 @@ import Toast from "./components/Toast";
 import Home from "./pages/Home";
 import AddProject from "./pages/AddProject";
 import ProjectDetails from "./pages/ProjectDetails";
+import AdminDashboard from "./pages/AdminDashboard";
+import Donate from "./pages/Donate";
 import About from "./pages/About";
 import "./App.css";
 
@@ -30,6 +32,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/add" element={<AddProject />} />
           <Route path="/projects/:projectId" element={<ProjectDetails />} />
+          <Route path="/donate/:projectId" element={<Donate />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
