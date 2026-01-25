@@ -50,9 +50,9 @@ export default function ProjectDetails() {
             <span>{progress}% funded</span>
           </div>
           <p className="details-goal">Goal {formatCurrency(project.goal)}</p>
-          <button type="button" className="btn btn-primary">
+          <Link to={`/donate/${project.id}`} className="btn btn-primary">
             Donate to this project
-          </button>
+          </Link>
         </div>
 
         <div className="details-card">

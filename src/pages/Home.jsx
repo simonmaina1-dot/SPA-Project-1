@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
 import Modal from "../components/Modal";
@@ -29,6 +29,7 @@ import { ToastContext } from "../context/ToastContext";
 export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
+  const navigate = useNavigate();
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -274,8 +275,12 @@ export default function Home() {
             <button 
               className="btn btn-primary"
               onClick={() => {
-                showToast(`Thank you for your interest in ${selectedProject?.title}!`, "success");
+                if (!selectedProject) {
+                  return;
+                }
+                showToast("Redirecting to demo checkout...", "info");
                 handleCloseModal();
+                navigate(`/donate/${selectedProject.id}`);
               }}
             >
               Donate Now

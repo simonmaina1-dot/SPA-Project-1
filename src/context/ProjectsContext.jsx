@@ -46,6 +46,50 @@ const seedProjects = [
     donorCount: 28,
     status: "active",
   },
+  {
+    id: "p-1005",
+    title: "Clean Water Refill Station",
+    description:
+      "Install a public water refill kiosk to cut plastic waste and improve access.",
+    category: "community",
+    goal: 15000,
+    currentAmount: 5200,
+    donorCount: 31,
+    status: "active",
+  },
+  {
+    id: "p-1006",
+    title: "Neighborhood Food Pantry Fridge",
+    description:
+      "A solar-powered community fridge stocked weekly with fresh groceries.",
+    category: "community",
+    goal: 8000,
+    currentAmount: 7600,
+    donorCount: 54,
+    status: "active",
+  },
+  {
+    id: "p-1007",
+    title: "Girls in Tech Kit Drive",
+    description:
+      "Starter kits and mentorship sessions for girls exploring coding and robotics.",
+    category: "technology",
+    goal: 14000,
+    currentAmount: 9300,
+    donorCount: 61,
+    status: "active",
+  },
+  {
+    id: "p-1008",
+    title: "Youth Soccer Equipment Drive",
+    description:
+      "Uniforms, cones, and balls for weekly practice in neighborhood parks.",
+    category: "sports",
+    goal: 6000,
+    currentAmount: 2500,
+    donorCount: 19,
+    status: "active",
+  },
 ];
 
 export const ProjectsContext = createContext(null);
@@ -98,6 +142,33 @@ export function ProjectsProvider({ children }) {
     [setProjects]
   );
 
+  const addDonation = useCallback(
+    (id, amount) => {
+      setProjects((prev) =>
+        prev.map((project) => {
+          if (project.id !== id) {
+            return project;
+          }
+
+          const currentAmount = Number(project.currentAmount) || 0;
+          const donorCount = Number(project.donorCount) || 0;
+          const nextAmount = currentAmount + amount;
+          const isFunded = project.goal && nextAmount >= project.goal;
+          const nextStatus =
+            project.status === "review" ? "review" : isFunded ? "funded" : "active";
+
+          return {
+            ...project,
+            currentAmount: nextAmount,
+            donorCount: donorCount + 1,
+            status: nextStatus,
+          };
+        })
+      );
+    },
+    [setProjects]
+  );
+
   const getFeaturedProjects = useCallback(() => {
     const sorted = [...projects].sort((a, b) => {
       const aProgress = a.goal ? a.currentAmount / a.goal : 0;
@@ -123,6 +194,7 @@ export function ProjectsProvider({ children }) {
       addProject,
       updateProject,
       removeProject,
+      addDonation,
       getFeaturedProjects,
       formatCurrency,
     }),
@@ -132,6 +204,7 @@ export function ProjectsProvider({ children }) {
       addProject,
       updateProject,
       removeProject,
+      addDonation,
       getFeaturedProjects,
       formatCurrency,
     ]
