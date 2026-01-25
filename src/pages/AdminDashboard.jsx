@@ -188,7 +188,7 @@ export default function AdminDashboard() {
       </section>
 
       <section className="admin-grid">
-        <article className="admin-card admin-card-wide">
+        <article className="admin-card admin-card-wide admin-card-snapshot">
           <h3>Platform snapshot</h3>
           <div className="admin-stats">
             <div className="admin-stat">

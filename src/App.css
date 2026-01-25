@@ -619,6 +619,12 @@
   grid-column: 1 / -1;
 }
 
+.admin-card-snapshot {
+  margin-top: 0.75rem;
+  justify-self: end;
+  width: min(1100px, 100%);
+}
+
 .admin-card-subtitle {
   color: var(--text-muted);
   margin: 0;
