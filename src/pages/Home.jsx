@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
 import Modal from "../components/Modal";
@@ -241,9 +242,9 @@ export default function Home() {
                 </div>
                 <h3>No projects yet</h3>
                 <p>Be the first to create a project and start fundraising!</p>
-                <a href="/add" className="btn btn-primary">
+                <Link to="/add" className="btn btn-primary">
                   Create Project
-                </a>
+                </Link>
               </>
             )}
           </div>
@@ -298,4 +299,3 @@ export default function Home() {
     </div>
   );
 }
-
