@@ -1,4 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const navItems = [
   { to: "/", label: "Projects" },
@@ -7,6 +8,8 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const { currentUser } = useAuth();
+
   return (
     <header className="navbar">
       <Link to="/" className="nav-brand">
@@ -24,6 +27,16 @@ export default function Navbar() {
             {item.label}
           </NavLink>
         ))}
+        {currentUser && (
+          <NavLink
+            to="/admin"
+            className={({ isActive }) =>
+              `nav-link${isActive ? " active" : ""}`
+            }
+          >
+            Admin
+          </NavLink>
+        )}
       </nav>
       <Link to="/add" className="btn btn-primary nav-cta">
         Start a Project
