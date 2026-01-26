@@ -3,11 +3,18 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 const adminUsers = [
   {
-    id: "admin-simon",
+    id: "owner-simon",
     name: "Simon Maina",
     email: "mainawaititu2021@gmail.com",
     password: "simon-2026",
     role: "CEO",
+  },
+    {
+    id: "auditor-george",
+    name: "George Okumu",
+    email: "george.okumu@moringaschool.com",
+    password: "george-2026",
+    role: "Auditor",
   },
   {
     id: "admin-ashanti",
