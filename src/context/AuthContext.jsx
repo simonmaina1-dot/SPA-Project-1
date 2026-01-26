@@ -5,7 +5,7 @@ const adminUsers = [
   {
     id: "admin-simon",
     name: "Simon Maina",
-    email: "simon.maina@example.com",
+    email: "mainawaititu2021@gmail.com",
     password: "simon-2025",
     role: "CEO",
   },
