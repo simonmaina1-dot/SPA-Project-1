@@ -41,6 +41,7 @@ export default function App() {
       <footer className="app-footer">
         <span>Community Donation Hub</span>
         <span>Built for local impact</span>
+        <span>© 2026 Community Donation Hub</span>
       </footer>
       <Toast />
     </div>
