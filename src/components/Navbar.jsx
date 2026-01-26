@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const navSections = [
   { id: "featured", label: "Featured Projects" },
@@ -10,8 +10,6 @@ const navSections = [
 export default function Navbar() {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState("");
-  const [indicatorStyle, setIndicatorStyle] = useState({});
-  const linkRefs = useRef({});
 
   useEffect(() => {
     if (location.pathname !== "/projects") {
@@ -36,8 +34,8 @@ export default function Navbar() {
         });
       },
       {
-        rootMargin: "-10% 0px -70% 0px",
-        threshold: 0.2,
+        rootMargin: "-40% 0px -40% 0px",
+        threshold: 0,
       }
     );
 
@@ -47,22 +45,14 @@ export default function Navbar() {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!activeSection) {
-      setIndicatorStyle({});
+    if (!location.hash) {
       return;
     }
-    const activeLink = linkRefs.current[activeSection];
-    if (!activeLink) {
-      return;
+    const targetId = location.hash.replace("#", "");
+    if (navSections.some((section) => section.id === targetId)) {
+      setActiveSection(targetId);
     }
-
-    const { offsetLeft, offsetWidth } = activeLink;
-    setIndicatorStyle({
-      transform: `translateX(${offsetLeft}px)`,
-      width: `${offsetWidth}px`,
-      opacity: 1,
-    });
-  }, [activeSection]);
+  }, [location.hash]);
 
   const isSectionActive = (id) => {
     if (location.pathname !== "/projects") {
@@ -80,17 +70,11 @@ export default function Navbar() {
         Community Donation Hub
       </Link>
       <nav className="nav-links">
-        <span className="nav-active-indicator" style={indicatorStyle} />
         {navSections.map((section) => (
           <Link
             key={section.id}
             to={`/projects#${section.id}`}
             className={`nav-link${isSectionActive(section.id) ? " active" : ""}`}
-            ref={(node) => {
-              if (node) {
-                linkRefs.current[section.id] = node;
-              }
-            }}
           >
             {section.label}
           </Link>
