@@ -36,7 +36,7 @@ describe("Admin dashboard", () => {
 
     const user = userEvent.setup();
     await user.type(screen.getByLabelText("Admin email"), "kashiku789@gmail.com");
-    await user.type(screen.getByLabelText("Password"), "ashanti-2025");
+    await user.type(screen.getByLabelText("Password"), "ashanti-2026");
     await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     expect(screen.getByText("Admin Dashboard")).toBeInTheDocument();
