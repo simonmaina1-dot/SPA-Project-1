@@ -1,5 +1,5 @@
 import { createContext, useCallback, useMemo, useState, useEffect } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import useLocalStorageState from "../hooks/useLocalStorageState";
 
 const seedProjects = [
   {
@@ -125,7 +125,10 @@ const seedProjects = [
 export const ProjectsContext = createContext(null);
 
 export function ProjectsProvider({ children }) {
-  const [projects, setProjects] = useLocalStorage("cdh-projects", seedProjects);
+  const [projects, setProjects] = useLocalStorageState(
+    "cdh-projects",
+    seedProjects
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { createContext, useCallback, useMemo } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import useLocalStorageState from "../hooks/useLocalStorageState";
 
 const adminUsers = [
   {
@@ -42,7 +42,10 @@ const adminUsers = [
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useLocalStorage("cdh-admin-user", null);
+  const [currentUser, setCurrentUser] = useLocalStorageState(
+    "cdh-admin-user",
+    null
+  );
 
   const signIn = useCallback(
     (email, password) => {
