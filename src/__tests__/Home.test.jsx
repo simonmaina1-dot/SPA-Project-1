@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { ProjectsProvider } from "../context/ProjectsContext";
@@ -46,6 +46,45 @@ describe("Home page", () => {
     expect(scoped.getByText("Community Solar Garden")).toBeInTheDocument();
     expect(
       scoped.queryByText("Neighborhood Learning Lab")
+    ).not.toBeInTheDocument();
+  });
+
+  it("filters projects by category", async () => {
+    renderHome();
+
+    const user = userEvent.setup();
+    const select = await screen.findByLabelText("Filter by:");
+
+    await user.selectOptions(select, "environment");
+
+    const projectsSection = document.getElementById("projects");
+    expect(projectsSection).not.toBeNull();
+
+    const scoped = within(projectsSection);
+    expect(scoped.getByText("Community Solar Garden")).toBeInTheDocument();
+    expect(
+      scoped.queryByText("Neighborhood Learning Lab")
+    ).not.toBeInTheDocument();
+  });
+
+  it("opens and closes the project modal with escape", async () => {
+    renderHome();
+
+    const user = userEvent.setup();
+    const projectButton = await screen.findByRole("button", {
+      name: /Neighborhood Learning Lab/i,
+    });
+
+    await user.click(projectButton);
+
+    expect(
+      screen.getByRole("button", { name: "Donate Now" })
+    ).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(
+      screen.queryByRole("button", { name: "Donate Now" })
     ).not.toBeInTheDocument();
   });
 });

@@ -42,4 +42,41 @@ describe("Admin dashboard", () => {
     expect(screen.getByText("Admin Dashboard")).toBeInTheDocument();
     expect(screen.getByText("Platform snapshot")).toBeInTheDocument();
   });
+
+  it("updates the cover image preview when a new URL is entered", async () => {
+    renderDashboard();
+
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText("Admin email"), "kashiku789@gmail.com");
+    await user.type(screen.getByLabelText("Password"), "ashanti-2026");
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
+
+    await screen.findByRole("heading", { name: "Admin Dashboard" });
+
+    const imageInput = screen.getByLabelText("Cover image URL");
+    await user.clear(imageInput);
+    await user.type(imageInput, "https://example.com/updated-cover.jpg");
+
+    const preview = screen.getByAltText("Project cover preview");
+    expect(preview).toHaveAttribute(
+      "src",
+      "https://example.com/updated-cover.jpg"
+    );
+  });
+
+  it("flags a project for review from the queue", async () => {
+    renderDashboard();
+
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText("Admin email"), "kashiku789@gmail.com");
+    await user.type(screen.getByLabelText("Password"), "ashanti-2026");
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
+
+    await screen.findByRole("heading", { name: "Admin Dashboard" });
+
+    const flagButtons = screen.getAllByRole("button", { name: "Flag" });
+    await user.click(flagButtons[0]);
+
+    expect(screen.getByRole("button", { name: "Approve" })).toBeInTheDocument();
+  });
 });
