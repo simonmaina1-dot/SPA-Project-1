@@ -10,6 +10,8 @@ const initialValues = {
   description: "",
   category: "community",
   goal: "",
+  imageUrl: "",
+  galleryUrls: "",
 };
 
 export default function AddProject() {
@@ -84,7 +86,7 @@ export default function AddProject() {
             </label>
 
             <label className="form-field">
-              <span className="form-label">Funding goal (USD)</span>
+              <span className="form-label">Funding goal (KSh)</span>
               <input
                 type="number"
                 name="goal"
@@ -112,6 +114,35 @@ export default function AddProject() {
                 <option value="sports">Sports & Recreation</option>
                 <option value="other">Other</option>
               </select>
+            </label>
+
+            <div className="form-section">
+              <h4>Project images</h4>
+              <p className="form-helper">
+                Add a cover image and optional gallery links to show your work.
+              </p>
+            </div>
+
+            <label className="form-field">
+              <span className="form-label">Cover image URL</span>
+              <input
+                type="url"
+                name="imageUrl"
+                value={values.imageUrl}
+                onChange={handleChange}
+                placeholder="https://images.example.com/cover.jpg"
+              />
+            </label>
+
+            <label className="form-field form-field-wide">
+              <span className="form-label">Gallery image URLs (comma-separated)</span>
+              <input
+                type="text"
+                name="galleryUrls"
+                value={values.galleryUrls}
+                onChange={handleChange}
+                placeholder="https://images.example.com/1.jpg, https://images.example.com/2.jpg"
+              />
             </label>
 
             <label className="form-field form-field-wide">

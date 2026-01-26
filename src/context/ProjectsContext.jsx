@@ -8,6 +8,12 @@ const seedProjects = [
     description:
       "A pop-up classroom with devices, tutors, and weekend workshops for local youth.",
     category: "education",
+    imageUrl:
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
+    galleryUrls: [
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80",
+    ],
     goal: 12000,
     currentAmount: 6800,
     donorCount: 42,
@@ -19,6 +25,12 @@ const seedProjects = [
     description:
       "Shared solar panels for residents who cannot install their own rooftop systems.",
     category: "environment",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
+    galleryUrls: [
+      "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=900&q=80",
+    ],
     goal: 30000,
     currentAmount: 21400,
     donorCount: 96,
@@ -30,6 +42,8 @@ const seedProjects = [
     description:
       "Monthly wellness visits and screenings for underserved blocks.",
     category: "health",
+    imageUrl:
+      "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80",
     goal: 18000,
     currentAmount: 18000,
     donorCount: 73,
@@ -41,6 +55,8 @@ const seedProjects = [
     description:
       "Studio space, supplies, and mentorship for emerging community artists.",
     category: "arts",
+    imageUrl:
+      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80",
     goal: 9500,
     currentAmount: 4100,
     donorCount: 28,
@@ -52,6 +68,8 @@ const seedProjects = [
     description:
       "Install a public water refill kiosk to cut plastic waste and improve access.",
     category: "community",
+    imageUrl:
+      "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80",
     goal: 15000,
     currentAmount: 5200,
     donorCount: 31,
@@ -63,6 +81,8 @@ const seedProjects = [
     description:
       "A solar-powered community fridge stocked weekly with fresh groceries.",
     category: "community",
+    imageUrl:
+      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=900&q=80",
     goal: 8000,
     currentAmount: 7600,
     donorCount: 54,
@@ -74,6 +94,8 @@ const seedProjects = [
     description:
       "Starter kits and mentorship sessions for girls exploring coding and robotics.",
     category: "technology",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
     goal: 14000,
     currentAmount: 9300,
     donorCount: 61,
@@ -85,6 +107,8 @@ const seedProjects = [
     description:
       "Uniforms, cones, and balls for weekly practice in neighborhood parks.",
     category: "sports",
+    imageUrl:
+      "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=900&q=80",
     goal: 6000,
     currentAmount: 2500,
     donorCount: 19,
@@ -107,11 +131,20 @@ export function ProjectsProvider({ children }) {
     (project) => {
       const id = `p-${Date.now()}`;
       const goal = Number(project.goal) || 0;
+      const imageUrl = project.imageUrl ? project.imageUrl.trim() : "";
+      const galleryUrls = Array.isArray(project.galleryUrls)
+        ? project.galleryUrls.filter(Boolean)
+        : (project.galleryUrls || "")
+            .split(",")
+            .map((item) => item.trim())
+            .filter(Boolean);
       const newProject = {
         id,
         title: project.title.trim(),
         description: project.description.trim(),
         category: project.category || "community",
+        imageUrl,
+        galleryUrls,
         goal,
         currentAmount: Number(project.currentAmount) || 0,
         donorCount: Number(project.donorCount) || 0,
@@ -180,9 +213,9 @@ export function ProjectsProvider({ children }) {
   }, [projects]);
 
   const formatCurrency = useCallback((amount) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-KE", {
       style: "currency",
-      currency: "USD",
+      currency: "KES",
       maximumFractionDigits: 0,
     }).format(amount || 0);
   }, []);

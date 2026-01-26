@@ -83,12 +83,14 @@
 
 .hero-content h1 {
   font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.2rem;
+  text-align: center;
 }
 
 .hero-subtitle {
-  color: var(--text-muted);
+  color: var(--text);
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 .stats-dashboard {
@@ -198,7 +200,7 @@
   border: 1px solid var(--border);
   display: grid;
   gap: 1rem;
-  grid-template-rows: auto auto 1fr auto auto;
+  grid-template-rows: auto auto auto 1fr auto auto;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   height: 100%;
@@ -212,6 +214,31 @@
 .project-card.featured {
   border-color: rgba(15, 118, 110, 0.4);
   background: linear-gradient(180deg, #ffffff 0%, #f3fbfa 100%);
+}
+
+.project-card-media {
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(140deg, #e1f5f2 0%, #f3ede2 100%);
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-card-placeholder {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--accent-strong);
 }
 
 .project-card-header {
@@ -523,6 +550,23 @@
   grid-column: 1 / -1;
 }
 
+.form-section {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.form-section h4 {
+  margin: 0;
+}
+
+.form-helper {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
 .form-label {
   font-weight: 600;
 }
@@ -554,6 +598,29 @@
   color: var(--text-muted);
 }
 
+.details-hero {
+  margin-bottom: 2rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: var(--surface);
+}
+
+.details-hero img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.details-hero-placeholder {
+  padding: 2.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  background: linear-gradient(135deg, #f6f1e7 0%, #e9f4f2 100%);
+}
+
 .status-pill {
   background: var(--accent-soft);
   color: var(--accent-strong);
@@ -577,6 +644,25 @@
   padding: 1.5rem;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+}
+
+.details-muted {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.project-gallery {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.project-gallery img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
 }
 
 .detail-list {

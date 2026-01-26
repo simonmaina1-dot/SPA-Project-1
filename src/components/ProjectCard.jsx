@@ -9,6 +9,19 @@ export default function ProjectCard({ project, onClick, featured = false }) {
 
   const cardBody = (
     <article className={`project-card${featured ? " featured" : ""}`}>
+      <div className="project-card-media">
+        {project.imageUrl ? (
+          <img
+            src={project.imageUrl}
+            alt={`${project.title} cover`}
+            loading="lazy"
+          />
+        ) : (
+          <div className="project-card-placeholder">
+            <span>Community project</span>
+          </div>
+        )}
+      </div>
       <div className="project-card-header">
         <div>
           <span className="project-category">{project.category}</span>

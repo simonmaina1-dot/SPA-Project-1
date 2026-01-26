@@ -113,7 +113,7 @@ export default function Donate() {
               />
             </label>
             <label className="form-field">
-              <span className="form-label">Donation amount (USD)</span>
+              <span className="form-label">Donation amount (KSh)</span>
               <input
                 type="number"
                 name="amount"

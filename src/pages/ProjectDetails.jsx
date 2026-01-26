@@ -24,6 +24,9 @@ export default function ProjectDetails() {
   const progress = project.goal
     ? Math.min(100, Math.round((project.currentAmount / project.goal) * 100))
     : 0;
+  const galleryUrls = Array.isArray(project.galleryUrls)
+    ? project.galleryUrls
+    : [];
 
   return (
     <div className="page project-details-page">
@@ -37,6 +40,16 @@ export default function ProjectDetails() {
           <span className="status-pill">{project.status}</span>
           <span>{project.donorCount || 0} donors</span>
         </div>
+      </section>
+
+      <section className="details-hero">
+        {project.imageUrl ? (
+          <img src={project.imageUrl} alt={`${project.title} cover`} />
+        ) : (
+          <div className="details-hero-placeholder">
+            Add a project cover image to highlight this story.
+          </div>
+        )}
       </section>
 
       <section className="details-grid">
@@ -65,6 +78,24 @@ export default function ProjectDetails() {
           <Link to="/" className="btn btn-secondary">
             Explore more projects
           </Link>
+        </div>
+
+        <div className="details-card">
+          <h3>Project images</h3>
+          {galleryUrls.length ? (
+            <div className="project-gallery">
+              {galleryUrls.map((url, index) => (
+                <img
+                  key={`${url}-${index}`}
+                  src={url}
+                  alt={`${project.title} gallery ${index + 1}`}
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="details-muted">No gallery images yet.</p>
+          )}
         </div>
       </section>
     </div>
