@@ -166,10 +166,21 @@
 
 .projects-section {
   margin-top: 2rem;
+  scroll-margin-top: 120px;
+}
+
+.featured-section {
+  scroll-margin-top: 120px;
 }
 
 .about-section {
   margin-top: 3rem;
+  scroll-margin-top: 120px;
+}
+
+.section-helper {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
 }
 
 .section-header {

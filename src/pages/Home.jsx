@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useContext, useRef } from "react";
+import { useState, useMemo, useEffect, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
@@ -31,7 +31,6 @@ export default function Home() {
   const { showToast } = useContext(ToastContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const aboutRef = useRef(null);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -46,11 +45,16 @@ export default function Home() {
   }, [projects.length, showToast]); // Run when projects length or showToast changes
 
   useEffect(() => {
-    if (location.hash !== "#about" || !aboutRef.current) {
+    if (!location.hash) {
       return;
     }
-    aboutRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [location.hash]);
+
+    const targetId = location.hash.replace("#", "");
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [location.pathname, location.hash]);
 
   // Filter projects based on search and category
   // useMemo ensures this only runs when dependencies change
@@ -159,17 +163,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Projects (only show if there are projects) */}
-      {featuredProjects.length > 0 && projects.length >= 3 && (
-        <section className="featured-section" id="featured">
-          <h2>Featured Projects</h2>
+      <section className="featured-section" id="featured">
+        <h2>Featured Projects</h2>
+        {featuredProjects.length > 0 && projects.length >= 3 ? (
           <div className="featured-grid">
             {featuredProjects.map((project) => (
               <ProjectCard key={project.id} project={project} featured />
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <p className="section-helper">
+            Featured projects will appear once more campaigns are live.
+          </p>
+        )}
+      </section>
 
       {/* Search and Filter Section */}
       <section className="search-section">
@@ -311,7 +318,7 @@ export default function Home() {
         )}
       </Modal>
 
-      <section className="about-section" id="about" ref={aboutRef}>
+      <section className="about-section" id="about">
         <div className="page-header">
           <h2>About the Community Page</h2>
           <p>
