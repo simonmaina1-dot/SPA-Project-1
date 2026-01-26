@@ -4,6 +4,7 @@
 - Displays featured projects, stats, and a searchable grid.
 - Uses a modal for quick project details.
 - Shows empty and loading states.
+- Includes the About/architecture section at the bottom.
 
 ## Add Project (`src/pages/AddProject.jsx`)
 - Form for creating a new project.
@@ -17,9 +18,6 @@
 ## Donate (`src/pages/Donate.jsx`)
 - Demo checkout flow for simulated funding.
 - Updates project totals and returns to details view.
-
-## About (`src/pages/About.jsx`)
-- Short overview of architecture and app structure.
 
 ## Admin Dashboard (`src/pages/AdminDashboard.jsx`)
 - Password-protected admin view with platform metrics.

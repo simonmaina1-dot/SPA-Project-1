@@ -22,7 +22,7 @@ React Context for shared state (projects and toast notifications).
 - `/add` Add Project form.
 - `/projects/:projectId` Project details view.
 - `/donate/:projectId` Demo checkout flow.
-- `/about` Architecture overview.
+- `/projects` Project listing with About section.
 - `/admin` Admin dashboard (password protected).
 
 ## Running the App
