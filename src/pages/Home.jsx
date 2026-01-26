@@ -161,7 +161,7 @@ export default function Home() {
 
       {/* Featured Projects (only show if there are projects) */}
       {featuredProjects.length > 0 && projects.length >= 3 && (
-        <section className="featured-section">
+        <section className="featured-section" id="featured">
           <h2>Featured Projects</h2>
           <div className="featured-grid">
             {featuredProjects.map((project) => (
@@ -217,7 +217,7 @@ export default function Home() {
       </section>
 
       {/* Projects Grid */}
-      <section className="projects-section">
+      <section className="projects-section" id="projects">
         <div className="section-header">
           <h2>
             {selectedCategory === "all" ? "All Projects" : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Projects`}
@@ -313,32 +313,32 @@ export default function Home() {
 
       <section className="about-section" id="about" ref={aboutRef}>
         <div className="page-header">
-          <h2>About the Architecture</h2>
+          <h2>About the Community Page</h2>
           <p>
-            Community Donation Hub is built with React and a lightweight context
-            layer to keep project and toast state in sync.
+            The community page is where neighbors tell their stories and share
+            how funding changes lives on the ground.
           </p>
         </div>
         <div className="about-grid">
           <article className="about-card">
-            <h3>State flow</h3>
+            <h3>Local spotlights</h3>
             <p>
-              Projects live in a central context and are persisted to local
-              storage. Hooks provide a clean API for pages and components.
+              Each project gets a quick spotlight, with photos and progress
+              updates to make the impact feel real.
             </p>
           </article>
           <article className="about-card">
-            <h3>Reusable UI</h3>
+            <h3>Community signals</h3>
             <p>
-              Core UI blocks like cards, modals, and toasts are shared across
-              pages to keep the experience consistent.
+              We surface donor momentum, volunteer callouts, and category
+              trends so supporters can rally quickly.
             </p>
           </article>
           <article className="about-card">
-            <h3>Routing</h3>
+            <h3>Shared responsibility</h3>
             <p>
-              Vite powers the build system, while React Router keeps routes and
-              page transitions organized.
+              The goal is to keep the community informed, celebrate wins, and
+              invite new partners to join the mission.
             </p>
           </article>
         </div>
