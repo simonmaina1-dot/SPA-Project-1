@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const navSections = [
   { id: "featured", label: "Featured Projects" },
@@ -10,6 +10,8 @@ const navSections = [
 export default function Navbar() {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState("");
+  const [indicatorStyle, setIndicatorStyle] = useState({});
+  const linkRefs = useRef({});
 
   useEffect(() => {
     if (location.pathname !== "/projects") {
@@ -34,8 +36,8 @@ export default function Navbar() {
         });
       },
       {
-        rootMargin: "-40% 0px -40% 0px",
-        threshold: 0,
+        rootMargin: "-30% 0px -60% 0px",
+        threshold: 0.1,
       }
     );
 
@@ -54,6 +56,25 @@ export default function Navbar() {
     }
   }, [location.hash]);
 
+  useEffect(() => {
+    if (!activeSection) {
+      setIndicatorStyle({ opacity: 0, width: 0 });
+      return;
+    }
+
+    const activeLink = linkRefs.current[activeSection];
+    if (!activeLink) {
+      return;
+    }
+
+    const { offsetLeft, offsetWidth } = activeLink;
+    setIndicatorStyle({
+      transform: `translateX(${offsetLeft}px)`,
+      width: `${offsetWidth}px`,
+      opacity: 1,
+    });
+  }, [activeSection, location.pathname]);
+
   const isSectionActive = (id) => {
     if (location.pathname !== "/projects") {
       return false;
@@ -70,11 +91,17 @@ export default function Navbar() {
         Community Donation Hub
       </Link>
       <nav className="nav-links">
+        <span className="nav-active-indicator" style={indicatorStyle} aria-hidden="true" />
         {navSections.map((section) => (
           <Link
             key={section.id}
             to={`/projects#${section.id}`}
             className={`nav-link${isSectionActive(section.id) ? " active" : ""}`}
+            ref={(node) => {
+              if (node) {
+                linkRefs.current[section.id] = node;
+              }
+            }}
           >
             {section.label}
           </Link>
