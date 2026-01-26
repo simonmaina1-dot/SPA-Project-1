@@ -699,6 +699,66 @@
   box-shadow: var(--shadow);
 }
 
+.about-header {
+  max-width: 720px;
+  margin-bottom: 2rem;
+}
+
+.about-lead {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.about-intro {
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+.about-card p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+.about-card p:last-child {
+  margin-bottom: 0;
+}
+
+.about-emphasis {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.about-card-expanded {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.read-more-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.read-more-link:hover {
+  text-decoration: underline;
+}
+
 .admin-user-bar {
   margin-top: 1rem;
   display: flex;

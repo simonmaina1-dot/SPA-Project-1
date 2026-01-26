@@ -10,12 +10,9 @@ export default function Navbar() {
         <Link to="/projects#featured" className="nav-link">
           Featured Projects
         </Link>
-        <NavLink
-          to="/projects"
-          className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
-        >
+        <Link to="/projects#projects" className="nav-link">
           All Projects
-        </NavLink>
+        </Link>
         <Link to="/projects#about" className="nav-link">
           About
         </Link>
