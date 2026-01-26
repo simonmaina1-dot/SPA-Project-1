@@ -46,7 +46,7 @@ export default function Home() {
   }, [projects.length, showToast]); // Run when projects length or showToast changes
 
   useEffect(() => {
-    if (!location.hash) {
+    if (!location.hash || isLoading) {
       return;
     }
 
@@ -55,7 +55,7 @@ export default function Home() {
     if (target) {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.hash, isLoading]);
 
   // Filter projects based on search and category
   // useMemo ensures this only runs when dependencies change
@@ -332,7 +332,7 @@ export default function Home() {
           <p className="about-lead">
             Behind every funded project is a parent who stayed up late submitting
             updates, a volunteer who showed up on a Saturday morning, a donor
-            who gave $20 because they remembered what it felt like to need help
+            who gave ksh18,000 because they remembered what it felt like to need help
             and not get it.
           </p>
         </div>
