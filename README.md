@@ -1,201 +1,107 @@
 # Community Donation Hub
 
-A React Single Page Application (SPA) for community fundraising and project management. This application allows users to create projects, make donations, and track funding progress.
+A React Single Page Application (SPA) for community fundraising and project
+management. Users can create projects, explore active campaigns, and simulate
+support through a demo checkout flow.
 
 ## Features
 
-### Core Functionality
-- **Project Creation**: Create community projects with titles, descriptions, categories, and funding goals
-- **Donation System**: Make donations to support projects with validation
-- **Progress Tracking**: Visual progress bars showing funding status
-- **Search & Filter**: Find projects by category or search terms
-- **Data Persistence**: All data saved to localStorage
+- Project creation with title, goal, category, and description
+- Search, filter, and featured project discovery
+- Funding progress tracking with live stats
+- Demo donation checkout that updates totals
+- Admin dashboard with analytics and review queue (client-side gated)
+- Toast feedback and reusable modal UI
+- Local storage persistence for project data
+- Responsive layout for desktop, tablet, and mobile
 
-### Technical Features (Code Defense Ready)
-- **React Router**: 4 distinct views (Home, Add Project, Project Details, About)
-- **Context API**: Centralized state management with `ProjectsContext`
-- **Custom Hooks**: 
-  - `useProjects()` - Project data access and manipulation
-  - `useForm()` - Form handling and validation
-  - `useLocalStorage()` - localStorage abstraction
-- **Advanced Hooks**: `useEffect`, `useMemo`, `useCallback`
-- **Responsive Design**: Mobile-friendly with CSS Grid and Flexbox
+## Routes
+
+- `/` or `/projects` - Project listing with search, stats, and About section
+- `/projects/:projectId` - Project details
+- `/add` - Add Project (draggable modal form)
+- `/donate/:projectId` - Demo checkout
+- `/admin` - Admin dashboard (password protected in UI)
 
 ## Project Structure
 
 ```
 src/
 ├── components/
-│   ├── Navbar.jsx          # Main navigation with active states
-│   └── ProjectCard.jsx     # Project display card with progress
+│   ├── Navbar.jsx
+│   ├── ProjectCard.jsx
+│   ├── Modal.jsx
+│   ├── DraggableModal.jsx
+│   └── Toast.jsx
 ├── context/
-│   └── ProjectsContext.jsx # Central state management
+│   ├── ProjectsContext.jsx
+│   ├── ToastContext.jsx
+│   └── AuthContext.jsx
 ├── hooks/
-│   ├── useProjects.js      # Project data hook
-│   ├── useForm.js          # Form handling hook
-│   └── useLocalStorage.js  # Storage abstraction hook
+│   ├── useProjects.js
+│   ├── useForm.js
+│   ├── useLocalStorage.js
+│   └── useAuth.js
 ├── pages/
-│   ├── Home.jsx            # Project listing with search/filter
-│   ├── AddProject.jsx      # Create new project form
-│   ├── ProjectDetails.jsx  # Full project view with donations
-│   └── About.jsx           # Architecture documentation
-├── App.jsx                 # Main app with routes
-├── main.jsx                # App entry point
-├── index.css               # Complete design system
-└── App.css                 # App-specific styles
+│   ├── Home.jsx
+│   ├── AddProject.jsx
+│   ├── ProjectDetails.jsx
+│   ├── Donate.jsx
+│   └── AdminDashboard.jsx
+├── App.jsx
+├── main.jsx
+├── index.css
+└── App.css
 ```
 
-##  Technical Architecture
+## State Management
 
-### State Management: Context API
+- `ProjectsContext` stores project data and exposes helpers like `addProject`
+  and `addDonation`.
+- `ToastContext` handles user feedback messages.
+- `AuthContext` gates admin views (client-side only).
 
-**Why Context over Redux/Prop Drilling?**
-- Simpler for this scale of application
-- Single source of truth for project data
-- Reduces boilerplate compared to Redux
-- Easier to understand for Code Defense
-
-```jsx
-// ProjectsContext provides:
-- projects: Array of all projects
-- donations: Array of all donations
-- isLoading: Loading state for persistence
-- addProject(project): Create new project
-- addDonation(projectId, amount, name): Record donation
-- getProjectDonations(id): Get donations for a project
-```
-
-### Custom Hooks
-
-#### `useProjects()`
-Primary hook for all project operations:
-- CRUD operations for projects and donations
-- Search and filter functionality
-- Currency formatting
-- Progress calculation
-
-#### `useForm(initialValues, validate)`
-Abstracts form state management:
-- Manages field values, errors, and touched state
-- Built-in validation with custom rules
-- Handles form submission
-
-#### `useLocalStorage(key, initialValue)`
-Wrapper for localStorage:
-- Automatic JSON serialization
-- Lazy initialization
-- Cross-tab synchronization via storage events
-
-### Routing Strategy
-
-```
-Routes:
-/           -> Home (project listing with search/filter)
-/add        -> AddProject (create new project)
-/project/:id -> ProjectDetails (view and donate)
-/about      -> About (documentation)
-```
-
-**Why React Router?**
-- True SPA experience (no page reloads)
-- Browser history support
-- URL-based navigation
-- Active state handling on NavLink
-
-### Performance Optimizations
-
-1. **`useMemo` for filtering**: Prevents recalculation on re-renders
-2. **`useCallback` for handlers**: Memoizes event handlers
-3. **Lazy initialization**: useState initial functions run once
-4. **Conditional rendering**: Loading/error states
-
-## Code Defense Preparation
-
-### Key Questions & Answers
-
-**Q: "Why use Context instead of prop drilling?"**
-A: Context provides a single source of truth accessible by any component. Prop drilling becomes unmanageable with deep component trees. Context is perfect for app-wide state like user theme, auth, or in our case, project data.
-
-**Q: "Why use useMemo for filtering?"**
-A: Filtering can be expensive with large datasets. useMemo caches the result and only recalculates when dependencies (projects, searchQuery, category) change. This prevents unnecessary computation on every render.
-
-**Q: "What happens if we remove the useEffect dependency?"**
-A: The dependency array controls when the effect runs. If we remove `[projects]`, the effect would only run once on mount and not persist new projects. This would cause data loss when projects are added.
-
-**Q: "Why separate the DonationForm component?"**
-A: Separation of concerns. The ProjectDetails page handles project display while DonationForm handles form logic. This makes the code more maintainable, testable, and reusable.
-
-**Q: "How does localStorage persistence work?"**
-A: 1. On mount, useEffect reads from localStorage
-2. When projects change, another useEffect saves to localStorage
-3. This creates a sync: Storage ↔ State ↔ UI
-
-### Key Files to Review
-
-1. **ProjectsContext.jsx**: State management architecture
-2. **useForm.js**: Form handling pattern
-3. **Home.jsx**: Filtering and search logic
-4. **ProjectDetails.jsx**: Complex component with multiple features
+Custom hooks provide clean access patterns:
+- `useProjects`, `useForm`, `useLocalStorage`, `useAuth`
 
 ## Getting Started
 
-### Installation
 ```bash
 npm install
-```
-
-### Development
-```bash
 npm run dev
 ```
 
-### Build
+## Testing
+
 ```bash
-npm run build
+npm run test
+npm run test:run
 ```
 
-### Preview Production Build
-```bash
-npm run preview
-```
+## Scripts
 
-## Available Scripts
+- `npm run dev` - start the dev server
+- `npm run build` - production build
+- `npm run preview` - preview build
+- `npm run lint` - lint
+- `npm run test` - watch tests
+- `npm run test:run` - run tests once
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+## Notes for Code Defense
 
-## Design System
+The About section lives inside the Projects page so the architecture details are
+part of the primary user flow. The admin experience is a demo gate (no real
+backend). For deeper documentation, see `project-documentation/`.
 
-The app uses a comprehensive CSS design system with:
-- CSS Variables for theming
-- Responsive breakpoints (768px, 1024px)
-- Smooth transitions and animations
-- Accessible form controls
-- Loading states with spinners
+## Data and Assets
 
-## Dependencies
+- Seed data lives in `src/data/projects.json` and loads on first run. Clear the
+  `cdh-projects` local storage key to reset.
+- Project image folders live in `public/project-images/<project-id>/` for
+  teammate uploads.
 
-- **React 19** - UI Framework
-- **React Router 7** - Client-side routing
-- **Vite** - Build tool and dev server
-- **ESLint** - Code quality
+## Heads-up
 
-## Features Implemented
-
- Advanced State Management (Context API)
-Custom Hooks (useProjects, useForm, useLocalStorage)
-Client-side Routing (4 distinct views)
-Form Validation
- Search and Filtering
- Progress Visualization
-localStorage Persistence
- Responsive Design
- Code Documentation
- Code Defense Preparation
-
----
-
-**Built with React best practices for the Code Defense presentation!**
-
+- Heads-up: `src/context/AuthContext.jsx` currently has a malformed admin entry
+  (admin-george) which will break parsing. If you want it fixed, tell me the
+  exact details to keep.

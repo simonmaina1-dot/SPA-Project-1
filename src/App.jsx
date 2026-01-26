@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Link } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Toast from "./components/Toast";
+import Home from "./pages/Home";
+import AddProject from "./pages/AddProject";
+import ProjectDetails from "./pages/ProjectDetails";
+import AdminDashboard from "./pages/AdminDashboard";
+import Donate from "./pages/Donate";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function NotFound() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="page not-found-page">
+      <section className="empty-state">
+        <h2>Page not found</h2>
+        <p>The link you followed does not exist yet.</p>
+        <Link to="/" className="btn btn-primary">
+          Go to home
+        </Link>
+      </section>
+    </div>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <div className="app-shell">
+      <Navbar />
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Home />} />
+          <Route path="/add" element={<AddProject />} />
+          <Route path="/projects/:projectId" element={<ProjectDetails />} />
+          <Route path="/donate/:projectId" element={<Donate />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <footer className="app-footer">
+        <span>Community Donation Hub</span>
+        <span>Built for local impact</span>
+      </footer>
+      <Toast />
+    </div>
+  );
+}
