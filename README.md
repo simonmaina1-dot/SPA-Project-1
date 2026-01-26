@@ -95,9 +95,8 @@ backend). For deeper documentation, see `project-documentation/`.
 
 ## Data and Assets
 
-- Seed data lives in `src/data/projects.json` and loads on first run. Clear the
-  `cdh-projects` local storage key to reset.
-- Project image folders live in `public/project-images/<project-id>/` for
+- Reset local data by clearing the `cdh-projects` key in local storage.
+- Project image folders live in `public/project-images/<project-slug>/` for
   teammate uploads.
 
 ## Heads-up
