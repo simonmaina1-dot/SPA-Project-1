@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useMemo, useEffect, useContext, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
 import Modal from "../components/Modal";
@@ -30,6 +30,8 @@ export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const aboutRef = useRef(null);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -42,6 +44,13 @@ export default function Home() {
       showToast(`Welcome! ${projects.length} projects available`, "info");
     }
   }, [projects.length, showToast]); // Run when projects length or showToast changes
+
+  useEffect(() => {
+    if (location.hash !== "#about" || !aboutRef.current) {
+      return;
+    }
+    aboutRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [location.hash]);
 
   // Filter projects based on search and category
   // useMemo ensures this only runs when dependencies change
@@ -301,6 +310,39 @@ export default function Home() {
           </div>
         )}
       </Modal>
+
+      <section className="about-section" id="about" ref={aboutRef}>
+        <div className="page-header">
+          <h2>About the Architecture</h2>
+          <p>
+            Community Donation Hub is built with React and a lightweight context
+            layer to keep project and toast state in sync.
+          </p>
+        </div>
+        <div className="about-grid">
+          <article className="about-card">
+            <h3>State flow</h3>
+            <p>
+              Projects live in a central context and are persisted to local
+              storage. Hooks provide a clean API for pages and components.
+            </p>
+          </article>
+          <article className="about-card">
+            <h3>Reusable UI</h3>
+            <p>
+              Core UI blocks like cards, modals, and toasts are shared across
+              pages to keep the experience consistent.
+            </p>
+          </article>
+          <article className="about-card">
+            <h3>Routing</h3>
+            <p>
+              Vite powers the build system, while React Router keeps routes and
+              page transitions organized.
+            </p>
+          </article>
+        </div>
+      </section>
     </div>
   );
 }

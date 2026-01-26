@@ -164,6 +164,10 @@
   margin-top: 2rem;
 }
 
+.about-section {
+  margin-top: 3rem;
+}
+
 .section-header {
   display: flex;
   align-items: center;
@@ -364,6 +368,16 @@
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   overflow: hidden;
+}
+
+.draggable-modal {
+  cursor: default;
+}
+
+.draggable-header {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
 }
 
 .modal-header,

@@ -6,7 +6,6 @@ import AddProject from "./pages/AddProject";
 import ProjectDetails from "./pages/ProjectDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import Donate from "./pages/Donate";
-import About from "./pages/About";
 import "./App.css";
 
 function NotFound() {
@@ -30,11 +29,11 @@ export default function App() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Home />} />
           <Route path="/add" element={<AddProject />} />
           <Route path="/projects/:projectId" element={<ProjectDetails />} />
           <Route path="/donate/:projectId" element={<Donate />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
