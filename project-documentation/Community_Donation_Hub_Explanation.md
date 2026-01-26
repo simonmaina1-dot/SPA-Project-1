@@ -85,5 +85,4 @@ export default function useProjects() { ... }
 Fetches projects
 Stores them in state
 Exposes helper functions
-
 ## Css – I think u can just do centralized theming, consistent UI and make the app look professional. Can make the navbar remain visible as one scrolls down. Toast is on you guys
