@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
+import useForm from "../hooks/useForm";
 import ProjectCard from "../components/ProjectCard";
 import Modal from "../components/Modal";
 import { ToastContext } from "../context/ToastContext";
@@ -26,11 +27,22 @@ import { ToastContext } from "../context/ToastContext";
  * - Side effects like showing welcome toast on mount
  * - Cleanup not needed here since we only run once
  */
+const feedbackInitialValues = {
+  name: "",
+  email: "",
+  message: "",
+};
+
 export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const {
+    values: feedbackValues,
+    handleChange: handleFeedbackChange,
+    reset: resetFeedback,
+  } = useForm(feedbackInitialValues);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -118,6 +130,12 @@ export default function Home() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedProject(null);
+  };
+
+  const handleFeedbackSubmit = (event) => {
+    event.preventDefault();
+    showToast("Thanks for sharing your feedback!", "success");
+    resetFeedback();
   };
 
   // Toggle expanded state for about cards (only one open at a time)
@@ -461,6 +479,58 @@ export default function Home() {
             )}
           </article>
         </div>
+      </section>
+
+      <section className="feedback-section">
+        <div className="section-header">
+          <h2>Share feedback</h2>
+          <p>
+            Tell us how the Community Donation Hub can support your neighborhood
+            better.
+          </p>
+        </div>
+        <form className="form-card" onSubmit={handleFeedbackSubmit}>
+          <div className="form-grid">
+            <label className="form-field">
+              <span className="form-label">Full name</span>
+              <input
+                type="text"
+                name="name"
+                value={feedbackValues.name}
+                onChange={handleFeedbackChange}
+                placeholder="Your name"
+                required
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-label">Email</span>
+              <input
+                type="email"
+                name="email"
+                value={feedbackValues.email}
+                onChange={handleFeedbackChange}
+                placeholder="you@email.com"
+                required
+              />
+            </label>
+            <label className="form-field form-field-wide">
+              <span className="form-label">Feedback</span>
+              <textarea
+                name="message"
+                value={feedbackValues.message}
+                onChange={handleFeedbackChange}
+                rows="4"
+                placeholder="What should we improve or add next?"
+                required
+              />
+            </label>
+          </div>
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary">
+              Send feedback
+            </button>
+          </div>
+        </form>
       </section>
     </div>
   );
