@@ -92,3 +92,16 @@ npm run test:run
 The About section lives inside the Projects page so the architecture details are
 part of the primary user flow. The admin experience is a demo gate (no real
 backend). For deeper documentation, see `project-documentation/`.
+
+## Data and Assets
+
+- Seed data lives in `src/data/projects.json` and loads on first run. Clear the
+  `cdh-projects` local storage key to reset.
+- Project image folders live in `public/project-images/<project-id>/` for
+  teammate uploads.
+
+## Heads-up
+
+- Heads-up: `src/context/AuthContext.jsx` currently has a malformed admin entry
+  (admin-george) which will break parsing. If you want it fixed, tell me the
+  exact details to keep.
