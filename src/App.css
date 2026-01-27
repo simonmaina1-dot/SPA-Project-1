@@ -2324,6 +2324,13 @@ body {
   margin-top: 1rem;
 }
 
+.admin-feedback-form .form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .admin-donor-form {
   margin-top: 1rem;
 }
