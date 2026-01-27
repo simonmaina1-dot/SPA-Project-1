@@ -4,6 +4,7 @@ import useForm from "../hooks/useForm";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import DraggableModal from "../components/DraggableModal";
+import FeedbackForm from "../components/FeedbackForm";
 
 const initialValues = {
   title: "",
@@ -158,6 +159,11 @@ export default function AddProject() {
             </label>
           </div>
         </form>
+
+        <FeedbackForm
+          title="Share feedback"
+          subtitle="Tell us how the Community Donation Hub can support your neighborhood better."
+        />
       </DraggableModal>
     </div>
   );
