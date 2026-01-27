@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
-import DraggableModal from "../components/DraggableModal";
+import Modal from "../components/Modal";
 import FeedbackForm from "../components/FeedbackForm";
 
 const initialValues = {
@@ -37,7 +37,7 @@ export default function AddProject() {
 
   return (
     <div className="page add-project-page">
-      <DraggableModal
+      <Modal
         isOpen
         onClose={() => navigate("/")}
         title="Launch a New Project"
@@ -164,7 +164,7 @@ export default function AddProject() {
           title="Share feedback"
           subtitle="Tell us how the Community Donation Hub can support your neighborhood better."
         />
-      </DraggableModal>
+      </Modal>
     </div>
   );
 }
