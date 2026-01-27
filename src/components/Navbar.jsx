@@ -1,4 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { to: "/projects", label: "Projects" },
@@ -6,8 +7,35 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Add shadow when scrolled
+      setScrolled(currentScrollY > 10);
+
+      // Hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down & past 100px
+        setHidden(true);
+      } else {
+        // Scrolling up
+        setHidden(false);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className="navbar">
+    <header className={`navbar${scrolled ? " scrolled" : ""}${hidden ? " hidden" : ""}`}>
       <Link to="/" className="nav-brand">
         Community Donation Hub
       </Link>

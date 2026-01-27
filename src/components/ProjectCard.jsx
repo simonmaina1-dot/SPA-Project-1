@@ -1,61 +1,156 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import useProjects from "../hooks/useProjects";
 
 export default function ProjectCard({ project, onClick, featured = false }) {
   const { formatCurrency } = useProjects();
+
   const progress = project.goal
     ? Math.min(100, Math.round((project.currentAmount / project.goal) * 100))
     : 0;
 
+  // Get gallery count and build image URLs
+  const galleryCount = Number(project.galleryCount) || 0;
+  const galleryImages = [];
+  
+  for (let i = 1; i <= galleryCount; i++) {
+    galleryImages.push(`/project-images/${project.id}/${i}.jpg`);
+  }
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedIndexes, setLoadedIndexes] = useState(new Set());
+
+  // Auto-slide with staggered timing for each card
+  useEffect(() => {
+    if (galleryImages.length <= 1) return;
+
+    // Random initial delay (0-4 seconds) so cards don't sync
+    const randomDelay = Math.random() * 4000;
+    
+    const delayTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
+      }, 4000); // Change slide every 4 seconds
+
+      // Cleanup interval when component unmounts
+      return () => clearInterval(interval);
+    }, randomDelay);
+
+    // Cleanup timeout when component unmounts
+    return () => clearTimeout(delayTimer);
+  }, [galleryImages.length]);
+
+  const handleImageLoad = (index) => {
+    setLoadedIndexes((prev) => {
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  };
+
+  const handleImageError = (index, src) => {
+    console.error(`Failed to load image ${index} for ${project.id}:`, src);
+  };
+
   const cardBody = (
     <article className={`project-card${featured ? " featured" : ""}`}>
-      <div className="project-card-media">
-        {project.imageUrl ? (
-          <img
-            src={project.imageUrl}
-            alt={`${project.title} cover`}
-            loading="lazy"
-          />
+      {/* Background image slideshow */}
+      <div className="project-card-slides">
+        {galleryImages.length > 0 ? (
+          galleryImages.map((src, index) => {
+            const isActive = index === currentIndex;
+            const isLoaded = loadedIndexes.has(index);
+            const shouldShow = isActive && isLoaded;
+            
+            return (
+              <div
+                key={index}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url(${src})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  opacity: shouldShow ? 1 : 0,
+                  transition: 'opacity 1s ease-in-out',
+                  zIndex: isActive ? 2 : 1
+                }}
+              >
+                <img
+                  src={src}
+                  alt=""
+                  onLoad={() => handleImageLoad(index)}
+                  onError={() => handleImageError(index, src)}
+                  style={{ display: "none" }}
+                />
+              </div>
+            );
+          })
         ) : (
-          <div className="project-card-placeholder">
-            <span>Community project</span>
-          </div>
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(135deg, #1db954 0%, #1ed760 100%)'
+          }} />
         )}
       </div>
-      <div className="project-card-header">
-        <div>
+
+      {/* Gradient overlay */}
+      <div className="project-card-overlay" />
+
+      {/* Content overlay */}
+      <div className="project-card-content">
+        <div className="project-card-header">
           <span className="project-category">{project.category}</span>
-          <h3>{project.title}</h3>
+          <h3 className="project-title">{project.title}</h3>
+          <p className="project-description">{project.description}</p>
         </div>
-        {featured && <span className="project-tag">Featured</span>}
-      </div>
-      <p className="project-description">{project.description}</p>
-      <div className="project-progress">
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progress}%` }} />
+
+        <div className="project-card-footer">
+          <div className="project-funding">
+            <span className="funding-percentage">{progress}% funded</span>
+            <div className="funding-bar">
+              <div
+                className="funding-progress"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+
+          <span className="learn-more-btn">
+            Learn more
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M7.5 15L12.5 10L7.5 5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
         </div>
-        <div className="progress-meta">
-          <span>{formatCurrency(project.currentAmount)}</span>
-          <span>{progress}% funded</span>
-        </div>
-      </div>
-      <div className="project-card-footer">
-        <span className="project-goal">Goal {formatCurrency(project.goal)}</span>
-        <span className="project-donors">{project.donorCount || 0} donors</span>
       </div>
     </article>
   );
 
   if (onClick) {
     return (
-      <button type="button" className="project-card-button" onClick={onClick}>
+      <button type="button" className="project-card-wrapper" onClick={onClick}>
         {cardBody}
       </button>
     );
   }
 
   return (
-    <Link to={`/projects/${project.id}`} className="project-card-link">
+    <Link to={`/projects/${project.id}`} className="project-card-wrapper">
       {cardBody}
     </Link>
   );
