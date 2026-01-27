@@ -1792,6 +1792,7 @@ body {
    ========================================== */
 .admin-page {
   background: var(--surface);
+  max-width: 100%;
 }
 
 .admin-navbar {
@@ -1838,6 +1839,8 @@ body {
 
 .admin-content {
   padding: 2rem 2.5rem 4rem;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .admin-content .page-header {
