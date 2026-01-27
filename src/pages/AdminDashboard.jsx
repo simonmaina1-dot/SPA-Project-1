@@ -1,10 +1,18 @@
 import { useContext, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
+import Modal from "../components/Modal";
 
 export default function AdminDashboard() {
-  const { projects, formatCurrency, updateProject } = useProjects();
+  const {
+    projects,
+    formatCurrency,
+    updateProject,
+    addProject,
+    removeProject,
+  } = useProjects();
   const { showToast } = useContext(ToastContext);
   const { currentUser, signIn, signOut } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
@@ -17,6 +25,16 @@ export default function AdminDashboard() {
     category: "community",
     goal: "",
     status: "active",
+    imageUrl: "",
+    galleryUrls: "",
+  });
+  const [viewMode, setViewMode] = useState("table");
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [newProject, setNewProject] = useState({
+    title: "",
+    description: "",
+    category: "community",
+    goal: "",
     imageUrl: "",
     galleryUrls: "",
   });
@@ -184,58 +202,137 @@ export default function AdminDashboard() {
     showToast("Project details updated.", "success");
   };
 
+  const handleNewProjectChange = (event) => {
+    const { name, value } = event.target;
+    setNewProject((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddProject = (event) => {
+    event.preventDefault();
+
+    if (!newProject.title.trim() || !newProject.description.trim()) {
+      showToast("Please fill in required fields.", "warning");
+      return;
+    }
+
+    const galleryUrls = newProject.galleryUrls
+      .split(",")
+      .map((url) => url.trim())
+      .filter(Boolean);
+
+    addProject({
+      title: newProject.title.trim(),
+      description: newProject.description.trim(),
+      category: newProject.category || "community",
+      goal: Number(newProject.goal) || 0,
+      imageUrl: newProject.imageUrl.trim(),
+      galleryUrls,
+    });
+
+    showToast("Project created successfully.", "success");
+    setNewProject({
+      title: "",
+      description: "",
+      category: "community",
+      goal: "",
+      imageUrl: "",
+      galleryUrls: "",
+    });
+    setViewMode("table");
+  };
+
+  const handleDeleteClick = (projectId) => {
+    setDeleteConfirmId(projectId);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteConfirmId) {
+      removeProject(deleteConfirmId);
+      showToast("Project deleted.", "success");
+      setDeleteConfirmId(null);
+      if (editProjectId === deleteConfirmId) {
+        setEditProjectId("");
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmId(null);
+  };
+
+  const getProjectTitle = (id) => {
+    const project = projects.find((p) => p.id === id);
+    return project?.title || "this project";
+  };
+
   if (!currentUser) {
     return (
       <div className="page admin-page">
-        <section className="page-header">
-          <h1>Admin Access</h1>
-          <p>This dashboard is password protected for approved administrators.</p>
-        </section>
+        <nav className="admin-navbar">
+          <Link to="/" className="admin-brand">
+            Community Donation Hub
+          </Link>
+          <div className="admin-navbar-right">
+            <Link to="/" className="admin-back-link">
+              Back to main site
+            </Link>
+            <span className="admin-user-info">Admin access</span>
+          </div>
+        </nav>
 
-        <form className="form-card admin-login" onSubmit={handleLogin}>
-          <div className="form-grid">
-            <label className="form-field">
-              <span className="form-label">Admin email</span>
-              <input
-                type="email"
-                name="email"
-                value={credentials.email}
-                onChange={handleChange}
-                placeholder="name@company.com"
-                required
-              />
-            </label>
+        <div className="admin-content">
+          <section className="page-header">
+            <h1>Admin Access</h1>
+            <p>
+              This dashboard is password protected for approved administrators.
+            </p>
+          </section>
 
-            <label className="form-field">
-              <span className="form-label">Password</span>
-              <div className="password-field">
+          <form className="form-card admin-login" onSubmit={handleLogin}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Admin email</span>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={credentials.password}
+                  type="email"
+                  name="email"
+                  value={credentials.email}
                   onChange={handleChange}
-                  placeholder="Enter your password"
+                  placeholder="name@company.com"
                   required
                 />
-                <button
-                  type="button"
-                  className="btn btn-secondary password-toggle"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-            </label>
-          </div>
+              </label>
 
-          {errorMessage && <p className="form-error">{errorMessage}</p>}
+              <label className="form-field">
+                <span className="form-label">Password</span>
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={credentials.password}
+                    onChange={handleChange}
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-secondary password-toggle"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+              </label>
+            </div>
 
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primary">
-              Sign in
-            </button>
-          </div>
-        </form>
+            {errorMessage && <p className="form-error">{errorMessage}</p>}
+
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Sign in
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
@@ -247,23 +344,33 @@ export default function AdminDashboard() {
 
   return (
     <div className="page admin-page">
-      <section className="page-header">
-        <h1>Admin Dashboard</h1>
-        <p>
-          Monitor campaigns, manage approvals, and keep community fundraising on
-          track.
-        </p>
-        <div className="admin-user-bar">
-          <span>
+      <nav className="admin-navbar">
+        <Link to="/" className="admin-brand">
+          Community Donation Hub
+        </Link>
+        <div className="admin-navbar-right">
+          <Link to="/" className="admin-back-link">
+            Back to main site
+          </Link>
+          <span className="admin-user-info">
             Signed in as {currentUser.name} ({currentUser.role})
           </span>
           <button type="button" className="btn btn-secondary" onClick={signOut}>
             Sign out
           </button>
         </div>
-      </section>
+      </nav>
 
-      <section className="admin-grid">
+      <div className="admin-content">
+        <section className="page-header">
+          <h1>Admin Dashboard</h1>
+          <p>
+            Monitor campaigns, manage approvals, and keep community fundraising on
+            track.
+          </p>
+        </section>
+
+        <section className="admin-grid">
         <article className="admin-card admin-card-wide admin-card-snapshot">
           <h3>Platform snapshot</h3>
           <div className="admin-stats">
@@ -300,134 +407,352 @@ export default function AdminDashboard() {
           </div>
         </article>
 
-        <article className="admin-card admin-card-wide">
-          <h3>Project management</h3>
-          <p className="admin-card-subtitle">
-            Edit project details, update status, and add image links.
-          </p>
-          <form className="admin-form" onSubmit={handleEditSubmit}>
-            <div className="form-grid">
-              <label className="form-field">
-                <span className="form-label">Project</span>
-                <select
-                  name="projectId"
-                  value={editProjectId}
-                  onChange={(event) => setEditProjectId(event.target.value)}
+        <article className="admin-card admin-card-wide admin-project-management">
+          <div className="admin-section-header">
+            <div>
+              <h3>Project management</h3>
+              <p className="admin-card-subtitle">
+                View, add, edit, or delete projects from the platform.
+              </p>
+            </div>
+            <div className="admin-section-actions">
+              {viewMode === "table" && (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => setViewMode("add")}
                 >
-                  {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="form-field">
-                <span className="form-label">Status</span>
-                <select
-                  name="status"
-                  value={editValues.status}
-                  onChange={handleEditChange}
+                  + Add Project
+                </button>
+              )}
+              {viewMode !== "table" && (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setViewMode("table")}
                 >
-                  <option value="active">Active</option>
-                  <option value="review">Review</option>
-                  <option value="funded">Funded</option>
-                  <option value="draft">Draft</option>
-                </select>
-              </label>
+                  Back to List
+                </button>
+              )}
+            </div>
+          </div>
 
-              <label className="form-field">
-                <span className="form-label">Category</span>
-                <select
-                  name="category"
-                  value={editValues.category}
-                  onChange={handleEditChange}
-                >
-                  <option value="education">Education</option>
-                  <option value="health">Health & Medical</option>
-                  <option value="environment">Environment</option>
-                  <option value="community">Community</option>
-                  <option value="technology">Technology</option>
-                  <option value="arts">Arts & Culture</option>
-                  <option value="sports">Sports & Recreation</option>
-                  <option value="other">Other</option>
-                </select>
-              </label>
+          {viewMode === "table" && (
+            <div className="admin-table-container">
+              {projects.length === 0 ? (
+                <p className="admin-empty">No projects yet. Add your first project.</p>
+              ) : (
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Goal</th>
+                      <th>Raised</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.map((project) => (
+                      <tr key={project.id}>
+                        <td className="admin-table-title">{project.title}</td>
+                        <td>
+                          <span className="admin-category-badge">
+                            {project.category.charAt(0).toUpperCase() + project.category.slice(1)}
+                          </span>
+                        </td>
+                        <td>{formatCurrency(project.goal)}</td>
+                        <td>{formatCurrency(project.currentAmount || 0)}</td>
+                        <td>
+                          <span className={`status-pill status-${project.status}`}>
+                            {project.status}
+                          </span>
+                        </td>
+                        <td className="admin-table-actions">
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-small"
+                            onClick={() => {
+                              setEditProjectId(project.id);
+                              setViewMode("edit");
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-small"
+                            onClick={() => handleDeleteClick(project.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
 
-              <label className="form-field">
-                <span className="form-label">Funding goal (KSh)</span>
-                <input
-                  type="number"
-                  name="goal"
-                  value={editValues.goal}
-                  onChange={handleEditChange}
-                  min="0"
-                />
-              </label>
-
-              <label className="form-field form-field-wide">
-                <span className="form-label">Project title</span>
-                <input
-                  type="text"
-                  name="title"
-                  value={editValues.title}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
-
-              <label className="form-field">
-                <span className="form-label">Cover image URL</span>
-                <input
-                  type="url"
-                  name="imageUrl"
-                  value={editValues.imageUrl}
-                  onChange={handleEditChange}
-                  placeholder="https://images.example.com/cover.jpg"
-                />
-              </label>
-
-              <div className="admin-image-preview">
-                {editValues.imageUrl ? (
-                  <img
-                    src={editValues.imageUrl}
-                    alt="Project cover preview"
-                    loading="lazy"
+          {viewMode === "add" && (
+            <form className="admin-form" onSubmit={handleAddProject}>
+              <div className="form-grid">
+                <label className="form-field form-field-wide">
+                  <span className="form-label">Project title *</span>
+                  <input
+                    type="text"
+                    name="title"
+                    value={newProject.title}
+                    onChange={handleNewProjectChange}
+                    placeholder="Enter project title"
+                    required
                   />
-                ) : (
-                  <span>No cover image yet.</span>
-                )}
+                </label>
+
+                <label className="form-field">
+                  <span className="form-label">Category</span>
+                  <select
+                    name="category"
+                    value={newProject.category}
+                    onChange={handleNewProjectChange}
+                  >
+                    <option value="education">Education</option>
+                    <option value="health">Health & Medical</option>
+                    <option value="environment">Environment</option>
+                    <option value="community">Community</option>
+                    <option value="technology">Technology</option>
+                    <option value="arts">Arts & Culture</option>
+                    <option value="sports">Sports & Recreation</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+
+                <label className="form-field">
+                  <span className="form-label">Funding goal (KSh) *</span>
+                  <input
+                    type="number"
+                    name="goal"
+                    value={newProject.goal}
+                    onChange={handleNewProjectChange}
+                    min="0"
+                    placeholder="12000"
+                    required
+                  />
+                </label>
+
+                <label className="form-field">
+                  <span className="form-label">Cover image URL</span>
+                  <input
+                    type="url"
+                    name="imageUrl"
+                    value={newProject.imageUrl}
+                    onChange={handleNewProjectChange}
+                    placeholder="https://images.example.com/cover.jpg"
+                  />
+                </label>
+
+                <label className="form-field form-field-wide">
+                  <span className="form-label">Gallery URLs (comma-separated)</span>
+                  <input
+                    type="text"
+                    name="galleryUrls"
+                    value={newProject.galleryUrls}
+                    onChange={handleNewProjectChange}
+                    placeholder="https://example.com/1.jpg, https://example.com/2.jpg"
+                  />
+                </label>
+
+                <label className="form-field form-field-wide">
+                  <span className="form-label">Description *</span>
+                  <textarea
+                    name="description"
+                    value={newProject.description}
+                    onChange={handleNewProjectChange}
+                    rows="4"
+                    placeholder="Describe what this project will accomplish..."
+                    required
+                  />
+                </label>
               </div>
 
-              <label className="form-field form-field-wide">
-                <span className="form-label">Gallery image URLs</span>
-                <input
-                  type="text"
-                  name="galleryUrls"
-                  value={editValues.galleryUrls}
-                  onChange={handleEditChange}
-                  placeholder="https://images.example.com/1.jpg, https://images.example.com/2.jpg"
-                />
-              </label>
+              <div className="admin-form-actions">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setViewMode("table")}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Create Project
+                </button>
+              </div>
+            </form>
+          )}
 
-              <label className="form-field form-field-wide">
-                <span className="form-label">Project description</span>
-                <textarea
-                  name="description"
-                  value={editValues.description}
-                  onChange={handleEditChange}
-                  rows="4"
-                />
-              </label>
-            </div>
+          {viewMode === "edit" && (
+            <form className="admin-form" onSubmit={handleEditSubmit}>
+              <div className="form-grid">
+                <label className="form-field">
+                  <span className="form-label">Project</span>
+                  <select
+                    name="projectId"
+                    value={editProjectId}
+                    onChange={(event) => setEditProjectId(event.target.value)}
+                  >
+                    {projects.map((project) => (
+                      <option key={project.id} value={project.id}>
+                        {project.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-            <div className="admin-form-actions">
-              <button type="submit" className="btn btn-primary">
-                Save updates
+                <label className="form-field">
+                  <span className="form-label">Status</span>
+                  <select
+                    name="status"
+                    value={editValues.status}
+                    onChange={handleEditChange}
+                  >
+                    <option value="active">Active</option>
+                    <option value="review">Review</option>
+                    <option value="funded">Funded</option>
+                    <option value="draft">Draft</option>
+                  </select>
+                </label>
+
+                <label className="form-field">
+                  <span className="form-label">Category</span>
+                  <select
+                    name="category"
+                    value={editValues.category}
+                    onChange={handleEditChange}
+                  >
+                    <option value="education">Education</option>
+                    <option value="health">Health & Medical</option>
+                    <option value="environment">Environment</option>
+                    <option value="community">Community</option>
+                    <option value="technology">Technology</option>
+                    <option value="arts">Arts & Culture</option>
+                    <option value="sports">Sports & Recreation</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+
+                <label className="form-field">
+                  <span className="form-label">Funding goal (KSh)</span>
+                  <input
+                    type="number"
+                    name="goal"
+                    value={editValues.goal}
+                    onChange={handleEditChange}
+                    min="0"
+                  />
+                </label>
+
+                <label className="form-field form-field-wide">
+                  <span className="form-label">Project title</span>
+                  <input
+                    type="text"
+                    name="title"
+                    value={editValues.title}
+                    onChange={handleEditChange}
+                    required
+                  />
+                </label>
+
+                <label className="form-field">
+                  <span className="form-label">Cover image URL</span>
+                  <input
+                    type="url"
+                    name="imageUrl"
+                    value={editValues.imageUrl}
+                    onChange={handleEditChange}
+                    placeholder="https://images.example.com/cover.jpg"
+                  />
+                </label>
+
+                <div className="admin-image-preview">
+                  {editValues.imageUrl ? (
+                    <img
+                      src={editValues.imageUrl}
+                      alt="Project cover preview"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span>No cover image yet.</span>
+                  )}
+                </div>
+
+                <label className="form-field form-field-wide">
+                  <span className="form-label">Gallery image URLs</span>
+                  <input
+                    type="text"
+                    name="galleryUrls"
+                    value={editValues.galleryUrls}
+                    onChange={handleEditChange}
+                    placeholder="https://images.example.com/1.jpg, https://images.example.com/2.jpg"
+                  />
+                </label>
+
+                <label className="form-field form-field-wide">
+                  <span className="form-label">Project description</span>
+                  <textarea
+                    name="description"
+                    value={editValues.description}
+                    onChange={handleEditChange}
+                    rows="4"
+                  />
+                </label>
+              </div>
+
+              <div className="admin-form-actions">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setViewMode("table")}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          )}
+        </article>
+
+        <Modal
+          isOpen={Boolean(deleteConfirmId)}
+          onClose={handleCancelDelete}
+          title="Delete Project"
+          footer={
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleCancelDelete}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleConfirmDelete}
+              >
+                Delete
               </button>
             </div>
-          </form>
-        </article>
+          }
+        >
+          <p>Are you sure you want to delete "{getProjectTitle(deleteConfirmId)}"?</p>
+          <p className="admin-warning-text">
+            This action cannot be undone. All project data will be permanently removed.
+          </p>
+        </Modal>
 
         <article className="admin-card">
           <h3>Funding health</h3>
@@ -614,7 +939,8 @@ export default function AdminDashboard() {
             ))}
           </div>
         </article>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }
