@@ -102,9 +102,9 @@ export function ProjectsProvider({ children }) {
   }, [projects]);
 
   const formatCurrency = useCallback((amount) => {
-    return new Intl.NumberFormat("en-KE", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "KES",
+      currency: "USD",
       maximumFractionDigits: 0,
     }).format(amount || 0);
   }, []);
