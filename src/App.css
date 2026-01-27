@@ -2123,55 +2123,74 @@ body {
   }
 
   .nav-menu {
-    display: none;
-    flex-direction: column;
-    position: fixed;
-    top: 56px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #ffffff;
-    padding: 24px;
-    z-index: 1001;
-    overflow-y: auto;
-    border-top: 1px solid var(--color-border);
+    display: none !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    height: auto !important;
+    max-height: 70vh !important;
+    background: #ffffff !important;
+    padding: 8px 16px 16px !important;
+    z-index: 9999 !important;
+    overflow-y: auto !important;
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2) !important;
   }
 
   .nav-menu.open {
-    display: flex;
+    display: flex !important;
   }
 
   .nav-links {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    margin-bottom: 24px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 2px !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
   }
 
   .nav-link {
-    padding: 14px 16px;
-    font-size: 16px;
-    border-radius: 12px;
+    display: block !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: #333 !important;
+    text-decoration: none !important;
+  }
+
+  .nav-link:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
   }
 
   .nav-link::after {
-    display: none;
+    display: none !important;
   }
 
   .nav-link.active {
-    background: rgba(29, 185, 84, 0.1);
+    background: rgba(29, 185, 84, 0.12) !important;
+    color: #1db954 !important;
   }
 
   .nav-actions {
-    flex-direction: column;
-    gap: 12px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
   }
 
   .nav-cta {
-    width: 100%;
-    justify-content: center;
-    padding: 14px 24px;
-    font-size: 15px;
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+    text-align: center !important;
   }
 
   .main-content {
