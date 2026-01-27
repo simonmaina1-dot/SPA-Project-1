@@ -216,7 +216,7 @@ export default function Home() {
 
       {/* Featured Projects (only show if there are projects) */}
       {featuredProjects.length > 0 && projects.length >= 3 && (
-        <section className="featured-section">
+        <section className="featured-section" id="featured">
           <h2>Featured Projects</h2>
           <div className="featured-grid">
             {featuredProjects.map((project) => (
@@ -276,7 +276,7 @@ export default function Home() {
 
 
       {/* Projects Grid */}
-      <section className="projects-section">
+      <section className="projects-section" id="all-projects">
         <div className="section-header">
           <h2>
             {selectedCategory === "all" ? "All Projects" : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Projects`}
@@ -372,9 +372,6 @@ export default function Home() {
                 Community suggestions and feedback submissions.
               </p>
             </div>
-            <span className="admin-badge">
-              {feedbackList.filter((f) => f.status === "new").length} new
-            </span>
           </div>
           <form className="feedback-form-card form-card" onSubmit={handleFeedbackSubmit}>
             <div className="form-grid">
