@@ -24,12 +24,26 @@ export default function ProjectDetails() {
   const [isDonateOpen, setIsDonateOpen] = useState(false);
   const { values, handleChange, reset } = useForm(donationInitialValues);
 
-  // Build gallery images from galleryCount
-  const galleryCount = Number(project?.galleryCount) || 0;
   const galleryImages = [];
-  
-  for (let i = 1; i <= galleryCount; i++) {
-    galleryImages.push(`/project-images/${projectId}/${i}.jpg`);
+  const remoteGallery = Array.isArray(project?.galleryUrls)
+    ? project.galleryUrls.filter(Boolean)
+    : [];
+
+  if (project?.imageUrl) {
+    galleryImages.push(project.imageUrl);
+  }
+
+  remoteGallery.forEach((url) => {
+    if (url && url !== project?.imageUrl) {
+      galleryImages.push(url);
+    }
+  });
+
+  if (galleryImages.length === 0) {
+    const galleryCount = Number(project?.galleryCount) || 0;
+    for (let i = 1; i <= galleryCount; i++) {
+      galleryImages.push(`/project-images/${projectId}/${i}.jpg`);
+    }
   }
 
   const handleCopyLink = async () => {
