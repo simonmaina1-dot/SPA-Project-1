@@ -1,67 +1,81 @@
-import { createContext, useCallback, useMemo } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
-
-const seedFeedback = [
-  {
-    id: "f-1001",
-    name: "Jane Mwangi",
-    email: "jane.mwangi@email.com",
-    message: "Love the platform! Would be great to have email notifications for project updates.",
-    createdAt: "2026-01-25T10:30:00Z",
-    status: "new",
-  },
-  {
-    id: "f-1002",
-    name: "Peter Ochieng",
-    email: "peter.o@email.com",
-    message: "The donation process is smooth. Can we add M-Pesa integration?",
-    createdAt: "2026-01-24T14:15:00Z",
-    status: "reviewed",
-  },
-];
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 export const FeedbackContext = createContext(null);
 
 export function FeedbackProvider({ children }) {
-  const [feedbackList, setFeedbackList] = useLocalStorage(
-    "cdh-feedback",
-    seedFeedback
-  );
+  const [feedbackList, setFeedbackList] = useState([]);
 
-  const addFeedback = useCallback(
-    (feedback) => {
-      const id = `f-${Date.now()}`;
-      const newFeedback = {
-        id,
-        name: feedback.name.trim(),
-        email: feedback.email.trim(),
-        message: feedback.message.trim(),
-        createdAt: new Date().toISOString(),
-        status: "new",
-      };
+  // Fetch feedback from db.json via JSON Server
+  useEffect(() => {
+    fetch("http://localhost:3002/feedback")
+      .then((res) => res.json())
+      .then((data) => setFeedbackList(data))
+      .catch((err) => console.error("Failed to load feedback:", err));
+  }, []);
+
+  // Add new feedback (POST to JSON Server)
+  const addFeedback = useCallback(async (feedback) => {
+    const newFeedback = {
+      id: `f-${Date.now()}`,
+      name: feedback.name.trim(),
+      email: feedback.email.trim(),
+      message: feedback.message.trim(),
+      createdAt: new Date().toISOString(),
+      status: "new",
+    };
+
+    try {
+      const res = await fetch("http://localhost:3002/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newFeedback),
+      });
+
+      if (!res.ok) throw new Error("Failed to save feedback");
+
       setFeedbackList((prev) => [newFeedback, ...prev]);
-      return id;
-    },
-    [setFeedbackList]
-  );
+      return newFeedback.id;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }, []);
 
-  const updateFeedbackStatus = useCallback(
-    (id, status) => {
+  // Update feedback status (PATCH to JSON Server)
+  const updateFeedbackStatus = useCallback(async (id, status) => {
+    try {
+      const res = await fetch(`http://localhost:3002/feedback/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update feedback");
+
       setFeedbackList((prev) =>
         prev.map((item) =>
           item.id === id ? { ...item, status } : item
         )
       );
-    },
-    [setFeedbackList]
-  );
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
-  const removeFeedback = useCallback(
-    (id) => {
+  // Remove feedback (DELETE from JSON Server)
+  const removeFeedback = useCallback(async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3002/feedback/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete feedback");
+
       setFeedbackList((prev) => prev.filter((item) => item.id !== id));
-    },
-    [setFeedbackList]
-  );
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
   const value = useMemo(
     () => ({
