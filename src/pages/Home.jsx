@@ -46,6 +46,14 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
+  const [expandedCards, setExpandedCards] = useState({});
+
+  // Toggle expanded state for about cards (only one open at a time)
+  const toggleCard = (cardId) => {
+    setExpandedCards((prev) =>
+      prev[cardId] ? {} : { [cardId]: true }
+    );
+  };
 
   const handleFeedbackSubmit = (event) => {
     event.preventDefault();
@@ -330,34 +338,138 @@ export default function Home() {
 
       {/* About Section */}
       <section className="about-section" id="about" ref={aboutRef}>
-        <div className="page-header">
-          <h2>About the Architecture</h2>
-          <p>
-            Community Donation Hub is built with React and a lightweight context
-            layer to keep project and toast state in sync.
+        <div className="about-header">
+          <h2>About the Community</h2>
+          <p className="about-lead">
+            Behind every funded project is a parent who stayed up late submitting
+            updates, a volunteer who showed up on a Saturday morning, a donor
+            who gave Ksh 18,000 because they remembered what it felt like to need help
+            and not get it.
           </p>
         </div>
+
         <div className="about-grid">
           <article className="about-card">
-            <h3>State flow</h3>
+            <h3>Local Spotlights</h3>
             <p>
-              Projects live in a central context and are persisted to local
-              storage. Hooks provide a clean API for pages and components.
+              Every active project gets a spotlight: a photo, a short update,
+              and a clear accounting of where things stand.{" "}
+              {!expandedCards.spotlights && (
+                <button
+                  className="read-more-link"
+                  onClick={() => toggleCard("spotlights")}
+                >
+                  Read more
+                </button>
+              )}
             </p>
+            {expandedCards.spotlights && (
+              <div className="about-card-expanded">
+                <p>
+                  You'll see a food pantry coordinator posting that the new
+                  refrigeration unit arrived—and that Tuesday distributions now
+                  serve 40 more families. A youth soccer coach sharing a photo
+                  of kids in cleats that actually fit. A mobile clinic volunteer
+                  explaining that last month's dental screenings caught three
+                  cavities early, before they became emergencies.
+                </p>
+                <p>
+                  These aren't success stories crafted for fundraising. They're
+                  progress reports written by people in the middle of the work,
+                  often tired, sometimes frustrated, always honest about what's
+                  working and what still isn't.
+                </p>
+                <p className="about-emphasis">
+                  The goal is visibility, not performance.{" "}
+                  <button
+                    className="read-more-link"
+                    onClick={() => toggleCard("spotlights")}
+                  >
+                    Show less
+                  </button>
+                </p>
+              </div>
+            )}
           </article>
+
           <article className="about-card">
-            <h3>Reusable UI</h3>
+            <h3>Community Signals</h3>
             <p>
-              Core UI blocks like cards, modals, and toasts are shared across
-              pages to keep the experience consistent.
+              We track what's moving. When a project picks up five new donors in
+              a week, you'll see it. When a volunteer callout goes unanswered,
+              you'll see that too.{" "}
+              {!expandedCards.signals && (
+                <button
+                  className="read-more-link"
+                  onClick={() => toggleCard("signals")}
+                >
+                  Read more
+                </button>
+              )}
             </p>
+            {expandedCards.signals && (
+              <div className="about-card-expanded">
+                <p>
+                  Category trends show where attention is flowing—and where it's
+                  needed. If education projects are surging while health
+                  initiatives stall, that's information worth having. If a
+                  neighborhood food pantry is Ksh 200 short of its next milestone
+                  with three days left, we surface that so people who want to
+                  help can act while it still matters.
+                </p>
+                <p className="about-emphasis">
+                  This isn't gamification. It's coordination.{" "}
+                  <button
+                    className="read-more-link"
+                    onClick={() => toggleCard("signals")}
+                  >
+                    Show less
+                  </button>
+                </p>
+              </div>
+            )}
           </article>
+
           <article className="about-card">
-            <h3>Routing</h3>
+            <h3>Shared Responsibility</h3>
             <p>
-              Vite powers the build system, while React Router keeps routes and
-              page transitions organized.
+              Transparency isn't a feature here; it's the foundation. When a
+              project hits its goal, we celebrate. When something falls short,
+              we say so.{" "}
+              {!expandedCards.responsibility && (
+                <button
+                  className="read-more-link"
+                  onClick={() => toggleCard("responsibility")}
+                >
+                  Read more
+                </button>
+              )}
             </p>
+            {expandedCards.responsibility && (
+              <div className="about-card-expanded">
+                <p>
+                  We don't pretend this platform runs itself. It works because
+                  people check in, post updates, flag problems, and hold each
+                  other accountable.
+                </p>
+                <p>
+                  If you're a donor, you'll find proof that your contribution
+                  moved. If you're a volunteer, you'll find places that need
+                  hands, not just sympathy. If you're a local organization
+                  looking for partners, you'll find a track record you can
+                  verify.
+                </p>
+                <p className="about-emphasis">
+                  The door is open. Step in when you're ready.{" "}
+                  <button
+                    className="read-more-link"
+                    onClick={() => toggleCard("responsibility")}
+                  >
+                    Show less
+                  </button>
+                </p>
+              </div>
+            )}
           </article>
         </div>
       </section>
