@@ -1,27 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function useLocalStorageState(key, initialValue) {
-  const skipWriteRef = useRef(false);
+  const initialRef = useRef(
+    typeof initialValue === "function" ? initialValue() : initialValue
+  );
+
   const [value, setValue] = useState(() => {
     if (typeof window === "undefined") {
-      return initialValue;
+      return initialRef.current;
     }
 
     try {
       const storedValue = window.localStorage.getItem(key);
-      return storedValue ? JSON.parse(storedValue) : initialValue;
+      return storedValue ? JSON.parse(storedValue) : initialRef.current;
     } catch {
-      return initialValue;
+      return initialRef.current;
     }
   });
 
   useEffect(() => {
     if (typeof window === "undefined") {
-      return;
-    }
-
-    if (skipWriteRef.current) {
-      skipWriteRef.current = false;
       return;
     }
 
@@ -33,17 +31,18 @@ export default function useLocalStorageState(key, initialValue) {
   }, [key, value]);
 
   const reset = useCallback(() => {
-    if (typeof window !== "undefined") {
-      try {
-        window.localStorage.removeItem(key);
-      } catch {
-        // Ignore remove errors.
-      }
+    setValue(initialRef.current);
+
+    if (typeof window === "undefined") {
+      return;
     }
 
-    skipWriteRef.current = true;
-    setValue(initialValue);
-  }, [initialValue, key]);
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      // Ignore reset errors (private mode, storage disabled).
+    }
+  }, [key]);
 
   return [value, setValue, reset];
 }

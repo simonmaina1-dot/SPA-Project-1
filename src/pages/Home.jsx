@@ -1,11 +1,10 @@
-import { useState, useMemo, useEffect, useContext, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useMemo, useEffect, useContext } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
-import ProjectCard from "../components/ProjectCard";
-import { ToastContext } from "../context/ToastContext";
-import useFeedback from "../hooks/useFeedback";
 import useForm from "../hooks/useForm";
-
+import ProjectCard from "../components/ProjectCard";
+import Modal from "../components/Modal";
+import { ToastContext } from "../context/ToastContext";
 
 /**
  * Home Page - Main landing page displaying community projects
@@ -18,7 +17,6 @@ import useForm from "../hooks/useForm";
  * - Empty state when no projects exist
  * - Toast notifications for user feedback
  * - Modal for project actions
- * - Scroll-triggered stats animation
  * 
  * WHY useMemo for filtering?
  * - Prevents unnecessary recalculation on re-renders
@@ -27,39 +25,30 @@ import useForm from "../hooks/useForm";
  * 
  * WHY useEffect?
  * - Side effects like showing welcome toast on mount
- * - Intersection Observer for scroll animations
  * - Cleanup not needed here since we only run once
  */
+const feedbackInitialValues = {
+  name: "",
+  email: "",
+  message: "",
+};
+
 export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
-  const { feedbackList, addFeedback } = useFeedback();
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     values: feedbackValues,
     handleChange: handleFeedbackChange,
     reset: resetFeedback,
-  } = useForm({ name: "", email: "", message: "" });
-  const location = useLocation();
-  const aboutRef = useRef(null);
-  const statsRef = useRef(null); // Reference for stats animation
+  } = useForm(feedbackInitialValues);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
-
-  const handleFeedbackSubmit = (event) => {
-    event.preventDefault();
-
-    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
-      showToast("Add your name and feedback message.", "warning");
-      return;
-    }
-
-    addFeedback(feedbackValues);
-    showToast("Thanks for sharing your feedback!", "success");
-    resetFeedback();
-  };
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [expandedCards, setExpandedCards] = useState({});
 
   // Show welcome toast on first mount
   useEffect(() => {
@@ -68,55 +57,27 @@ export default function Home() {
     }
   }, [projects.length, showToast]); // Run when projects length or showToast changes
 
-
-  // Smooth scroll to about section
   useEffect(() => {
-    if (location.hash !== "#about" || !aboutRef.current) {
+    if (!location.hash || isLoading) {
       return;
     }
-    aboutRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [location.hash]);
 
-
-  // Intersection Observer for stats animation on scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setStatsVisible(true);
-          }
-        });
-      },
-      { 
-        threshold: 0.2, // Trigger when 20% of element is visible
-        rootMargin: '0px 0px -50px 0px' // Trigger slightly before fully visible
-      }
-    );
-
-    if (statsRef.current) {
-      observer.observe(statsRef.current);
+    const targetId = location.hash.replace("#", "");
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-
-    return () => {
-      if (statsRef.current) {
-        observer.unobserve(statsRef.current);
-      }
-    };
-  }, []);
-
+  }, [location.pathname, location.hash, isLoading]);
 
   // Filter projects based on search and category
   // useMemo ensures this only runs when dependencies change
   const filteredProjects = useMemo(() => {
     let result = projects;
 
-
     // Apply category filter first
     if (selectedCategory !== "all") {
       result = result.filter((p) => p.category === selectedCategory);
     }
-
 
     // Then apply search filter
     if (searchQuery.trim()) {
@@ -128,16 +89,13 @@ export default function Home() {
       );
     }
 
-
     return result;
   }, [projects, searchQuery, selectedCategory]);
-
 
   // Get featured projects for the hero section
   const featuredProjects = useMemo(() => {
     return getFeaturedProjects();
   }, [getFeaturedProjects]);
-
 
   // Calculate total funding stats
   const totalStats = useMemo(() => {
@@ -146,10 +104,8 @@ export default function Home() {
     const totalDonors = projects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
     const fundedCount = projects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
 
-
     return { totalRaised, totalGoal, totalDonors, fundedCount };
   }, [projects]);
-
 
   // Categories for filter dropdown
   const categories = [
@@ -164,7 +120,30 @@ export default function Home() {
     { value: "other", label: "Other" }
   ];
 
+  // Handle project card click - opens modal
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
 
+  // Close modal handler
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
+  };
+
+  const handleFeedbackSubmit = (event) => {
+    event.preventDefault();
+    showToast("Thanks for sharing your feedback!", "success");
+    resetFeedback();
+  };
+
+  // Toggle expanded state for about cards (only one open at a time)
+  const toggleCard = (cardId) => {
+    setExpandedCards((prev) =>
+      prev[cardId] ? {} : { [cardId]: true }
+    );
+  };
 
   // Loading state
   if (isLoading) {
@@ -178,7 +157,6 @@ export default function Home() {
     );
   }
 
-
   return (
     <div className="page home-page">
       {/* Hero Section */}
@@ -189,11 +167,8 @@ export default function Home() {
             Support meaningful projects making a difference in our community
           </p>
           
-          {/* Stats Dashboard with Scroll Animation */}
-          <div 
-            ref={statsRef} 
-            className={`stats-dashboard${statsVisible ? " visible" : ""}`}
-          >
+          {/* Stats Dashboard */}
+          <div className="stats-dashboard">
             <div className="stat-card">
               <span className="stat-value">{projects.length}</span>
               <span className="stat-label">Projects</span>
@@ -214,19 +189,20 @@ export default function Home() {
         </div>
       </section>
 
-
-      {/* Featured Projects (only show if there are projects) */}
-      {featuredProjects.length > 0 && projects.length >= 3 && (
-        <section className="featured-section">
-          <h2>Featured Projects</h2>
+      <section className="featured-section" id="featured">
+        <h2>Featured Projects</h2>
+        {featuredProjects.length > 0 && projects.length >= 3 ? (
           <div className="featured-grid">
             {featuredProjects.map((project) => (
               <ProjectCard key={project.id} project={project} featured />
             ))}
           </div>
-        </section>
-      )}
-
+        ) : (
+          <p className="section-helper">
+            Featured projects will appear once more campaigns are live.
+          </p>
+        )}
+      </section>
 
       {/* Search and Filter Section */}
       <section className="search-section">
@@ -244,7 +220,6 @@ export default function Home() {
           </svg>
         </div>
 
-
         <div className="filter-bar">
           <label htmlFor="category-filter">Filter by:</label>
           <select
@@ -260,7 +235,6 @@ export default function Home() {
             ))}
           </select>
 
-
           {(searchQuery || selectedCategory !== "all") && (
             <button
               className="btn btn-text"
@@ -275,9 +249,8 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Projects Grid */}
-      <section className="projects-section">
+      <section className="projects-section" id="projects">
         <div className="section-header">
           <h2>
             {selectedCategory === "all" ? "All Projects" : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Projects`}
@@ -286,7 +259,6 @@ export default function Home() {
             {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} found
           </span>
         </div>
-
 
         {filteredProjects.length === 0 ? (
           <div className="empty-state">
@@ -322,113 +294,244 @@ export default function Home() {
         ) : (
           <div className="projects-grid">
             {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard 
+                key={project.id} 
+                project={project} 
+                onClick={() => handleProjectClick(project)}
+              />
             ))}
           </div>
         )}
       </section>
 
+      {/* Project Details Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={selectedProject?.title || "Project Details"}
+        footer={
+          <div className="modal-actions">
+            <button className="btn btn-secondary" onClick={handleCloseModal}>
+              Close
+            </button>
+            <button 
+              className="btn btn-primary"
+              onClick={() => {
+                if (!selectedProject) {
+                  return;
+                }
+                showToast("Redirecting to demo checkout...", "info");
+                handleCloseModal();
+                navigate(`/donate/${selectedProject.id}`);
+              }}
+            >
+              Donate Now
+            </button>
+          </div>
+        }
+      >
+        {selectedProject && (
+          <div className="project-details-modal">
+            <p className="project-description">{selectedProject.description}</p>
+            <div className="project-meta">
+              <p><strong>Category:</strong> {selectedProject.category}</p>
+              <p><strong>Goal:</strong> {formatCurrency(selectedProject.goal)}</p>
+              <p><strong>Raised:</strong> {formatCurrency(selectedProject.currentAmount || 0)}</p>
+              <p><strong>Donors:</strong> {selectedProject.donorCount || 0}</p>
+              <p><strong>Status:</strong> {selectedProject.status}</p>
+            </div>
+          </div>
+        )}
+      </Modal>
 
-
-      {/* About Section */}
-      <section className="about-section" id="about" ref={aboutRef}>
-        <div className="page-header">
-          <h2>About the Architecture</h2>
-          <p>
-            Community Donation Hub is built with React and a lightweight context
-            layer to keep project and toast state in sync.
+      <section className="about-section" id="about">
+        <div className="about-header">
+          <h2>About the Community</h2>
+          <p className="about-lead">
+            Behind every funded project is a parent who stayed up late submitting
+            updates, a volunteer who showed up on a Saturday morning, a donor
+            who gave ksh18,000 because they remembered what it felt like to need help
+            and not get it.
           </p>
         </div>
+
         <div className="about-grid">
           <article className="about-card">
-            <h3>State flow</h3>
+            <h3>Local Spotlights</h3>
             <p>
-              Projects live in a central context and are persisted to local
-              storage. Hooks provide a clean API for pages and components.
+              Every active project gets a spotlight: a photo, a short update,
+              and a clear accounting of where things stand.{" "}
+              {!expandedCards.spotlights && (
+                <button
+                  className="read-more-link"
+                  onClick={() => toggleCard("spotlights")}
+                >
+                  Read more
+                </button>
+              )}
             </p>
+            {expandedCards.spotlights && (
+              <div className="about-card-expanded">
+                <p>
+                  You'll see a food pantry coordinator posting that the new
+                  refrigeration unit arrived—and that Tuesday distributions now
+                  serve 40 more families. A youth soccer coach sharing a photo
+                  of kids in cleats that actually fit. A mobile clinic volunteer
+                  explaining that last month's dental screenings caught three
+                  cavities early, before they became emergencies.
+                </p>
+                <p>
+                  These aren't success stories crafted for fundraising. They're
+                  progress reports written by people in the middle of the work,
+                  often tired, sometimes frustrated, always honest about what's
+                  working and what still isn't.
+                </p>
+                <p className="about-emphasis">
+                  The goal is visibility, not performance.{" "}
+                  <button
+                    className="read-more-link"
+                    onClick={() => toggleCard("spotlights")}
+                  >
+                    Show less
+                  </button>
+                </p>
+              </div>
+            )}
           </article>
+
           <article className="about-card">
-            <h3>Reusable UI</h3>
+            <h3>Community Signals</h3>
             <p>
-              Core UI blocks like cards, modals, and toasts are shared across
-              pages to keep the experience consistent.
+              We track what's moving. When a project picks up five new donors in
+              a week, you'll see it. When a volunteer callout goes unanswered,
+              you'll see that too.{" "}
+              {!expandedCards.signals && (
+                <button
+                  className="read-more-link"
+                  onClick={() => toggleCard("signals")}
+                >
+                  Read more
+                </button>
+              )}
             </p>
+            {expandedCards.signals && (
+              <div className="about-card-expanded">
+                <p>
+                  Category trends show where attention is flowing—and where it's
+                  needed. If education projects are surging while health
+                  initiatives stall, that's information worth having. If a
+                  neighborhood food pantry is $200 short of its next milestone
+                  with three days left, we surface that so people who want to
+                  help can act while it still matters.
+                </p>
+                <p className="about-emphasis">
+                  This isn't gamification. It's coordination.{" "}
+                  <button
+                    className="read-more-link"
+                    onClick={() => toggleCard("signals")}
+                  >
+                    Show less
+                  </button>
+                </p>
+              </div>
+            )}
           </article>
+
           <article className="about-card">
-            <h3>Routing</h3>
+            <h3>Shared Responsibility</h3>
             <p>
-              Vite powers the build system, while React Router keeps routes and
-              page transitions organized.
+              Transparency isn't a feature here; it's the foundation. When a
+              project hits its goal, we celebrate. When something falls short,
+              we say so.{" "}
+              {!expandedCards.responsibility && (
+                <button
+                  className="read-more-link"
+                  onClick={() => toggleCard("responsibility")}
+                >
+                  Read more
+                </button>
+              )}
             </p>
+            {expandedCards.responsibility && (
+              <div className="about-card-expanded">
+                <p>
+                  We don't pretend this platform runs itself. It works because
+                  people check in, post updates, flag problems, and hold each
+                  other accountable.
+                </p>
+                <p>
+                  If you're a donor, you'll find proof that your contribution
+                  moved. If you're a volunteer, you'll find places that need
+                  hands, not just sympathy. If you're a local organization
+                  looking for partners, you'll find a track record you can
+                  verify.
+                </p>
+                <p className="about-emphasis">
+                  The door is open. Step in when you're ready.{" "}
+                  <button
+                    className="read-more-link"
+                    onClick={() => toggleCard("responsibility")}
+                  >
+                    Show less
+                  </button>
+                </p>
+              </div>
+            )}
           </article>
         </div>
       </section>
 
-      {/* Feedback Section */}
       <section className="feedback-section">
-        <article className="admin-card admin-card-wide">
-          <div className="admin-section-header">
-            <div>
-              <h3>User Feedback</h3>
-              <p className="admin-card-subtitle">
-                Community suggestions and feedback submissions.
-              </p>
-            </div>
-            <span className="admin-badge">
-              {feedbackList.filter((f) => f.status === "new").length} new
-            </span>
+        <div className="section-header">
+          <h2>Share feedback</h2>
+          <p>
+            Tell us how the Community Donation Hub can support your neighborhood
+            better.
+          </p>
+        </div>
+        <form className="form-card" onSubmit={handleFeedbackSubmit}>
+          <div className="form-grid">
+            <label className="form-field">
+              <span className="form-label">Full name</span>
+              <input
+                type="text"
+                name="name"
+                value={feedbackValues.name}
+                onChange={handleFeedbackChange}
+                placeholder="Your name"
+                required
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-label">Email</span>
+              <input
+                type="email"
+                name="email"
+                value={feedbackValues.email}
+                onChange={handleFeedbackChange}
+                placeholder="you@email.com"
+                required
+              />
+            </label>
+            <label className="form-field form-field-wide">
+              <span className="form-label">Feedback</span>
+              <textarea
+                name="message"
+                value={feedbackValues.message}
+                onChange={handleFeedbackChange}
+                rows="4"
+                placeholder="What should we improve or add next?"
+                required
+              />
+            </label>
           </div>
-          <form className="admin-feedback-form form-card" onSubmit={handleFeedbackSubmit}>
-            <div className="form-grid">
-              <label className="form-field">
-                <span className="form-label">Name</span>
-                <input
-                  type="text"
-                  name="name"
-                  value={feedbackValues.name}
-                  onChange={handleFeedbackChange}
-                  placeholder="Visitor name"
-                  required
-                />
-              </label>
-              <label className="form-field">
-                <span className="form-label">Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  value={feedbackValues.email}
-                  onChange={handleFeedbackChange}
-                  placeholder="email@example.com"
-                />
-              </label>
-              <label className="form-field form-field-wide">
-                <span className="form-label">Message</span>
-                <textarea
-                  name="message"
-                  value={feedbackValues.message}
-                  onChange={handleFeedbackChange}
-                  rows="3"
-                  placeholder="Feedback summary"
-                  required
-                />
-              </label>
-            </div>
-            <div className="form-actions">
-              <button type="submit" className="btn btn-primary">
-                Log feedback
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => resetFeedback()}
-              >
-                Clear
-              </button>
-            </div>
-          </form>
-        </article>
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary">
+              Send feedback
+            </button>
+          </div>
+        </form>
       </section>
     </div>
   );
 }
-
