@@ -1,10 +1,12 @@
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import useProjects from "../hooks/useProjects";
+import { ToastContext } from "../context/ToastContext";
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
   const { projects, formatCurrency } = useProjects();
+  const { showToast } = useContext(ToastContext);
   
   const project = projects.find((item) => item.id === projectId);
   
@@ -18,6 +20,22 @@ export default function ProjectDetails() {
   for (let i = 1; i <= galleryCount; i++) {
     galleryImages.push(`/project-images/${projectId}/${i}.jpg`);
   }
+
+  const handleCopyLink = async () => {
+    const shareUrl = `${window.location.origin}/projects/${projectId}`;
+
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast("Project link copied.", "success");
+        return;
+      } catch {
+        // Fall back to prompt.
+      }
+    }
+
+    window.prompt("Copy this link:", shareUrl);
+  };
 
   // Auto-slide gallery images
   useEffect(() => {
@@ -218,7 +236,12 @@ export default function ProjectDetails() {
                       <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
                     </svg>
                   </button>
-                  <button className="share-btn" aria-label="Copy link">
+                  <button
+                    className="share-btn"
+                    type="button"
+                    aria-label="Copy link"
+                    onClick={handleCopyLink}
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
                       <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
