@@ -1,8 +1,7 @@
 import { useState, useMemo, useEffect, useContext, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
-import Modal from "../components/Modal";
 import { ToastContext } from "../context/ToastContext";
 
 
@@ -32,15 +31,12 @@ import { ToastContext } from "../context/ToastContext";
 export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
-  const navigate = useNavigate();
   const location = useLocation();
   const aboutRef = useRef(null);
   const statsRef = useRef(null); // Reference for stats animation
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
   const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
 
 
@@ -146,20 +142,6 @@ export default function Home() {
     { value: "sports", label: "Sports & Recreation" },
     { value: "other", label: "Other" }
   ];
-
-
-  // Handle project card click - opens modal
-  const handleProjectClick = (project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
-  };
-
-
-  // Close modal handler
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedProject(null);
-  };
 
 
   // Loading state
@@ -318,56 +300,11 @@ export default function Home() {
         ) : (
           <div className="projects-grid">
             {filteredProjects.map((project) => (
-              <ProjectCard 
-                key={project.id} 
-                project={project} 
-                onClick={() => handleProjectClick(project)}
-              />
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         )}
       </section>
-
-
-      {/* Project Details Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        title={selectedProject?.title || "Project Details"}
-        footer={
-          <div className="modal-actions">
-            <button className="btn btn-secondary" onClick={handleCloseModal}>
-              Close
-            </button>
-            <button 
-              className="btn btn-primary"
-              onClick={() => {
-                if (!selectedProject) {
-                  return;
-                }
-                showToast("Redirecting to demo checkout...", "info");
-                handleCloseModal();
-                navigate(`/donate/${selectedProject.id}`);
-              }}
-            >
-              Donate Now
-            </button>
-          </div>
-        }
-      >
-        {selectedProject && (
-          <div className="project-details-modal">
-            <p className="project-description">{selectedProject.description}</p>
-            <div className="project-meta">
-              <p><strong>Category:</strong> {selectedProject.category}</p>
-              <p><strong>Goal:</strong> {formatCurrency(selectedProject.goal)}</p>
-              <p><strong>Raised:</strong> {formatCurrency(selectedProject.currentAmount || 0)}</p>
-              <p><strong>Donors:</strong> {selectedProject.donorCount || 0}</p>
-              <p><strong>Status:</strong> {selectedProject.status}</p>
-            </div>
-          </div>
-        )}
-      </Modal>
 
 
       {/* About Section */}

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
@@ -16,6 +16,7 @@ export default function ProjectDetails() {
   const { projectId } = useParams();
   const { projects, formatCurrency, addDonation } = useProjects();
   const { showToast } = useContext(ToastContext);
+  const navigate = useNavigate();
   
   const project = projects.find((item) => item.id === projectId);
   
@@ -97,7 +98,12 @@ export default function ProjectDetails() {
     : 0;
 
   return (
-    <div className="project-details-page">
+    <Modal
+      isOpen
+      onClose={() => navigate("/projects")}
+      title="Project details"
+    >
+      <div className="project-details-page">
       {/* Hero Section with Image Gallery */}
       <section className="details-hero">
         <div className="details-hero-image">
@@ -352,6 +358,7 @@ export default function ProjectDetails() {
           </div>
         </form>
       </Modal>
-    </div>
+      </div>
+    </Modal>
   );
 }
