@@ -156,7 +156,7 @@ export default function ProjectCard({ project, onClick, featured = false }) {
 
   if (onClick) {
     return (
-      <button type="button" className="project-card-button" onClick={onClick}>
+      <button type="button" className="project-card-wrapper" onClick={onClick}>
         {cardBody}
       </button>
     );

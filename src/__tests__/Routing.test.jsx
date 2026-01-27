@@ -4,8 +4,6 @@ import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import { ProjectsProvider } from "../context/ProjectsContext";
 import { ToastProvider } from "../context/ToastContext";
-import { FeedbackProvider } from "../context/FeedbackContext";
-import { DonationsProvider } from "../context/DonationsContext";
 import App from "../App";
 
 const renderApp = (route) =>
@@ -13,13 +11,9 @@ const renderApp = (route) =>
     <MemoryRouter initialEntries={[route]}>
       <AuthProvider>
         <ProjectsProvider>
-          <DonationsProvider>
-            <FeedbackProvider>
-              <ToastProvider>
-                <App />
-              </ToastProvider>
-            </FeedbackProvider>
-          </DonationsProvider>
+          <ToastProvider>
+            <App />
+          </ToastProvider>
         </ProjectsProvider>
       </AuthProvider>
     </MemoryRouter>

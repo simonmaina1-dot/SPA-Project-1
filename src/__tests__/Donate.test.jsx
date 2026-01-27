@@ -5,8 +5,6 @@ import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import { ProjectsProvider } from "../context/ProjectsContext";
 import { ToastProvider } from "../context/ToastContext";
-import { FeedbackProvider } from "../context/FeedbackContext";
-import { DonationsProvider } from "../context/DonationsContext";
 import App from "../App";
 
 const renderApp = (route) =>
@@ -14,13 +12,9 @@ const renderApp = (route) =>
     <MemoryRouter initialEntries={[route]}>
       <AuthProvider>
         <ProjectsProvider>
-          <DonationsProvider>
-            <FeedbackProvider>
-              <ToastProvider>
-                <App />
-              </ToastProvider>
-            </FeedbackProvider>
-          </DonationsProvider>
+          <ToastProvider>
+            <App />
+          </ToastProvider>
         </ProjectsProvider>
       </AuthProvider>
     </MemoryRouter>
@@ -39,12 +33,8 @@ describe("Donate flow", () => {
     renderApp("/donate/p-1001");
 
     const user = userEvent.setup();
-
-    // Wait for the modal to appear
-    await screen.findByText("Complete Your Donation");
-
-    await user.type(screen.getByPlaceholderText("Your name"), "Test Donor");
-    await user.type(screen.getByPlaceholderText("you@email.com"), "donor@example.com");
+    await user.type(screen.getByLabelText("Full name"), "Test Donor");
+    await user.type(screen.getByLabelText("Email"), "donor@example.com");
     await user.click(screen.getByRole("button", { name: "Pay now" }));
 
     expect(
@@ -58,12 +48,9 @@ describe("Donate flow", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderApp("/donate/p-1001");
 
-    // Wait for the modal to appear
-    await screen.findByText("Complete Your Donation");
-
-    await user.type(screen.getByPlaceholderText("Your name"), "Test Donor");
-    await user.type(screen.getByPlaceholderText("you@email.com"), "donor@example.com");
-    await user.type(screen.getByPlaceholderText("50"), "500");
+    await user.type(screen.getByLabelText("Full name"), "Test Donor");
+    await user.type(screen.getByLabelText("Email"), "donor@example.com");
+    await user.type(screen.getByLabelText("Donation amount (KSh)"), "500");
     await user.click(screen.getByRole("button", { name: "Pay now" }));
 
     await act(async () => {
@@ -73,5 +60,6 @@ describe("Donate flow", () => {
     expect(
       await screen.findByRole("heading", { name: "Neighborhood Learning Lab" })
     ).toBeInTheDocument();
+    expect(screen.getByText("43 donors")).toBeInTheDocument();
   });
 });
