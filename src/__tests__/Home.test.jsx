@@ -1,18 +1,24 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { ProjectsProvider } from "../context/ProjectsContext";
 import { ToastProvider } from "../context/ToastContext";
+import { FeedbackProvider } from "../context/FeedbackContext";
+import { DonationsProvider } from "../context/DonationsContext";
 import Home from "../pages/Home";
 
 const renderHome = () =>
   render(
     <MemoryRouter>
       <ProjectsProvider>
-        <ToastProvider>
-          <Home />
-        </ToastProvider>
+        <DonationsProvider>
+          <FeedbackProvider>
+            <ToastProvider>
+              <Home />
+            </ToastProvider>
+          </FeedbackProvider>
+        </DonationsProvider>
       </ProjectsProvider>
     </MemoryRouter>
   );
@@ -47,5 +53,35 @@ describe("Home page", () => {
     expect(
       scoped.queryByText("Neighborhood Learning Lab")
     ).not.toBeInTheDocument();
+  });
+
+  it("filters projects by category", async () => {
+    renderHome();
+
+    const user = userEvent.setup();
+    const select = await screen.findByLabelText("Filter by:");
+
+    await user.selectOptions(select, "environment");
+
+    const projectsSection = document.getElementById("projects");
+    expect(projectsSection).not.toBeNull();
+
+    const scoped = within(projectsSection);
+    expect(scoped.getByText("Community Solar Garden")).toBeInTheDocument();
+    expect(
+      scoped.queryByText("Neighborhood Learning Lab")
+    ).not.toBeInTheDocument();
+  });
+
+  it("navigates to project details page", async () => {
+    renderHome();
+
+    // Find the project link
+    const projectLink = await screen.findByRole("link", {
+      name: /Donate Page/i,
+    });
+
+    expect(projectLink).toBeInTheDocument();
+    expect(projectLink).toHaveAttribute("href", expect.stringContaining("/projects/"));
   });
 });

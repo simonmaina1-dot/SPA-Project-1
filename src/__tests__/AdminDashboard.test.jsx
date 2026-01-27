@@ -5,6 +5,8 @@ import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import { ProjectsProvider } from "../context/ProjectsContext";
 import { ToastProvider } from "../context/ToastContext";
+import { FeedbackProvider } from "../context/FeedbackContext";
+import { DonationsProvider } from "../context/DonationsContext";
 import AdminDashboard from "../pages/AdminDashboard";
 
 const renderDashboard = () =>
@@ -12,9 +14,13 @@ const renderDashboard = () =>
     <MemoryRouter>
       <AuthProvider>
         <ProjectsProvider>
-          <ToastProvider>
-            <AdminDashboard />
-          </ToastProvider>
+          <DonationsProvider>
+            <FeedbackProvider>
+              <ToastProvider>
+                <AdminDashboard />
+              </ToastProvider>
+            </FeedbackProvider>
+          </DonationsProvider>
         </ProjectsProvider>
       </AuthProvider>
     </MemoryRouter>
@@ -36,10 +42,47 @@ describe("Admin dashboard", () => {
 
     const user = userEvent.setup();
     await user.type(screen.getByLabelText("Admin email"), "kashiku789@gmail.com");
-    await user.type(screen.getByLabelText("Password"), "ashanti-2025");
+    await user.type(screen.getByLabelText("Password"), "ashanti-2026");
     await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     expect(screen.getByText("Admin Dashboard")).toBeInTheDocument();
     expect(screen.getByText("Platform snapshot")).toBeInTheDocument();
+  });
+
+  it("updates the cover image preview when a new URL is entered", async () => {
+    renderDashboard();
+
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText("Admin email"), "kashiku789@gmail.com");
+    await user.type(screen.getByLabelText("Password"), "ashanti-2026");
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
+
+    await screen.findByRole("heading", { name: "Admin Dashboard" });
+
+    const imageInput = screen.getByLabelText("Cover image URL");
+    await user.clear(imageInput);
+    await user.type(imageInput, "https://example.com/updated-cover.jpg");
+
+    const preview = screen.getByAltText("Project cover preview");
+    expect(preview).toHaveAttribute(
+      "src",
+      "https://example.com/updated-cover.jpg"
+    );
+  });
+
+  it("flags a project for review from the queue", async () => {
+    renderDashboard();
+
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText("Admin email"), "kashiku789@gmail.com");
+    await user.type(screen.getByLabelText("Password"), "ashanti-2026");
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
+
+    await screen.findByRole("heading", { name: "Admin Dashboard" });
+
+    const flagButtons = screen.getAllByRole("button", { name: "Flag" });
+    await user.click(flagButtons[0]);
+
+    expect(screen.getByRole("button", { name: "Approve" })).toBeInTheDocument();
   });
 });
