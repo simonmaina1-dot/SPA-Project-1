@@ -55,9 +55,14 @@ export default function Navbar() {
           About
         </Link>
       </nav>
-      <Link to="/add" className="btn btn-primary nav-cta">
-        Start a Project
-      </Link>
+      <div className="nav-actions">
+        <Link to="/add" className="btn btn-primary nav-cta">
+          Start a Project
+        </Link>
+        <Link to="/dashboard" className="btn btn-secondary nav-cta">
+          Admin Page
+        </Link>
+      </div>
     </header>
   );
 }

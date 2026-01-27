@@ -1919,6 +1919,12 @@ body {
 }
 
 /* CTA Button in Navbar */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .nav-cta {
   white-space: nowrap;
   padding: 10px 20px;
@@ -1957,8 +1963,11 @@ body {
     font-size: 13px;
   }
 
-  .nav-cta {
+  .nav-actions {
     order: 2;
+  }
+
+  .nav-cta {
     padding: 8px 16px;
     font-size: 13px;
   }
