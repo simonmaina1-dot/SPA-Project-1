@@ -25,24 +25,29 @@ export default function ProjectDetails() {
   const { values, handleChange, reset } = useForm(donationInitialValues);
 
   const galleryImages = [];
-  const remoteGallery = Array.isArray(project?.galleryUrls)
+  const galleryUrls = Array.isArray(project?.galleryUrls)
     ? project.galleryUrls.filter(Boolean)
     : [];
+  const galleryFiles = Array.isArray(project?.galleryFiles)
+    ? project.galleryFiles.filter(Boolean)
+    : [];
 
-  if (project?.imageUrl) {
-    galleryImages.push(project.imageUrl);
-  }
-
-  remoteGallery.forEach((url) => {
-    if (url && url !== project?.imageUrl) {
+  const addImage = (url) => {
+    if (url && !galleryImages.includes(url)) {
       galleryImages.push(url);
     }
-  });
+  };
+
+  addImage(project?.imageUrl);
+  galleryUrls.forEach(addImage);
+  galleryFiles.forEach((file) =>
+    addImage(`/project-images/${projectId}/${file}`)
+  );
 
   if (galleryImages.length === 0) {
     const galleryCount = Number(project?.galleryCount) || 0;
     for (let i = 1; i <= galleryCount; i++) {
-      galleryImages.push(`/project-images/${projectId}/${i}.jpg`);
+      addImage(`/project-images/${projectId}/${i}.jpg`);
     }
   }
 
