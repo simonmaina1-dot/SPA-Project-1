@@ -376,7 +376,7 @@ export default function Home() {
               {feedbackList.filter((f) => f.status === "new").length} new
             </span>
           </div>
-          <form className="admin-feedback-form form-card" onSubmit={handleFeedbackSubmit}>
+          <form className="feedback-form-card form-card" onSubmit={handleFeedbackSubmit}>
             <div className="form-grid">
               <label className="form-field">
                 <span className="form-label">Name</span>

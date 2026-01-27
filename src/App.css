@@ -2320,11 +2320,11 @@ body {
   font-size: 0.9rem;
 }
 
-.admin-feedback-form {
+.feedback-form-card {
   margin-top: 1rem;
 }
 
-.admin-feedback-form .form-actions {
+.feedback-form-card .form-actions {
   display: flex;
   gap: 8px;
   margin-top: 0.5rem;
