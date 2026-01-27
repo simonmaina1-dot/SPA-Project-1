@@ -71,6 +71,10 @@ export default function Donate() {
     }, 700);
   };
 
+  const submitForm = () => {
+    handleSubmit({ preventDefault: () => {} });
+  };
+
   const handleClose = () => {
     navigate(`/projects/${project.id}`);
   };
@@ -84,10 +88,10 @@ export default function Donate() {
         footer={
           <div className="form-actions">
             <button
-              type="submit"
+              type="button"
               className="btn btn-primary"
-              form="donate-form"
               disabled={isProcessing}
+              onClick={submitForm}
             >
               {isProcessing ? "Processing..." : "Pay now"}
             </button>
@@ -118,7 +122,12 @@ export default function Donate() {
             </div>
           </aside>
 
-          <form className="form-card payment-card" id="donate-form" onSubmit={handleSubmit}>
+          <form
+            className="form-card payment-card"
+            id="donate-form"
+            onSubmit={handleSubmit}
+            noValidate
+          >
             <div className="form-grid">
               <label className="form-field">
                 <span className="form-label">Full name</span>

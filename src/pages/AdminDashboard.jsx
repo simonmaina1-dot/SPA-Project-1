@@ -34,7 +34,7 @@ export default function AdminDashboard() {
     imageUrl: "",
     galleryUrls: "",
   });
-  const [viewMode, setViewMode] = useState("table");
+  const [viewMode, setViewMode] = useState("add");
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [newProject, setNewProject] = useState({
     title: "",
@@ -653,7 +653,9 @@ export default function AdminDashboard() {
 
                 <div className="admin-edit-sidebar">
                   <div className="admin-edit-preview-card">
-                    <span className="form-label">Cover Image</span>
+                    <label className="form-label" htmlFor="new-project-cover">
+                      Cover image URL
+                    </label>
                     <div className="admin-edit-preview">
                       {newProject.imageUrl ? (
                         <img
@@ -674,11 +676,13 @@ export default function AdminDashboard() {
                     </div>
                     <input
                       type="url"
+                      id="new-project-cover"
                       name="imageUrl"
                       value={newProject.imageUrl}
                       onChange={handleNewProjectChange}
                       placeholder="https://images.example.com/cover.jpg"
                       className="admin-edit-url-input"
+                      aria-label="Cover image URL"
                     />
                   </div>
                 </div>
