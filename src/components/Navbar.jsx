@@ -1,112 +1,63 @@
-import { Link, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const navSections = [
-  { id: "featured", label: "Featured Projects" },
-  { id: "projects", label: "All Projects" },
-  { id: "about", label: "About" },
+const navItems = [
+  { to: "/projects", label: "Projects" },
+  { to: "/add", label: "Add Project" },
 ];
 
 export default function Navbar() {
-  const location = useLocation();
-  const [activeSection, setActiveSection] = useState("");
-  const [indicatorStyle, setIndicatorStyle] = useState({});
-  const linkRefs = useRef({});
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    if (location.pathname !== "/projects") {
-      setActiveSection("");
-      return;
-    }
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
 
-    const elements = navSections
-      .map((section) => document.getElementById(section.id))
-      .filter(Boolean);
+      // Add shadow when scrolled
+      setScrolled(currentScrollY > 10);
 
-    if (!elements.length) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        rootMargin: "-30% 0px -60% 0px",
-        threshold: 0.1,
+      // Hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down & past 100px
+        setHidden(true);
+      } else {
+        // Scrolling up
+        setHidden(false);
       }
-    );
 
-    elements.forEach((element) => observer.observe(element));
+      setLastScrollY(currentScrollY);
+    };
 
-    return () => observer.disconnect();
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (!location.hash) {
-      return;
-    }
-    const targetId = location.hash.replace("#", "");
-    if (navSections.some((section) => section.id === targetId)) {
-      setActiveSection(targetId);
-    }
-  }, [location.hash]);
-
-  useEffect(() => {
-    if (!activeSection) {
-      setIndicatorStyle({ opacity: 0, width: 0 });
-      return;
-    }
-
-    const activeLink = linkRefs.current[activeSection];
-    if (!activeLink) {
-      return;
-    }
-
-    const { offsetLeft, offsetWidth } = activeLink;
-    setIndicatorStyle({
-      transform: `translateX(${offsetLeft}px)`,
-      width: `${offsetWidth}px`,
-      opacity: 1,
-    });
-  }, [activeSection, location.pathname]);
-
-  const isSectionActive = (id) => {
-    if (location.pathname !== "/projects") {
-      return false;
-    }
-    if (activeSection) {
-      return activeSection === id;
-    }
-    return location.hash === `#${id}`;
-  };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   return (
-    <header className="navbar">
+    <header className={`navbar${scrolled ? " scrolled" : ""}${hidden ? " hidden" : ""}`}>
       <Link to="/" className="nav-brand">
         Community Donation Hub
       </Link>
       <nav className="nav-links">
-        <span className="nav-active-indicator" style={indicatorStyle} aria-hidden="true" />
-        {navSections.map((section) => (
-          <Link
-            key={section.id}
-            to={`/projects#${section.id}`}
-            className={`nav-link${isSectionActive(section.id) ? " active" : ""}`}
-            ref={(node) => {
-              if (node) {
-                linkRefs.current[section.id] = node;
-              }
-            }}
+        {navItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className={({ isActive }) =>
+              `nav-link${isActive ? " active" : ""}`
+            }
           >
-            {section.label}
-          </Link>
+            {item.label}
+          </NavLink>
         ))}
+        <Link to="/projects#about" className="nav-link">
+          About
+        </Link>
       </nav>
+      <Link to="/add" className="btn btn-primary nav-cta">
+        Start a Project
+      </Link>
     </header>
   );
 }

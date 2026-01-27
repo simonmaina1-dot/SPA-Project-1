@@ -1,9 +1,10 @@
-import { useState, useMemo, useEffect, useContext } from "react";
+import { useState, useMemo, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
 import Modal from "../components/Modal";
 import { ToastContext } from "../context/ToastContext";
+
 
 /**
  * Home Page - Main landing page displaying community projects
@@ -16,6 +17,7 @@ import { ToastContext } from "../context/ToastContext";
  * - Empty state when no projects exist
  * - Toast notifications for user feedback
  * - Modal for project actions
+ * - Scroll-triggered stats animation
  * 
  * WHY useMemo for filtering?
  * - Prevents unnecessary recalculation on re-renders
@@ -24,6 +26,7 @@ import { ToastContext } from "../context/ToastContext";
  * 
  * WHY useEffect?
  * - Side effects like showing welcome toast on mount
+ * - Intersection Observer for scroll animations
  * - Cleanup not needed here since we only run once
  */
 export default function Home() {
@@ -31,12 +34,15 @@ export default function Home() {
   const { showToast } = useContext(ToastContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const aboutRef = useRef(null);
+  const statsRef = useRef(null); // Reference for stats animation
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [expandedCards, setExpandedCards] = useState({});
+  const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
+
 
   // Show welcome toast on first mount
   useEffect(() => {
@@ -45,27 +51,55 @@ export default function Home() {
     }
   }, [projects.length, showToast]); // Run when projects length or showToast changes
 
+
+  // Smooth scroll to about section
   useEffect(() => {
-    if (!location.hash || isLoading) {
+    if (location.hash !== "#about" || !aboutRef.current) {
       return;
     }
+    aboutRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [location.hash]);
 
-    const targetId = location.hash.replace("#", "");
-    const target = document.getElementById(targetId);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  // Intersection Observer for stats animation on scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setStatsVisible(true);
+          }
+        });
+      },
+      { 
+        threshold: 0.2, // Trigger when 20% of element is visible
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before fully visible
+      }
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
     }
-  }, [location.pathname, location.hash, isLoading]);
+
+    return () => {
+      if (statsRef.current) {
+        observer.unobserve(statsRef.current);
+      }
+    };
+  }, []);
+
 
   // Filter projects based on search and category
   // useMemo ensures this only runs when dependencies change
   const filteredProjects = useMemo(() => {
     let result = projects;
 
+
     // Apply category filter first
     if (selectedCategory !== "all") {
       result = result.filter((p) => p.category === selectedCategory);
     }
+
 
     // Then apply search filter
     if (searchQuery.trim()) {
@@ -77,13 +111,16 @@ export default function Home() {
       );
     }
 
+
     return result;
   }, [projects, searchQuery, selectedCategory]);
+
 
   // Get featured projects for the hero section
   const featuredProjects = useMemo(() => {
     return getFeaturedProjects();
   }, [getFeaturedProjects]);
+
 
   // Calculate total funding stats
   const totalStats = useMemo(() => {
@@ -92,8 +129,10 @@ export default function Home() {
     const totalDonors = projects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
     const fundedCount = projects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
 
+
     return { totalRaised, totalGoal, totalDonors, fundedCount };
   }, [projects]);
+
 
   // Categories for filter dropdown
   const categories = [
@@ -108,11 +147,13 @@ export default function Home() {
     { value: "other", label: "Other" }
   ];
 
+
   // Handle project card click - opens modal
   const handleProjectClick = (project) => {
     setSelectedProject(project);
     setIsModalOpen(true);
   };
+
 
   // Close modal handler
   const handleCloseModal = () => {
@@ -120,12 +161,6 @@ export default function Home() {
     setSelectedProject(null);
   };
 
-  // Toggle expanded state for about cards (only one open at a time)
-  const toggleCard = (cardId) => {
-    setExpandedCards((prev) =>
-      prev[cardId] ? {} : { [cardId]: true }
-    );
-  };
 
   // Loading state
   if (isLoading) {
@@ -139,6 +174,7 @@ export default function Home() {
     );
   }
 
+
   return (
     <div className="page home-page">
       {/* Hero Section */}
@@ -149,8 +185,11 @@ export default function Home() {
             Support meaningful projects making a difference in our community
           </p>
           
-          {/* Stats Dashboard */}
-          <div className="stats-dashboard">
+          {/* Stats Dashboard with Scroll Animation */}
+          <div 
+            ref={statsRef} 
+            className={`stats-dashboard${statsVisible ? " visible" : ""}`}
+          >
             <div className="stat-card">
               <span className="stat-value">{projects.length}</span>
               <span className="stat-label">Projects</span>
@@ -171,20 +210,19 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="featured-section" id="featured">
-        <h2>Featured Projects</h2>
-        {featuredProjects.length > 0 && projects.length >= 3 ? (
+
+      {/* Featured Projects (only show if there are projects) */}
+      {featuredProjects.length > 0 && projects.length >= 3 && (
+        <section className="featured-section">
+          <h2>Featured Projects</h2>
           <div className="featured-grid">
             {featuredProjects.map((project) => (
               <ProjectCard key={project.id} project={project} featured />
             ))}
           </div>
-        ) : (
-          <p className="section-helper">
-            Featured projects will appear once more campaigns are live.
-          </p>
-        )}
-      </section>
+        </section>
+      )}
+
 
       {/* Search and Filter Section */}
       <section className="search-section">
@@ -202,6 +240,7 @@ export default function Home() {
           </svg>
         </div>
 
+
         <div className="filter-bar">
           <label htmlFor="category-filter">Filter by:</label>
           <select
@@ -217,6 +256,7 @@ export default function Home() {
             ))}
           </select>
 
+
           {(searchQuery || selectedCategory !== "all") && (
             <button
               className="btn btn-text"
@@ -231,8 +271,9 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* Projects Grid */}
-      <section className="projects-section" id="projects">
+      <section className="projects-section">
         <div className="section-header">
           <h2>
             {selectedCategory === "all" ? "All Projects" : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Projects`}
@@ -241,6 +282,7 @@ export default function Home() {
             {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} found
           </span>
         </div>
+
 
         {filteredProjects.length === 0 ? (
           <div className="empty-state">
@@ -286,6 +328,7 @@ export default function Home() {
         )}
       </section>
 
+
       {/* Project Details Modal */}
       <Modal
         isOpen={isModalOpen}
@@ -326,139 +369,37 @@ export default function Home() {
         )}
       </Modal>
 
-      <section className="about-section" id="about">
-        <div className="about-header">
-          <h2>About the Community</h2>
-          <p className="about-lead">
-            Behind every funded project is a parent who stayed up late submitting
-            updates, a volunteer who showed up on a Saturday morning, a donor
-            who gave ksh18,000 because they remembered what it felt like to need help
-            and not get it.
+
+      {/* About Section */}
+      <section className="about-section" id="about" ref={aboutRef}>
+        <div className="page-header">
+          <h2>About the Architecture</h2>
+          <p>
+            Community Donation Hub is built with React and a lightweight context
+            layer to keep project and toast state in sync.
           </p>
         </div>
-
         <div className="about-grid">
           <article className="about-card">
-            <h3>Local Spotlights</h3>
+            <h3>State flow</h3>
             <p>
-              Every active project gets a spotlight: a photo, a short update,
-              and a clear accounting of where things stand.{" "}
-              {!expandedCards.spotlights && (
-                <button
-                  className="read-more-link"
-                  onClick={() => toggleCard("spotlights")}
-                >
-                  Read more
-                </button>
-              )}
+              Projects live in a central context and are persisted to local
+              storage. Hooks provide a clean API for pages and components.
             </p>
-            {expandedCards.spotlights && (
-              <div className="about-card-expanded">
-                <p>
-                  You'll see a food pantry coordinator posting that the new
-                  refrigeration unit arrived—and that Tuesday distributions now
-                  serve 40 more families. A youth soccer coach sharing a photo
-                  of kids in cleats that actually fit. A mobile clinic volunteer
-                  explaining that last month's dental screenings caught three
-                  cavities early, before they became emergencies.
-                </p>
-                <p>
-                  These aren't success stories crafted for fundraising. They're
-                  progress reports written by people in the middle of the work,
-                  often tired, sometimes frustrated, always honest about what's
-                  working and what still isn't.
-                </p>
-                <p className="about-emphasis">
-                  The goal is visibility, not performance.{" "}
-                  <button
-                    className="read-more-link"
-                    onClick={() => toggleCard("spotlights")}
-                  >
-                    Show less
-                  </button>
-                </p>
-              </div>
-            )}
           </article>
-
           <article className="about-card">
-            <h3>Community Signals</h3>
+            <h3>Reusable UI</h3>
             <p>
-              We track what's moving. When a project picks up five new donors in
-              a week, you'll see it. When a volunteer callout goes unanswered,
-              you'll see that too.{" "}
-              {!expandedCards.signals && (
-                <button
-                  className="read-more-link"
-                  onClick={() => toggleCard("signals")}
-                >
-                  Read more
-                </button>
-              )}
+              Core UI blocks like cards, modals, and toasts are shared across
+              pages to keep the experience consistent.
             </p>
-            {expandedCards.signals && (
-              <div className="about-card-expanded">
-                <p>
-                  Category trends show where attention is flowing—and where it's
-                  needed. If education projects are surging while health
-                  initiatives stall, that's information worth having. If a
-                  neighborhood food pantry is $200 short of its next milestone
-                  with three days left, we surface that so people who want to
-                  help can act while it still matters.
-                </p>
-                <p className="about-emphasis">
-                  This isn't gamification. It's coordination.{" "}
-                  <button
-                    className="read-more-link"
-                    onClick={() => toggleCard("signals")}
-                  >
-                    Show less
-                  </button>
-                </p>
-              </div>
-            )}
           </article>
-
           <article className="about-card">
-            <h3>Shared Responsibility</h3>
+            <h3>Routing</h3>
             <p>
-              Transparency isn't a feature here; it's the foundation. When a
-              project hits its goal, we celebrate. When something falls short,
-              we say so.{" "}
-              {!expandedCards.responsibility && (
-                <button
-                  className="read-more-link"
-                  onClick={() => toggleCard("responsibility")}
-                >
-                  Read more
-                </button>
-              )}
+              Vite powers the build system, while React Router keeps routes and
+              page transitions organized.
             </p>
-            {expandedCards.responsibility && (
-              <div className="about-card-expanded">
-                <p>
-                  We don't pretend this platform runs itself. It works because
-                  people check in, post updates, flag problems, and hold each
-                  other accountable.
-                </p>
-                <p>
-                  If you're a donor, you'll find proof that your contribution
-                  moved. If you're a volunteer, you'll find places that need
-                  hands, not just sympathy. If you're a local organization
-                  looking for partners, you'll find a track record you can
-                  verify.
-                </p>
-                <p className="about-emphasis">
-                  The door is open. Step in when you're ready.{" "}
-                  <button
-                    className="read-more-link"
-                    onClick={() => toggleCard("responsibility")}
-                  >
-                    Show less
-                  </button>
-                </p>
-              </div>
-            )}
           </article>
         </div>
       </section>

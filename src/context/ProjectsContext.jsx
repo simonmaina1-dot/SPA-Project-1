@@ -125,7 +125,7 @@ const seedProjects = [
 export const ProjectsContext = createContext(null);
 
 export function ProjectsProvider({ children }) {
-  const [projects, setProjects] = useLocalStorage("cdh-projects", seedProjects);
+  const [projects, setProjects] = useLocalStorage("cdh-projects-v4", seedProjects);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -133,35 +133,38 @@ export function ProjectsProvider({ children }) {
     return () => window.clearTimeout(timer);
   }, []);
 
-  const addProject = useCallback(
-    (project) => {
-      const id = `p-${Date.now()}`;
-      const goal = Number(project.goal) || 0;
-      const imageUrl = project.imageUrl ? project.imageUrl.trim() : "";
-      const galleryUrls = Array.isArray(project.galleryUrls)
-        ? project.galleryUrls.filter(Boolean)
-        : (project.galleryUrls || "")
-            .split(",")
-            .map((item) => item.trim())
-            .filter(Boolean);
-      const newProject = {
-        id,
-        title: project.title.trim(),
-        description: project.description.trim(),
-        category: project.category || "community",
-        imageUrl,
-        galleryUrls,
-        goal,
-        currentAmount: Number(project.currentAmount) || 0,
-        donorCount: Number(project.donorCount) || 0,
-        status: goal > 0 ? "active" : "draft",
-      };
+ const addProject = useCallback(
+  (project) => {
+    const id = `p-${Date.now()}`;
+    const goal = Number(project.goal) || 0;
+    const imageUrl = project.imageUrl ? project.imageUrl.trim() : "";
+    const galleryUrls = Array.isArray(project.galleryUrls)
+      ? project.galleryUrls.filter(Boolean)
+      : (project.galleryUrls || "")
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean);
+    
+    const newProject = {
+      id,
+      title: project.title.trim(),
+      description: project.description.trim(),
+      category: project.category || "community",
+      imageUrl,
+      galleryUrls,
+      galleryCount: Number(project.galleryCount) || 0, // ADD THIS LINE
+      goal,
+      currentAmount: Number(project.currentAmount) || 0,
+      donorCount: Number(project.donorCount) || 0,
+      status: goal > 0 ? "active" : "draft",
+    };
 
-      setProjects((prev) => [newProject, ...prev]);
-      return id;
-    },
-    [setProjects]
-  );
+    setProjects((prev) => [newProject, ...prev]);
+    return id;
+  },
+  [setProjects]
+);
+
 
   const updateProject = useCallback(
     (id, updates) => {
