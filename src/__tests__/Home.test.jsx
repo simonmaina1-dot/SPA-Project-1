@@ -73,15 +73,18 @@ describe("Home page", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("navigates to project details page", async () => {
+  it("displays project cards with links to details", async () => {
     renderHome();
 
-    // Find the project link
-    const projectLink = await screen.findByRole("link", {
+    // Wait for projects to load
+    await screen.findByText("Community Donation Hub");
+
+    // Find all project links - should have multiple "Donate Page" links
+    const projectLinks = await screen.findAllByRole("link", {
       name: /Donate Page/i,
     });
 
-    expect(projectLink).toBeInTheDocument();
-    expect(projectLink).toHaveAttribute("href", expect.stringContaining("/projects/"));
+    expect(projectLinks.length).toBeGreaterThan(0);
+    expect(projectLinks[0]).toHaveAttribute("href", expect.stringContaining("/projects/"));
   });
 });
