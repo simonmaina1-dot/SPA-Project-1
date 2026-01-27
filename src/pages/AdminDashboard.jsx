@@ -2,7 +2,6 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import useFeedback from "../hooks/useFeedback";
-import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
 import Modal from "../components/Modal";
@@ -16,7 +15,6 @@ export default function AdminDashboard() {
     removeProject,
   } = useProjects();
   const { feedbackList, updateFeedbackStatus, removeFeedback } = useFeedback();
-  const { donations, getRecentDonations } = useDonations();
   const { showToast } = useContext(ToastContext);
   const { currentUser, signIn, signOut } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
@@ -34,6 +32,7 @@ export default function AdminDashboard() {
   });
   const [viewMode, setViewMode] = useState("add");
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [deleteFeedbackId, setDeleteFeedbackId] = useState(null);
   const [newProject, setNewProject] = useState({
     title: "",
     description: "",
@@ -1046,48 +1045,6 @@ export default function AdminDashboard() {
         <article className="admin-card admin-card-wide">
           <div className="admin-section-header">
             <div>
-              <h3>Donor Records</h3>
-              <p className="admin-card-subtitle">
-                Recent donations and donor information.
-              </p>
-            </div>
-            <span className="admin-badge">{donations.length} total</span>
-          </div>
-          <div className="admin-table-container">
-            {donations.length === 0 ? (
-              <p className="admin-empty">No donations recorded yet.</p>
-            ) : (
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Donor</th>
-                    <th>Email</th>
-                    <th>Project</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {getRecentDonations(10).map((donation) => (
-                    <tr key={donation.id}>
-                      <td className="admin-table-title">{donation.donorName}</td>
-                      <td>{donation.donorEmail || "—"}</td>
-                      <td>{donation.projectTitle}</td>
-                      <td>{formatCurrency(donation.amount)}</td>
-                      <td className="admin-row-meta">
-                        {new Date(donation.createdAt).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </article>
-
-        <article className="admin-card admin-card-wide">
-          <div className="admin-section-header">
-            <div>
               <h3>User Feedback</h3>
               <p className="admin-card-subtitle">
                 Community suggestions and feedback submissions.
@@ -1105,14 +1062,9 @@ export default function AdminDashboard() {
                       <p className="admin-row-title">{feedback.name}</p>
                       <span className="admin-row-meta">{feedback.email}</span>
                     </div>
-                    <div className="admin-feedback-meta">
-                      <span className={`status-pill status-${feedback.status === "new" ? "active" : "funded"}`}>
-                        {feedback.status}
-                      </span>
-                      <span className="admin-row-meta">
-                        {new Date(feedback.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
+                    <span className="admin-row-meta">
+                      {new Date(feedback.createdAt).toLocaleDateString()}
+                    </span>
                   </div>
                   <p className="admin-feedback-message">{feedback.message}</p>
                   <div className="admin-feedback-actions">
