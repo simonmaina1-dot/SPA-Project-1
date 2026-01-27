@@ -371,7 +371,7 @@ export default function AdminDashboard() {
         </section>
 
         <section className="admin-grid">
-        <article className="admin-card admin-card-wide admin-card-snapshot">
+        <article className="admin-card admin-card-snapshot">
           <h3>Platform snapshot</h3>
           <div className="admin-stats">
             <div className="admin-stat">
@@ -404,6 +404,33 @@ export default function AdminDashboard() {
               </span>
               <span className="admin-stat-label">Remaining need</span>
             </div>
+          </div>
+        </article>
+
+        <article className="admin-card admin-card-activity">
+          <h3>Recent activity</h3>
+          <div className="admin-timeline">
+            {projects.slice(0, 5).map((project, index) => (
+              <div key={project.id} className="admin-activity">
+                <span className="admin-activity-dot" />
+                <div>
+                  <p className="admin-row-title">
+                    {project.title} received a donation
+                  </p>
+                  <span className="admin-row-meta">
+                    {formatCurrency(Math.round((project.currentAmount || 0) / 4))} -{" "}
+                    {project.category}
+                  </span>
+                  <span className="admin-activity-time">
+                    {index === 0
+                      ? "Just now"
+                      : index === 1
+                        ? "Today"
+                        : "This week"}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </article>
 
@@ -944,33 +971,6 @@ export default function AdminDashboard() {
                   </span>
                 </div>
                 <span className="admin-pill">{project.progress}% funded</span>
-              </div>
-            ))}
-          </div>
-        </article>
-
-        <article className="admin-card admin-card-wide">
-          <h3>Recent activity</h3>
-          <div className="admin-timeline">
-            {projects.map((project, index) => (
-              <div key={project.id} className="admin-activity">
-                <span className="admin-activity-dot" />
-                <div>
-                  <p className="admin-row-title">
-                    {project.title} received a donation
-                  </p>
-                  <span className="admin-row-meta">
-                    {formatCurrency(Math.round((project.currentAmount || 0) / 4))} -{" "}
-                    {project.category}
-                  </span>
-                  <span className="admin-activity-time">
-                    {index === 0
-                      ? "Just now"
-                      : index === 1
-                        ? "Today"
-                        : "This week"}
-                  </span>
-                </div>
               </div>
             ))}
           </div>

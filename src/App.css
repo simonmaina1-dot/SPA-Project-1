@@ -2091,6 +2091,14 @@ body {
   grid-column: 1 / -1;
 }
 
+.admin-card-snapshot {
+  grid-column: span 3;
+}
+
+.admin-card-activity {
+  grid-column: span 2;
+}
+
 .admin-card-subtitle {
   color: var(--text-muted);
   font-size: 0.95rem;
@@ -2849,11 +2857,21 @@ body {
   .admin-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .admin-card-snapshot,
+  .admin-card-activity {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 900px) {
   .admin-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-card-snapshot,
+  .admin-card-activity {
+    grid-column: 1 / -1;
   }
 }
 
