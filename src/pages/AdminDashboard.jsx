@@ -2,7 +2,6 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import useFeedback from "../hooks/useFeedback";
-import useForm from "../hooks/useForm";
 import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
@@ -16,9 +15,8 @@ export default function AdminDashboard() {
     addProject,
     removeProject,
   } = useProjects();
-  const { feedbackList, addFeedback, updateFeedbackStatus, removeFeedback } =
-    useFeedback();
-  const { donations, getRecentDonations, addDonation } = useDonations();
+  const { feedbackList, updateFeedbackStatus, removeFeedback } = useFeedback();
+  const { donations, getRecentDonations } = useDonations();
   const { showToast } = useContext(ToastContext);
   const { currentUser, signIn, signOut } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
@@ -44,23 +42,6 @@ export default function AdminDashboard() {
     imageUrl: "",
     galleryUrls: "",
   });
-  const {
-    values: donorValues,
-    handleChange: handleDonorChange,
-    reset: resetDonorForm,
-    setFieldValue: setDonorFieldValue,
-  } = useForm({
-    donorName: "",
-    donorEmail: "",
-    projectId: "",
-    amount: "",
-    message: "",
-  });
-  const {
-    values: feedbackValues,
-    handleChange: handleFeedbackChange,
-    reset: resetFeedback,
-  } = useForm({ name: "", email: "", message: "" });
 
   const metrics = useMemo(() => {
     const totalRaised = projects.reduce(
@@ -286,65 +267,6 @@ export default function AdminDashboard() {
   const getProjectTitle = (id) => {
     const project = projects.find((p) => p.id === id);
     return project?.title || "this project";
-  };
-
-  const handleFeedbackSubmit = (event) => {
-    event.preventDefault();
-    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
-      showToast("Please add a name and message.", "warning");
-      return;
-    }
-    addFeedback(feedbackValues);
-    showToast("Feedback logged.", "success");
-    resetFeedback();
-  };
-
-  useEffect(() => {
-    if (!projects.length || donorValues.projectId) {
-      return;
-    }
-    setDonorFieldValue("projectId", projects[0].id);
-  }, [projects, donorValues.projectId, setDonorFieldValue]);
-
-  const handleDonorSubmit = (event) => {
-    event.preventDefault();
-    if (!donorValues.donorName.trim() || !donorValues.amount) {
-      showToast("Add a donor name and amount.", "warning");
-      return;
-    }
-
-    const project = projects.find((item) => item.id === donorValues.projectId);
-    if (!project) {
-      showToast("Select a project to attribute the donation.", "warning");
-      return;
-    }
-
-    const amount = Number(donorValues.amount);
-    if (!amount || amount <= 0) {
-      showToast("Enter a valid donation amount.", "warning");
-      return;
-    }
-
-    addDonation({
-      projectId: project.id,
-      projectTitle: project.title,
-      donorName: donorValues.donorName,
-      donorEmail: donorValues.donorEmail,
-      amount,
-      message: donorValues.message,
-    });
-
-    updateProject(project.id, {
-      currentAmount: (project.currentAmount || 0) + amount,
-      donorCount: (project.donorCount || 0) + 1,
-      status:
-        project.goal && (project.currentAmount || 0) + amount >= project.goal
-          ? "funded"
-          : project.status || "active",
-    });
-
-    showToast("Donor record added.", "success");
-    resetDonorForm();
   };
 
   if (!currentUser) {
@@ -1075,80 +997,6 @@ export default function AdminDashboard() {
             </div>
             <span className="admin-badge">{donations.length} total</span>
           </div>
-          <form className="admin-donor-form form-card" onSubmit={handleDonorSubmit}>
-            <div className="form-grid">
-              <label className="form-field">
-                <span className="form-label">Donor name</span>
-                <input
-                  type="text"
-                  name="donorName"
-                  value={donorValues.donorName}
-                  onChange={handleDonorChange}
-                  placeholder="Donor name"
-                  required
-                />
-              </label>
-              <label className="form-field">
-                <span className="form-label">Email</span>
-                <input
-                  type="email"
-                  name="donorEmail"
-                  value={donorValues.donorEmail}
-                  onChange={handleDonorChange}
-                  placeholder="donor@email.com"
-                />
-              </label>
-              <label className="form-field">
-                <span className="form-label">Project</span>
-                <select
-                  name="projectId"
-                  value={donorValues.projectId}
-                  onChange={handleDonorChange}
-                  required
-                >
-                  {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="form-field">
-                <span className="form-label">Amount (KSh)</span>
-                <input
-                  type="number"
-                  name="amount"
-                  value={donorValues.amount}
-                  onChange={handleDonorChange}
-                  min="1"
-                  placeholder="500"
-                  required
-                />
-              </label>
-              <label className="form-field form-field-wide">
-                <span className="form-label">Message</span>
-                <textarea
-                  name="message"
-                  value={donorValues.message}
-                  onChange={handleDonorChange}
-                  rows="3"
-                  placeholder="Optional note from the donor"
-                />
-              </label>
-            </div>
-            <div className="form-actions">
-              <button type="submit" className="btn btn-primary">
-                Add donor
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => resetDonorForm()}
-              >
-                Clear
-              </button>
-            </div>
-          </form>
           <div className="admin-table-container">
             {donations.length === 0 ? (
               <p className="admin-empty">No donations recorded yet.</p>
@@ -1193,54 +1041,6 @@ export default function AdminDashboard() {
               {feedbackList.filter((f) => f.status === "new").length} new
             </span>
           </div>
-          <form className="feedback-form-card form-card" onSubmit={handleFeedbackSubmit}>
-            <div className="form-grid">
-              <label className="form-field">
-                <span className="form-label">Name</span>
-                <input
-                  type="text"
-                  name="name"
-                  value={feedbackValues.name}
-                  onChange={handleFeedbackChange}
-                  placeholder="Visitor name"
-                  required
-                />
-              </label>
-              <label className="form-field">
-                <span className="form-label">Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  value={feedbackValues.email}
-                  onChange={handleFeedbackChange}
-                  placeholder="email@example.com"
-                />
-              </label>
-              <label className="form-field form-field-wide">
-                <span className="form-label">Message</span>
-                <textarea
-                  name="message"
-                  value={feedbackValues.message}
-                  onChange={handleFeedbackChange}
-                  rows="3"
-                  placeholder="Feedback summary"
-                  required
-                />
-              </label>
-            </div>
-            <div className="form-actions">
-              <button type="submit" className="btn btn-primary">
-                Log feedback
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => resetFeedback()}
-              >
-                Clear
-              </button>
-            </div>
-          </form>
           <div className="admin-feedback-list">
             {feedbackList.length === 0 ? (
               <p className="admin-empty">No feedback received yet.</p>
