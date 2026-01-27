@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import useForm from "../hooks/useForm";
+import useFeedback from "../hooks/useFeedback";
 import { ToastContext } from "../context/ToastContext";
 
 const initialValues = {
@@ -10,62 +11,62 @@ const initialValues = {
 
 export default function FeedbackForm({ title = "Share feedback", subtitle }) {
   const { showToast } = useContext(ToastContext);
+  const { addFeedback } = useFeedback();
   const { values, handleChange, reset } = useForm(initialValues);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    addFeedback(values);
     showToast("Thanks for sharing your feedback!", "success");
     reset();
   };
 
   return (
-    <section className="feedback-section">
-      <div className="section-header">
+    <div className="feedback-form">
+      <div className="feedback-form-header">
         <h2>{title}</h2>
+        {subtitle && <p>{subtitle}</p>}
       </div>
-      {subtitle && <p className="section-subtitle">{subtitle}</p>}
-      <form className="form-card" onSubmit={handleSubmit}>
-        <div className="form-grid">
-          <label className="form-field">
-            <span className="form-label">Full name</span>
+      <form className="feedback-form-body" onSubmit={handleSubmit}>
+        <div className="feedback-form-row">
+          <label className="feedback-form-field">
+            <span className="feedback-form-label">Full Name</span>
             <input
               type="text"
               name="name"
               value={values.name}
               onChange={handleChange}
-              placeholder="Your name"
+              placeholder="John Doe"
               required
             />
           </label>
-          <label className="form-field">
-            <span className="form-label">Email</span>
+          <label className="feedback-form-field">
+            <span className="feedback-form-label">Email Address</span>
             <input
               type="email"
               name="email"
               value={values.email}
               onChange={handleChange}
-              placeholder="your-name@email.com"
-              required
-            />
-          </label>
-          <label className="form-field form-field-wide">
-            <span className="form-label">Feedback</span>
-            <textarea
-              name="message"
-              value={values.message}
-              onChange={handleChange}
-              rows="4"
-              placeholder="What should we improve or add next?"
+              placeholder="john@example.com"
               required
             />
           </label>
         </div>
-        <div className="form-actions">
-          <button type="submit" className="btn btn-primary">
-            Send feedback
-          </button>
-        </div>
+        <label className="feedback-form-field">
+          <span className="feedback-form-label">Your Feedback</span>
+          <textarea
+            name="message"
+            value={values.message}
+            onChange={handleChange}
+            rows="5"
+            placeholder="Share your thoughts, suggestions, or ideas for improvement..."
+            required
+          />
+        </label>
+        <button type="submit" className="btn btn-primary feedback-submit-btn">
+          Send Feedback
+        </button>
       </form>
-    </section>
+    </div>
   );
 }

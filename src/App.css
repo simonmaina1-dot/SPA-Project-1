@@ -219,12 +219,12 @@ body {
 }
 
 .stat-value {
- font-size: 32px;
+  font-size: clamp(22px, 3.2vw, 32px);
   font-weight: 700;
   font-family: 'Google Sans', sans-serif;
-  line-height: 1.1;
-  white-space: nowrap;
-  overflow: visible;
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .stat-label {
@@ -419,6 +419,11 @@ body {
 .project-card-button {
   all: unset;
   cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.project-card-shell {
   display: block;
   width: 100%;
 }
@@ -1473,6 +1478,74 @@ body {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+}
+
+/* ==========================================
+   FORM GRID (DONATION MODALS)
+   ========================================== */
+.form-card {
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.form-field-wide {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: var(--color-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ==========================================
@@ -2580,6 +2653,11 @@ body {
   padding: 64px 24px;
   background: var(--color-bg);
   border-top: 1px solid var(--color-border);
+}
+
+.feedback-section .admin-card {
+  width: 100%;
+  max-width: 100%;
 }
 
 .feedback-form {

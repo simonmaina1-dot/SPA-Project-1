@@ -1,4 +1,4 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
@@ -16,7 +16,6 @@ export default function ProjectDetails() {
   const { projectId } = useParams();
   const { projects, formatCurrency, addDonation } = useProjects();
   const { showToast } = useContext(ToastContext);
-  const navigate = useNavigate();
   
   const project = projects.find((item) => item.id === projectId);
   
@@ -98,13 +97,7 @@ export default function ProjectDetails() {
     : 0;
 
   return (
-    <Modal
-      isOpen
-      onClose={() => navigate("/projects")}
-      title="Project details"
-      hideHeader
-    >
-      <div className="project-details-page">
+    <div className="page project-details-page">
       {/* Hero Section with Image Gallery */}
       <section className="details-hero">
         <div className="details-hero-image">
@@ -263,16 +256,28 @@ export default function ProjectDetails() {
               <div className="share-section">
                 <p className="share-label">Share this project</p>
                 <div className="share-buttons">
-                  <button className="share-btn" aria-label="Share on Twitter">
+                  <a
+                    className="share-btn"
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Share on Twitter"
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
                     </svg>
-                  </button>
-                  <button className="share-btn" aria-label="Share on Facebook">
+                  </a>
+                  <a
+                    className="share-btn"
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Share on Facebook"
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
                     </svg>
-                  </button>
+                  </a>
                   <button
                     className="share-btn"
                     type="button"
@@ -359,7 +364,6 @@ export default function ProjectDetails() {
           </div>
         </form>
       </Modal>
-      </div>
-    </Modal>
+    </div>
   );
 }

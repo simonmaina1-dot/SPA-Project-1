@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
 import { ToastContext } from "../context/ToastContext";
+import useFeedback from "../hooks/useFeedback";
+import useForm from "../hooks/useForm";
 
 
 /**
@@ -31,6 +33,12 @@ import { ToastContext } from "../context/ToastContext";
 export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
+  const { feedbackList, addFeedback } = useFeedback();
+  const {
+    values: feedbackValues,
+    handleChange: handleFeedbackChange,
+    reset: resetFeedback,
+  } = useForm({ name: "", email: "", message: "" });
   const location = useLocation();
   const aboutRef = useRef(null);
   const statsRef = useRef(null); // Reference for stats animation
@@ -38,6 +46,19 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
+
+  const handleFeedbackSubmit = (event) => {
+    event.preventDefault();
+
+    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
+      showToast("Add your name and feedback message.", "warning");
+      return;
+    }
+
+    addFeedback(feedbackValues);
+    showToast("Thanks for sharing your feedback!", "success");
+    resetFeedback();
+  };
 
 
   // Show welcome toast on first mount
@@ -339,6 +360,71 @@ export default function Home() {
             </p>
           </article>
         </div>
+      </section>
+
+      {/* Feedback Section */}
+      <section className="feedback-section">
+        <article className="admin-card admin-card-wide">
+          <div className="admin-section-header">
+            <div>
+              <h3>User Feedback</h3>
+              <p className="admin-card-subtitle">
+                Community suggestions and feedback submissions.
+              </p>
+            </div>
+            <span className="admin-badge">
+              {feedbackList.filter((f) => f.status === "new").length} new
+            </span>
+          </div>
+          <form className="admin-feedback-form form-card" onSubmit={handleFeedbackSubmit}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Name</span>
+                <input
+                  type="text"
+                  name="name"
+                  value={feedbackValues.name}
+                  onChange={handleFeedbackChange}
+                  placeholder="Visitor name"
+                  required
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  value={feedbackValues.email}
+                  onChange={handleFeedbackChange}
+                  placeholder="email@example.com"
+                />
+              </label>
+              <label className="form-field form-field-wide">
+                <span className="form-label">Message</span>
+                <textarea
+                  name="message"
+                  value={feedbackValues.message}
+                  onChange={handleFeedbackChange}
+                  rows="3"
+                  placeholder="Feedback summary"
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Log feedback
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => resetFeedback()}
+              >
+                Clear
+              </button>
+            </div>
+          </form>
+        </article>
       </section>
     </div>
   );
