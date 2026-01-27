@@ -1,106 +1,141 @@
-import { createContext, useCallback, useMemo, useState, useEffect } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
-import seedProjects from "../data/projects.json";
 
+import { createContext, useCallback, useMemo, useState, useEffect } from "react";
+
+// Create the ProjectsContext
 export const ProjectsContext = createContext(null);
 
 export function ProjectsProvider({ children }) {
-  const [projects, setProjects] = useLocalStorage("cdh-projects-v4", seedProjects);
+  // State to hold projects fetched from JSON Server
+  const [projects, setProjects] = useState([]);
+  // State to track loading status
   const [isLoading, setIsLoading] = useState(true);
 
+  // Fetch projects from JSON Server when component mounts
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLoading(false), 350);
-    return () => window.clearTimeout(timer);
+    fetch("http://localhost:3002/projects") 
+      .then(res => res.json())
+      .then(data => {
+        setProjects(data); 
+        setIsLoading(false); 
+      })
+      .catch(err => {
+        console.error("Failed to fetch projects:", err);
+        setIsLoading(false);
+      });
   }, []);
 
- const addProject = useCallback(
-  (project) => {
-    const id = `p-${Date.now()}`;
-    const goal = Number(project.goal) || 0;
-    const imageUrl = project.imageUrl ? project.imageUrl.trim() : "";
-    const galleryUrls = Array.isArray(project.galleryUrls)
-      ? project.galleryUrls.filter(Boolean)
-      : (project.galleryUrls || "")
-          .split(",")
-          .map((item) => item.trim())
-          .filter(Boolean);
-    
+  // Add a new project (POST request)
+  const addProject = useCallback((project) => {
+    const id = `p-${Date.now()}`; // Generate unique ID
     const newProject = {
       id,
       title: project.title.trim(),
       description: project.description.trim(),
       category: project.category || "community",
-      imageUrl,
-      galleryUrls,
-      galleryCount: Number(project.galleryCount) || 0, // ADD THIS LINE
-      goal,
+      imageUrl: project.imageUrl ? project.imageUrl.trim() : "",
+      galleryUrls: Array.isArray(project.galleryUrls)
+        ? project.galleryUrls.filter(Boolean)
+        : (project.galleryUrls || "")
+            .split(",")
+            .map((item) => item.trim())
+            .filter(Boolean),
+      galleryCount: Number(project.galleryCount) || 0,
+      goal: Number(project.goal) || 0,
       currentAmount: Number(project.currentAmount) || 0,
       donorCount: Number(project.donorCount) || 0,
-      status: goal > 0 ? "active" : "draft",
+      status: project.goal > 0 ? "active" : "draft",
     };
 
-    setProjects((prev) => [newProject, ...prev]);
+    // Send new project to JSON Server
+    fetch("http://localhost:3002/projects", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newProject),
+    })
+      .then(res => res.json())
+      .then(savedProject => {
+        setProjects((prev) => [savedProject, ...prev]); // Update state with new project
+      })
+      .catch(err => console.error("Failed to add project:", err));
+
     return id;
-  },
-  [setProjects]
-);
+  }, []);
 
+  // Update an existing project (PUT request)
+  const updateProject = useCallback((id, updates) => {
+    const projectToUpdate = projects.find(p => p.id === id);
+    if (!projectToUpdate) return;
 
-  const updateProject = useCallback(
-    (id, updates) => {
-      setProjects((prev) =>
-        prev.map((project) =>
-          project.id === id ? { ...project, ...updates } : project
-        )
-      );
-    },
-    [setProjects]
-  );
+    const updatedProject = { ...projectToUpdate, ...updates };
 
-  const removeProject = useCallback(
-    (id) => {
-      setProjects((prev) => prev.filter((project) => project.id !== id));
-    },
-    [setProjects]
-  );
+    fetch(`http://localhost:3002/projects/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedProject),
+    })
+      .then(res => res.json())
+      .then(savedProject => {
+        setProjects((prev) =>
+          prev.map((project) => project.id === id ? savedProject : project)
+        );
+      })
+      .catch(err => console.error("Failed to update project:", err));
+  }, [projects]);
 
-  const addDonation = useCallback(
-    (id, amount) => {
-      setProjects((prev) =>
-        prev.map((project) => {
-          if (project.id !== id) {
-            return project;
-          }
+  // Remove a project via DELETE request
+  const removeProject = useCallback((id) => {
+    fetch(`http://localhost:3002/projects/${id}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        setProjects((prev) => prev.filter((project) => project.id !== id));
+      })
+      .catch(err => console.error("Failed to delete project:", err));
+  }, []);
 
-          const currentAmount = Number(project.currentAmount) || 0;
-          const donorCount = Number(project.donorCount) || 0;
-          const nextAmount = currentAmount + amount;
-          const isFunded = project.goal && nextAmount >= project.goal;
-          const nextStatus =
-            project.status === "review" ? "review" : isFunded ? "funded" : "active";
+  // Add a donation to a project via PATCH request
+  const addDonation = useCallback((id, amount) => {
+    const projectToUpdate = projects.find(p => p.id === id);
+    if (!projectToUpdate) return;
 
-          return {
-            ...project,
-            currentAmount: nextAmount,
-            donorCount: donorCount + 1,
-            status: nextStatus,
-          };
-        })
-      );
-    },
-    [setProjects]
-  );
+    const currentAmount = Number(projectToUpdate.currentAmount) || 0;
+    const donorCount = Number(projectToUpdate.donorCount) || 0;
+    const nextAmount = currentAmount + amount;
+    const isFunded = projectToUpdate.goal && nextAmount >= projectToUpdate.goal;
+    const nextStatus = isFunded ? "funded" : "active";
 
+    const updatedProject = {
+      ...projectToUpdate,
+      currentAmount: nextAmount,
+      donorCount: donorCount + 1,
+      status: nextStatus,
+    };
+
+    fetch(`http://localhost:3002/projects/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedProject),
+    })
+      .then(res => res.json())
+      .then(savedProject => {
+        setProjects((prev) =>
+          prev.map((project) => project.id === id ? savedProject : project)
+        );
+      })
+      .catch(err => console.error("Failed to add donation:", err));
+  }, [projects]);
+
+  // Get top 3 featured projects based on progress
   const getFeaturedProjects = useCallback(() => {
     const sorted = [...projects].sort((a, b) => {
       const aProgress = a.goal ? a.currentAmount / a.goal : 0;
       const bProgress = b.goal ? b.currentAmount / b.goal : 0;
       return bProgress - aProgress;
     });
-
     return sorted.slice(0, 3);
   }, [projects]);
 
+  // Format currency in Kenyan Shillings
   const formatCurrency = useCallback((amount) => {
     return new Intl.NumberFormat("en-KE", {
       style: "currency",
@@ -109,29 +144,19 @@ export function ProjectsProvider({ children }) {
     }).format(amount || 0);
   }, []);
 
-  const value = useMemo(
-    () => ({
-      projects,
-      isLoading,
-      addProject,
-      updateProject,
-      removeProject,
-      addDonation,
-      getFeaturedProjects,
-      formatCurrency,
-    }),
-    [
-      projects,
-      isLoading,
-      addProject,
-      updateProject,
-      removeProject,
-      addDonation,
-      getFeaturedProjects,
-      formatCurrency,
-    ]
-  );
+  // Memoize context value
+  const value = useMemo(() => ({
+    projects,
+    isLoading,
+    addProject,
+    updateProject,
+    removeProject,
+    addDonation,
+    getFeaturedProjects,
+    formatCurrency,
+  }), [projects, isLoading, addProject, updateProject, removeProject, addDonation, getFeaturedProjects, formatCurrency]);
 
+  // Provide context to children
   return (
     <ProjectsContext.Provider value={value}>
       {children}
