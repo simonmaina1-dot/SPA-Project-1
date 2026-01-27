@@ -5,17 +5,15 @@ import useProjects from "../hooks/useProjects";
 export default function ProjectCard({ project, onClick, featured = false }) {
   const { formatCurrency } = useProjects();
 
+  // Calculate funding progress
   const progress = project.goal
     ? Math.min(100, Math.round((project.currentAmount / project.goal) * 100))
     : 0;
 
-  // Get gallery count and build image URLs
-  const galleryCount = Number(project.galleryCount) || 0;
-  const galleryImages = [];
-  
-  for (let i = 1; i <= galleryCount; i++) {
-    galleryImages.push(`/project-images/${project.id}/${i}.jpg`);
-  }
+  // Build gallery images directly from db.json galleryFiles
+  const galleryImages = project.galleryFiles?.map(
+    (file) => `/project-images/${project.id}/${file}`
+  ) || [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedIndexes, setLoadedIndexes] = useState(new Set());
@@ -24,19 +22,16 @@ export default function ProjectCard({ project, onClick, featured = false }) {
   useEffect(() => {
     if (galleryImages.length <= 1) return;
 
-    // Random initial delay (0-4 seconds) so cards don't sync
     const randomDelay = Math.random() * 4000;
-    
+
     const delayTimer = setTimeout(() => {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
-      }, 4000); // Change slide every 4 seconds
+      }, 4000);
 
-      // Cleanup interval when component unmounts
       return () => clearInterval(interval);
     }, randomDelay);
 
-    // Cleanup timeout when component unmounts
     return () => clearTimeout(delayTimer);
   }, [galleryImages.length]);
 
@@ -52,6 +47,7 @@ export default function ProjectCard({ project, onClick, featured = false }) {
     console.error(`Failed to load image ${index} for ${project.id}:`, src);
   };
 
+  // Action button/link
   const actionLabel = "Donate Page";
   const actionContent = (
     <>
@@ -76,6 +72,7 @@ export default function ProjectCard({ project, onClick, featured = false }) {
     </Link>
   );
 
+  // Card body
   const cardBody = (
     <article className={`project-card${featured ? " featured" : ""}`}>
       {/* Background image slideshow */}
@@ -85,28 +82,28 @@ export default function ProjectCard({ project, onClick, featured = false }) {
             const isActive = index === currentIndex;
             const isLoaded = loadedIndexes.has(index);
             const shouldShow = isActive && isLoaded;
-            
+
             return (
               <div
                 key={index}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0,
                   left: 0,
-                  width: '100%',
-                  height: '100%',
+                  width: "100%",
+                  height: "100%",
                   backgroundImage: `url(${src})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
                   opacity: shouldShow ? 1 : 0,
-                  transition: 'opacity 1s ease-in-out',
-                  zIndex: isActive ? 2 : 1
+                  transition: "opacity 1s ease-in-out",
+                  zIndex: isActive ? 2 : 1,
                 }}
               >
                 <img
                   src={src}
-                  alt=""
+                  alt={`${project.title} image ${index + 1}`}
                   onLoad={() => handleImageLoad(index)}
                   onError={() => handleImageError(index, src)}
                   style={{ display: "none" }}
@@ -115,14 +112,16 @@ export default function ProjectCard({ project, onClick, featured = false }) {
             );
           })
         ) : (
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(135deg, #1db954 0%, #1ed760 100%)'
-          }} />
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(135deg, #1db954 0%, #1ed760 100%)",
+            }}
+          />
         )}
       </div>
 
@@ -162,9 +161,5 @@ export default function ProjectCard({ project, onClick, featured = false }) {
     );
   }
 
-  return (
-    <div className="project-card-shell">
-      {cardBody}
-    </div>
-  );
+  return <div className="project-card-shell">{cardBody}</div>;
 }
