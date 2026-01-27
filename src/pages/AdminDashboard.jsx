@@ -410,7 +410,15 @@ export default function AdminDashboard() {
         <article className="admin-card admin-card-activity">
           <h3>Recent activity</h3>
           <div className="admin-timeline">
-            {projects.slice(0, 5).map((project, index) => (
+            {projects
+              .filter(
+                (project) =>
+                  !["Community Solar Garden", "Mobile Health Clinic"].includes(
+                    project.title
+                  )
+              )
+              .slice(0, 5)
+              .map((project, index) => (
               <div key={project.id} className="admin-activity">
                 <span className="admin-activity-dot" />
                 <div>
@@ -430,7 +438,7 @@ export default function AdminDashboard() {
                   </span>
                 </div>
               </div>
-            ))}
+              ))}
           </div>
         </article>
 
