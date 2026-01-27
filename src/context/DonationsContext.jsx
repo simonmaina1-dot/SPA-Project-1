@@ -1,93 +1,62 @@
-import { createContext, useCallback, useMemo } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
-
-const seedDonations = [
-  {
-    id: "d-1001",
-    projectId: "p-1001",
-    projectTitle: "Neighborhood Learning Lab",
-    donorName: "Anonymous",
-    donorEmail: "",
-    amount: 500,
-    message: "Keep up the great work!",
-    createdAt: "2026-01-26T09:00:00Z",
-  },
-  {
-    id: "d-1002",
-    projectId: "p-1002",
-    projectTitle: "Community Solar Garden",
-    donorName: "Mary Wanjiku",
-    donorEmail: "mary.w@email.com",
-    amount: 2000,
-    message: "Happy to support clean energy!",
-    createdAt: "2026-01-25T16:30:00Z",
-  },
-  {
-    id: "d-1003",
-    projectId: "p-1001",
-    projectTitle: "Neighborhood Learning Lab",
-    donorName: "James Kimani",
-    donorEmail: "jkimani@email.com",
-    amount: 1500,
-    message: "",
-    createdAt: "2026-01-25T11:45:00Z",
-  },
-  {
-    id: "d-1004",
-    projectId: "p-1006",
-    projectTitle: "Neighborhood Food Pantry Fridge",
-    donorName: "Grace Achieng",
-    donorEmail: "grace.a@email.com",
-    amount: 800,
-    message: "For the community!",
-    createdAt: "2026-01-24T14:20:00Z",
-  },
-];
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 export const DonationsContext = createContext(null);
 
 export function DonationsProvider({ children }) {
-  const [donations, setDonations] = useLocalStorage(
-    "cdh-donations",
-    seedDonations
-  );
+  const [donations, setDonations] = useState([]);
 
-  const addDonation = useCallback(
-    (donation) => {
-      const id = `d-${Date.now()}`;
-      const newDonation = {
-        id,
-        projectId: donation.projectId,
-        projectTitle: donation.projectTitle,
-        donorName: donation.donorName?.trim() || "Anonymous",
-        donorEmail: donation.donorEmail?.trim() || "",
-        amount: Number(donation.amount) || 0,
-        message: donation.message?.trim() || "",
-        createdAt: new Date().toISOString(),
-      };
+  // Fetch donations from db.json via JSON Server
+  useEffect(() => {
+    fetch("http://localhost:3002/donations")
+      .then((res) => res.json())
+      .then((data) => setDonations(data))
+      .catch((err) => console.error("Failed to load donations:", err));
+  }, []);
+
+  // Add a new donation (POST to JSON Server)
+  const addDonation = useCallback(async (donation) => {
+    const newDonation = {
+      id: `d-${Date.now()}`,
+      projectId: donation.projectId,
+      projectTitle: donation.projectTitle,
+      donorName: donation.donorName?.trim() || "Anonymous",
+      donorEmail: donation.donorEmail?.trim() || "",
+      amount: Number(donation.amount) || 0,
+      message: donation.message?.trim() || "",
+      createdAt: new Date().toISOString(),
+    };
+
+    try {
+      const res = await fetch("http://localhost:3002/donations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newDonation),
+      });
+
+      if (!res.ok) throw new Error("Failed to save donation");
+
       setDonations((prev) => [newDonation, ...prev]);
-      return id;
-    },
-    [setDonations]
-  );
+      return newDonation.id;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }, []);
 
   const getDonationsByProject = useCallback(
-    (projectId) => {
-      return donations.filter((d) => d.projectId === projectId);
-    },
+    (projectId) => donations.filter((d) => d.projectId === projectId),
     [donations]
   );
 
   const getRecentDonations = useCallback(
-    (limit = 10) => {
-      return donations.slice(0, limit);
-    },
+    (limit = 10) => donations.slice(0, limit),
     [donations]
   );
 
-  const getTotalDonated = useCallback(() => {
-    return donations.reduce((sum, d) => sum + d.amount, 0);
-  }, [donations]);
+  const getTotalDonated = useCallback(
+    () => donations.reduce((sum, d) => sum + d.amount, 0),
+    [donations]
+  );
 
   const getUniqueDonors = useCallback(() => {
     const emails = donations
