@@ -511,11 +511,6 @@ body {
   z-index: 2;
 }
 
-/* Loaded class for extra control */
-.project-card-slide.loaded {
-  /* Ready to display */
-}
-
 /* Zoom on hover - only for loaded active slide */
 .project-card:hover .project-card-slide.active.loaded {
   transform: scale(1.05);
@@ -1292,6 +1287,77 @@ body {
   font-size: 15px;
   line-height: 1.6;
   color: var(--color-text-secondary);
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 48px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-header h2 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: 'Google Sans', sans-serif;
+  color: var(--color-text-primary);
+}
+
+.about-lead {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.read-more-link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.read-more-link:hover {
+  color: var(--color-primary-dark);
+}
+
+.about-card-expanded {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+  animation: expandIn 0.3s ease;
+}
+
+.about-card-expanded p {
+  margin-bottom: 12px;
+}
+
+.about-card-expanded p:last-child {
+  margin-bottom: 0;
+}
+
+.about-emphasis {
+  font-style: italic;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+@keyframes expandIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================================
