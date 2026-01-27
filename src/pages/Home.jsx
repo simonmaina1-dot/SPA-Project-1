@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect, useContext, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
-import Modal from "../components/Modal";
 import { ToastContext } from "../context/ToastContext";
+import useFeedback from "../hooks/useFeedback";
+import useForm from "../hooks/useForm";
 
 
 /**
@@ -32,16 +33,32 @@ import { ToastContext } from "../context/ToastContext";
 export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
-  const navigate = useNavigate();
+  const { feedbackList, addFeedback } = useFeedback();
+  const {
+    values: feedbackValues,
+    handleChange: handleFeedbackChange,
+    reset: resetFeedback,
+  } = useForm({ name: "", email: "", message: "" });
   const location = useLocation();
   const aboutRef = useRef(null);
   const statsRef = useRef(null); // Reference for stats animation
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
   const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
+
+  const handleFeedbackSubmit = (event) => {
+    event.preventDefault();
+
+    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
+      showToast("Add your name and feedback message.", "warning");
+      return;
+    }
+
+    addFeedback(feedbackValues);
+    showToast("Thanks for sharing your feedback!", "success");
+    resetFeedback();
+  };
 
 
   // Show welcome toast on first mount
@@ -147,19 +164,6 @@ export default function Home() {
     { value: "other", label: "Other" }
   ];
 
-
-  // Handle project card click - opens modal
-  const handleProjectClick = (project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
-  };
-
-
-  // Close modal handler
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedProject(null);
-  };
 
 
   // Loading state
@@ -318,56 +322,12 @@ export default function Home() {
         ) : (
           <div className="projects-grid">
             {filteredProjects.map((project) => (
-              <ProjectCard 
-                key={project.id} 
-                project={project} 
-                onClick={() => handleProjectClick(project)}
-              />
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         )}
       </section>
 
-
-      {/* Project Details Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        title={selectedProject?.title || "Project Details"}
-        footer={
-          <div className="modal-actions">
-            <button className="btn btn-secondary" onClick={handleCloseModal}>
-              Close
-            </button>
-            <button 
-              className="btn btn-primary"
-              onClick={() => {
-                if (!selectedProject) {
-                  return;
-                }
-                showToast("Redirecting to demo checkout...", "info");
-                handleCloseModal();
-                navigate(`/donate/${selectedProject.id}`);
-              }}
-            >
-              Donate Now
-            </button>
-          </div>
-        }
-      >
-        {selectedProject && (
-          <div className="project-details-modal">
-            <p className="project-description">{selectedProject.description}</p>
-            <div className="project-meta">
-              <p><strong>Category:</strong> {selectedProject.category}</p>
-              <p><strong>Goal:</strong> {formatCurrency(selectedProject.goal)}</p>
-              <p><strong>Raised:</strong> {formatCurrency(selectedProject.currentAmount || 0)}</p>
-              <p><strong>Donors:</strong> {selectedProject.donorCount || 0}</p>
-              <p><strong>Status:</strong> {selectedProject.status}</p>
-            </div>
-          </div>
-        )}
-      </Modal>
 
 
       {/* About Section */}
@@ -403,6 +363,72 @@ export default function Home() {
           </article>
         </div>
       </section>
+
+      {/* Feedback Section */}
+      <section className="feedback-section">
+        <article className="admin-card admin-card-wide">
+          <div className="admin-section-header">
+            <div>
+              <h3>User Feedback</h3>
+              <p className="admin-card-subtitle">
+                Community suggestions and feedback submissions.
+              </p>
+            </div>
+            <span className="admin-badge">
+              {feedbackList.filter((f) => f.status === "new").length} new
+            </span>
+          </div>
+          <form className="admin-feedback-form form-card" onSubmit={handleFeedbackSubmit}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Name</span>
+                <input
+                  type="text"
+                  name="name"
+                  value={feedbackValues.name}
+                  onChange={handleFeedbackChange}
+                  placeholder="Visitor name"
+                  required
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  value={feedbackValues.email}
+                  onChange={handleFeedbackChange}
+                  placeholder="email@example.com"
+                />
+              </label>
+              <label className="form-field form-field-wide">
+                <span className="form-label">Message</span>
+                <textarea
+                  name="message"
+                  value={feedbackValues.message}
+                  onChange={handleFeedbackChange}
+                  rows="3"
+                  placeholder="Feedback summary"
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Log feedback
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => resetFeedback()}
+              >
+                Clear
+              </button>
+            </div>
+          </form>
+        </article>
+      </section>
     </div>
   );
 }
+

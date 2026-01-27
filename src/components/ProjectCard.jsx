@@ -52,6 +52,30 @@ export default function ProjectCard({ project, onClick, featured = false }) {
     console.error(`Failed to load image ${index} for ${project.id}:`, src);
   };
 
+  const actionLabel = "Donate Page";
+  const actionContent = (
+    <>
+      {actionLabel}
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path
+          d="M7.5 15L12.5 10L7.5 5"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+
+  const actionNode = onClick ? (
+    <span className="learn-more-btn">{actionContent}</span>
+  ) : (
+    <Link to={`/projects/${project.id}`} className="learn-more-btn">
+      {actionContent}
+    </Link>
+  );
+
   const cardBody = (
     <article className={`project-card${featured ? " featured" : ""}`}>
       {/* Background image slideshow */}
@@ -124,18 +148,7 @@ export default function ProjectCard({ project, onClick, featured = false }) {
             </div>
           </div>
 
-          <span className="learn-more-btn">
-            Learn more
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M7.5 15L12.5 10L7.5 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
+          {actionNode}
         </div>
       </div>
     </article>
@@ -150,8 +163,8 @@ export default function ProjectCard({ project, onClick, featured = false }) {
   }
 
   return (
-    <Link to={`/projects/${project.id}`} className="project-card-wrapper">
+    <div className="project-card-shell">
       {cardBody}
-    </Link>
+    </div>
   );
 }

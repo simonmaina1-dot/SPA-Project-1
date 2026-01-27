@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
-import DraggableModal from "../components/DraggableModal";
+import Modal from "../components/Modal";
 
 const initialValues = {
   title: "",
@@ -19,9 +19,15 @@ export default function AddProject() {
   const { addProject } = useProjects();
   const { showToast } = useContext(ToastContext);
   const navigate = useNavigate();
+  const [step, setStep] = useState(1);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (step === 1) {
+      handleNextStep();
+      return;
+    }
 
     if (!values.title.trim() || !values.description.trim() || !values.goal) {
       showToast("Please complete the required fields.", "warning");
@@ -31,28 +37,62 @@ export default function AddProject() {
     const newId = addProject(values);
     showToast("Project created and ready for donors.", "success");
     reset();
+    setStep(1);
     navigate(`/projects/${newId}`);
+  };
+
+  const handleNextStep = () => {
+    if (!values.title.trim() || !values.description.trim() || !values.goal) {
+      showToast("Please complete the required fields.", "warning");
+      return;
+    }
+
+    setStep(2);
+  };
+
+  const handleBackStep = () => {
+    setStep(1);
+  };
+
+  const handleReset = () => {
+    reset();
+    setStep(1);
   };
 
   return (
     <div className="page add-project-page">
-      <DraggableModal
+      <Modal
         isOpen
         onClose={() => navigate("/")}
-        title="Launch a New Project"
+        title={step === 1 ? "Launch a New Project" : "Add Project Images"}
         footer={
           <div className="form-actions">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              form="add-project-form"
-            >
-              Create Project
-            </button>
+            {step === 1 ? (
+              <button type="button" className="btn btn-primary" onClick={handleNextStep}>
+                Next
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleBackStep}
+                >
+                  Back
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  form="add-project-form"
+                >
+                  Create Project
+                </button>
+              </>
+            )}
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => reset()}
+              onClick={handleReset}
             >
               Reset
             </button>
@@ -67,98 +107,103 @@ export default function AddProject() {
         }
       >
         <p>
-          Share your mission and funding goal. The community can see it
-          immediately.
+          {step === 1
+            ? "Share your mission and funding goal. The community can see it immediately."
+            : "Add visuals to help donors connect with your cause."}
         </p>
 
-        <form className="form-card" id="add-project-form" onSubmit={handleSubmit}>
-          <div className="form-grid">
-            <label className="form-field">
-              <span className="form-label">Project title</span>
-              <input
-                type="text"
-                name="title"
-                value={values.title}
-                onChange={handleChange}
-                placeholder="Neighborhood Learning Lab"
-                required
-              />
-            </label>
+        <form className="add-project-form" id="add-project-form" onSubmit={handleSubmit}>
+          {step === 1 ? (
+            <div className="add-form-section">
+              <label className="add-form-field">
+                <span className="add-form-label">Project Title *</span>
+                <input
+                  type="text"
+                  name="title"
+                  value={values.title}
+                  onChange={handleChange}
+                  placeholder="Enter your project name"
+                  required
+                />
+              </label>
 
-            <label className="form-field">
-              <span className="form-label">Funding goal (KSh)</span>
-              <input
-                type="number"
-                name="goal"
-                value={values.goal}
-                onChange={handleChange}
-                placeholder="12000"
-                min="0"
-                required
-              />
-            </label>
+              <label className="add-form-field">
+                <span className="add-form-label">Description *</span>
+                <textarea
+                  name="description"
+                  value={values.description}
+                  onChange={handleChange}
+                  rows="4"
+                  placeholder="Describe what this project will accomplish and how donations will be used..."
+                  required
+                />
+              </label>
 
-            <label className="form-field">
-              <span className="form-label">Category</span>
-              <select
-                name="category"
-                value={values.category}
-                onChange={handleChange}
-              >
-                <option value="education">Education</option>
-                <option value="health">Health & Medical</option>
-                <option value="environment">Environment</option>
-                <option value="community">Community</option>
-                <option value="technology">Technology</option>
-                <option value="arts">Arts & Culture</option>
-                <option value="sports">Sports & Recreation</option>
-                <option value="other">Other</option>
-              </select>
-            </label>
+              <div className="add-form-row">
+                <label className="add-form-field">
+                  <span className="add-form-label">Category</span>
+                  <select
+                    name="category"
+                    value={values.category}
+                    onChange={handleChange}
+                  >
+                    <option value="education">Education</option>
+                    <option value="health">Health & Medical</option>
+                    <option value="environment">Environment</option>
+                    <option value="community">Community</option>
+                    <option value="technology">Technology</option>
+                    <option value="arts">Arts & Culture</option>
+                    <option value="sports">Sports & Recreation</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
 
-            <div className="form-section">
-              <h4>Project images</h4>
-              <p className="form-helper">
-                Add a cover image and optional gallery links to show your work.
-              </p>
+                <label className="add-form-field">
+                  <span className="add-form-label">Funding Goal (KSh) *</span>
+                  <input
+                    type="number"
+                    name="goal"
+                    value={values.goal}
+                    onChange={handleChange}
+                    placeholder="12000"
+                    min="0"
+                    required
+                  />
+                </label>
+              </div>
             </div>
+          ) : (
+            <div className="add-form-section">
+              <div className="add-form-section-header">
+                <h4>Project Images</h4>
+                <p>Add visuals to help donors connect with your cause.</p>
+              </div>
 
-            <label className="form-field">
-              <span className="form-label">Cover image URL</span>
-              <input
-                type="url"
-                name="imageUrl"
-                value={values.imageUrl}
-                onChange={handleChange}
-                placeholder="https://images.example.com/cover.jpg"
-              />
-            </label>
+              <label className="add-form-field">
+                <span className="add-form-label">Cover Image URL</span>
+                <input
+                  type="url"
+                  name="imageUrl"
+                  value={values.imageUrl}
+                  onChange={handleChange}
+                  placeholder="https://images.unsplash.com/photo-example.jpg"
+                />
+              </label>
 
-            <label className="form-field form-field-wide">
-              <span className="form-label">Gallery image URLs (comma-separated)</span>
-              <input
-                type="text"
-                name="galleryUrls"
-                value={values.galleryUrls}
-                onChange={handleChange}
-                placeholder="https://images.example.com/1.jpg, https://images.example.com/2.jpg"
-              />
-            </label>
-
-            <label className="form-field form-field-wide">
-              <span className="form-label">Project description</span>
-              <textarea
-                name="description"
-                value={values.description}
-                onChange={handleChange}
-                rows="4"
-                placeholder="What will the donation fund?"
-                required
-              />
-            </label>
-          </div>
+              <label className="add-form-field">
+                <span className="add-form-label">Gallery URLs (comma-separated)</span>
+                <input
+                  type="text"
+                  name="galleryUrls"
+                  value={values.galleryUrls}
+                  onChange={handleChange}
+                  placeholder="https://example.com/1.jpg, https://example.com/2.jpg"
+                />
+              </label>
+            </div>
+          )}
         </form>
-      </DraggableModal>
+      </Modal>
     </div>
   );
 }

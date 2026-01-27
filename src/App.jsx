@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Toast from "./components/Toast";
 import Home from "./pages/Home";
@@ -23,9 +23,12 @@ function NotFound() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const isAdminPage = location.pathname === "/dashboard" || location.pathname === "/admin";
+
   return (
     <div className="app-shell">
-      <Navbar />
+      {!isAdminPage && <Navbar />}
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -33,14 +36,18 @@ export default function App() {
           <Route path="/add" element={<AddProject />} />
           <Route path="/projects/:projectId" element={<ProjectDetails />} />
           <Route path="/donate/:projectId" element={<Donate />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <footer className="app-footer">
-        <span>Community Donation Hub</span>
-        <span>Built for local impact</span>
-      </footer>
+      {!isAdminPage && (
+        <footer className="app-footer">
+          <span>Community Donation Hub</span>
+          <span>Built for local impact</span>
+          <span>© 2026 Community Donation Hub</span>
+        </footer>
+      )}
       <Toast />
     </div>
   );

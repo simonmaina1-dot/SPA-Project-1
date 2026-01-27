@@ -1,15 +1,28 @@
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import useProjects from "../hooks/useProjects";
+import { ToastContext } from "../context/ToastContext";
+import useForm from "../hooks/useForm";
+import Modal from "../components/Modal";
+
+const donationInitialValues = {
+  name: "",
+  email: "",
+  amount: "",
+  note: "",
+};
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
-  const { projects, formatCurrency } = useProjects();
+  const { projects, formatCurrency, addDonation } = useProjects();
+  const { showToast } = useContext(ToastContext);
   
   const project = projects.find((item) => item.id === projectId);
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set());
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const { values, handleChange, reset } = useForm(donationInitialValues);
 
   // Build gallery images from galleryCount
   const galleryCount = Number(project?.galleryCount) || 0;
@@ -18,6 +31,37 @@ export default function ProjectDetails() {
   for (let i = 1; i <= galleryCount; i++) {
     galleryImages.push(`/project-images/${projectId}/${i}.jpg`);
   }
+
+  const handleCopyLink = async () => {
+    const shareUrl = `${window.location.origin}/projects/${projectId}`;
+
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast("Project link copied.", "success");
+        return;
+      } catch {
+        // Fall back to prompt.
+      }
+    }
+
+    window.prompt("Copy this link:", shareUrl);
+  };
+
+  const handleDonateSubmit = (event) => {
+    event.preventDefault();
+    const amount = Number(values.amount);
+
+    if (!amount || amount <= 0) {
+      showToast("Enter a valid donation amount.", "warning");
+      return;
+    }
+
+    addDonation(projectId, amount);
+    showToast("Thanks for supporting this project!", "success");
+    reset();
+    setIsDonateOpen(false);
+  };
 
   // Auto-slide gallery images
   useEffect(() => {
@@ -53,7 +97,7 @@ export default function ProjectDetails() {
     : 0;
 
   return (
-    <div className="project-details-page">
+    <div className="page project-details-page">
       {/* Hero Section with Image Gallery */}
       <section className="details-hero">
         <div className="details-hero-image">
@@ -198,27 +242,48 @@ export default function ProjectDetails() {
                 </div>
               </div>
 
-              <Link to={`/donate/${project.id}`} className="donate-button">
+              <button
+                type="button"
+                className="donate-button"
+                onClick={() => setIsDonateOpen(true)}
+              >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" fill="currentColor"/>
                 </svg>
                 Donate Now
-              </Link>
+              </button>
 
               <div className="share-section">
                 <p className="share-label">Share this project</p>
                 <div className="share-buttons">
-                  <button className="share-btn" aria-label="Share on Twitter">
+                  <a
+                    className="share-btn"
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Share on Twitter"
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
                     </svg>
-                  </button>
-                  <button className="share-btn" aria-label="Share on Facebook">
+                  </a>
+                  <a
+                    className="share-btn"
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Share on Facebook"
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
                     </svg>
-                  </button>
-                  <button className="share-btn" aria-label="Copy link">
+                  </a>
+                  <button
+                    className="share-btn"
+                    type="button"
+                    aria-label="Copy link"
+                    onClick={handleCopyLink}
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
                       <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
@@ -230,6 +295,75 @@ export default function ProjectDetails() {
           </aside>
         </div>
       </section>
+
+      <Modal
+        isOpen={isDonateOpen}
+        onClose={() => setIsDonateOpen(false)}
+        title="Support this project"
+        footer={
+          <div className="modal-actions">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setIsDonateOpen(false)}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary" form="donate-form">
+              Donate
+            </button>
+          </div>
+        }
+      >
+        <form className="form-card" id="donate-form" onSubmit={handleDonateSubmit}>
+          <div className="form-grid">
+            <label className="form-field">
+              <span className="form-label">Full name</span>
+              <input
+                type="text"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                required
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-label">Email</span>
+              <input
+                type="email"
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                placeholder="your-name@email.com"
+                required
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-label">Amount (KSh)</span>
+              <input
+                type="number"
+                name="amount"
+                value={values.amount}
+                onChange={handleChange}
+                min="1"
+                placeholder="500"
+                required
+              />
+            </label>
+            <label className="form-field form-field-wide">
+              <span className="form-label">Message</span>
+              <textarea
+                name="note"
+                value={values.note}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Leave encouragement for the project team"
+              />
+            </label>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }

@@ -1,10 +1,24 @@
 import { useContext, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
+import useFeedback from "../hooks/useFeedback";
+import useForm from "../hooks/useForm";
+import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
+import Modal from "../components/Modal";
 
 export default function AdminDashboard() {
-  const { projects, formatCurrency, updateProject } = useProjects();
+  const {
+    projects,
+    formatCurrency,
+    updateProject,
+    addProject,
+    removeProject,
+  } = useProjects();
+  const { feedbackList, addFeedback, updateFeedbackStatus, removeFeedback } =
+    useFeedback();
+  const { donations, getRecentDonations, addDonation } = useDonations();
   const { showToast } = useContext(ToastContext);
   const { currentUser, signIn, signOut } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,6 +34,33 @@ export default function AdminDashboard() {
     imageUrl: "",
     galleryUrls: "",
   });
+  const [viewMode, setViewMode] = useState("add");
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [newProject, setNewProject] = useState({
+    title: "",
+    description: "",
+    category: "community",
+    goal: "",
+    imageUrl: "",
+    galleryUrls: "",
+  });
+  const {
+    values: donorValues,
+    handleChange: handleDonorChange,
+    reset: resetDonorForm,
+    setFieldValue: setDonorFieldValue,
+  } = useForm({
+    donorName: "",
+    donorEmail: "",
+    projectId: "",
+    amount: "",
+    message: "",
+  });
+  const {
+    values: feedbackValues,
+    handleChange: handleFeedbackChange,
+    reset: resetFeedback,
+  } = useForm({ name: "", email: "", message: "" });
 
   const metrics = useMemo(() => {
     const totalRaised = projects.reduce(
@@ -184,58 +225,196 @@ export default function AdminDashboard() {
     showToast("Project details updated.", "success");
   };
 
+  const handleNewProjectChange = (event) => {
+    const { name, value } = event.target;
+    setNewProject((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddProject = (event) => {
+    event.preventDefault();
+
+    if (!newProject.title.trim() || !newProject.description.trim()) {
+      showToast("Please fill in required fields.", "warning");
+      return;
+    }
+
+    const galleryUrls = newProject.galleryUrls
+      .split(",")
+      .map((url) => url.trim())
+      .filter(Boolean);
+
+    addProject({
+      title: newProject.title.trim(),
+      description: newProject.description.trim(),
+      category: newProject.category || "community",
+      goal: Number(newProject.goal) || 0,
+      imageUrl: newProject.imageUrl.trim(),
+      galleryUrls,
+    });
+
+    showToast("Project created successfully.", "success");
+    setNewProject({
+      title: "",
+      description: "",
+      category: "community",
+      goal: "",
+      imageUrl: "",
+      galleryUrls: "",
+    });
+    setViewMode("table");
+  };
+
+  const handleDeleteClick = (projectId) => {
+    setDeleteConfirmId(projectId);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteConfirmId) {
+      removeProject(deleteConfirmId);
+      showToast("Project deleted.", "success");
+      setDeleteConfirmId(null);
+      if (editProjectId === deleteConfirmId) {
+        setEditProjectId("");
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmId(null);
+  };
+
+  const getProjectTitle = (id) => {
+    const project = projects.find((p) => p.id === id);
+    return project?.title || "this project";
+  };
+
+  const handleFeedbackSubmit = (event) => {
+    event.preventDefault();
+    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
+      showToast("Please add a name and message.", "warning");
+      return;
+    }
+    addFeedback(feedbackValues);
+    showToast("Feedback logged.", "success");
+    resetFeedback();
+  };
+
+  useEffect(() => {
+    if (!projects.length || donorValues.projectId) {
+      return;
+    }
+    setDonorFieldValue("projectId", projects[0].id);
+  }, [projects, donorValues.projectId, setDonorFieldValue]);
+
+  const handleDonorSubmit = (event) => {
+    event.preventDefault();
+    if (!donorValues.donorName.trim() || !donorValues.amount) {
+      showToast("Add a donor name and amount.", "warning");
+      return;
+    }
+
+    const project = projects.find((item) => item.id === donorValues.projectId);
+    if (!project) {
+      showToast("Select a project to attribute the donation.", "warning");
+      return;
+    }
+
+    const amount = Number(donorValues.amount);
+    if (!amount || amount <= 0) {
+      showToast("Enter a valid donation amount.", "warning");
+      return;
+    }
+
+    addDonation({
+      projectId: project.id,
+      projectTitle: project.title,
+      donorName: donorValues.donorName,
+      donorEmail: donorValues.donorEmail,
+      amount,
+      message: donorValues.message,
+    });
+
+    updateProject(project.id, {
+      currentAmount: (project.currentAmount || 0) + amount,
+      donorCount: (project.donorCount || 0) + 1,
+      status:
+        project.goal && (project.currentAmount || 0) + amount >= project.goal
+          ? "funded"
+          : project.status || "active",
+    });
+
+    showToast("Donor record added.", "success");
+    resetDonorForm();
+  };
+
   if (!currentUser) {
     return (
       <div className="page admin-page">
-        <section className="page-header">
-          <h1>Admin Access</h1>
-          <p>This dashboard is password protected for approved administrators.</p>
-        </section>
+        <nav className="admin-navbar">
+          <Link to="/" className="admin-brand">
+            Community Donation Hub
+          </Link>
+          <div className="admin-navbar-right">
+            <Link to="/" className="admin-back-link">
+              Back to main site
+            </Link>
+            <span className="admin-user-info">Admin access</span>
+          </div>
+        </nav>
 
-        <form className="form-card admin-login" onSubmit={handleLogin}>
-          <div className="form-grid">
-            <label className="form-field">
-              <span className="form-label">Admin email</span>
-              <input
-                type="email"
-                name="email"
-                value={credentials.email}
-                onChange={handleChange}
-                placeholder="name@company.com"
-                required
-              />
-            </label>
+        <div className="admin-content">
+          <section className="page-header">
+            <h1>Admin Access</h1>
+            <p>
+              This dashboard is password protected for approved administrators.
+            </p>
+          </section>
 
-            <label className="form-field">
-              <span className="form-label">Password</span>
-              <div className="password-field">
+          <form className="form-card admin-login" onSubmit={handleLogin}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Admin email</span>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={credentials.password}
+                  type="email"
+                  name="email"
+                  value={credentials.email}
                   onChange={handleChange}
-                  placeholder="Enter your password"
+                  placeholder="name@company.com"
                   required
                 />
-                <button
-                  type="button"
-                  className="btn btn-secondary password-toggle"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-            </label>
-          </div>
+              </label>
 
-          {errorMessage && <p className="form-error">{errorMessage}</p>}
+              <label className="form-field">
+                <span className="form-label">Password</span>
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={credentials.password}
+                    onChange={handleChange}
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-secondary password-toggle"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+              </label>
+            </div>
 
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primary">
-              Sign in
-            </button>
-          </div>
-        </form>
+            {errorMessage && <p className="form-error">{errorMessage}</p>}
+
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Sign in
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
@@ -247,23 +426,33 @@ export default function AdminDashboard() {
 
   return (
     <div className="page admin-page">
-      <section className="page-header">
-        <h1>Admin Dashboard</h1>
-        <p>
-          Monitor campaigns, manage approvals, and keep community fundraising on
-          track.
-        </p>
-        <div className="admin-user-bar">
-          <span>
+      <nav className="admin-navbar">
+        <Link to="/" className="admin-brand">
+          Community Donation Hub
+        </Link>
+        <div className="admin-navbar-right">
+          <Link to="/" className="admin-back-link">
+            Back to main site
+          </Link>
+          <span className="admin-user-info">
             Signed in as {currentUser.name} ({currentUser.role})
           </span>
           <button type="button" className="btn btn-secondary" onClick={signOut}>
             Sign out
           </button>
         </div>
-      </section>
+      </nav>
 
-      <section className="admin-grid">
+      <div className="admin-content">
+        <section className="page-header">
+          <h1>Admin Dashboard</h1>
+          <p>
+            Monitor campaigns, manage approvals, and keep community fundraising on
+            track.
+          </p>
+        </section>
+
+        <section className="admin-grid">
         <article className="admin-card admin-card-wide admin-card-snapshot">
           <h3>Platform snapshot</h3>
           <div className="admin-stats">
@@ -300,134 +489,395 @@ export default function AdminDashboard() {
           </div>
         </article>
 
-        <article className="admin-card admin-card-wide">
-          <h3>Project management</h3>
-          <p className="admin-card-subtitle">
-            Edit project details, update status, and add image links.
-          </p>
-          <form className="admin-form" onSubmit={handleEditSubmit}>
-            <div className="form-grid">
-              <label className="form-field">
-                <span className="form-label">Project</span>
-                <select
-                  name="projectId"
-                  value={editProjectId}
-                  onChange={(event) => setEditProjectId(event.target.value)}
+        <article className="admin-card admin-card-wide admin-project-management">
+          <div className="admin-section-header">
+            <div>
+              <h3>Project management</h3>
+              <p className="admin-card-subtitle">
+                View, add, edit, or delete projects from the platform.
+              </p>
+            </div>
+            <div className="admin-section-actions">
+              {viewMode === "table" && (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => setViewMode("add")}
                 >
-                  {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="form-field">
-                <span className="form-label">Status</span>
-                <select
-                  name="status"
-                  value={editValues.status}
-                  onChange={handleEditChange}
+                  + Add Project
+                </button>
+              )}
+              {viewMode !== "table" && (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setViewMode("table")}
                 >
-                  <option value="active">Active</option>
-                  <option value="review">Review</option>
-                  <option value="funded">Funded</option>
-                  <option value="draft">Draft</option>
-                </select>
-              </label>
+                  Back to List
+                </button>
+              )}
+            </div>
+          </div>
 
-              <label className="form-field">
-                <span className="form-label">Category</span>
-                <select
-                  name="category"
-                  value={editValues.category}
-                  onChange={handleEditChange}
-                >
-                  <option value="education">Education</option>
-                  <option value="health">Health & Medical</option>
-                  <option value="environment">Environment</option>
-                  <option value="community">Community</option>
-                  <option value="technology">Technology</option>
-                  <option value="arts">Arts & Culture</option>
-                  <option value="sports">Sports & Recreation</option>
-                  <option value="other">Other</option>
-                </select>
-              </label>
+          {viewMode === "table" && (
+            <div className="admin-table-container">
+              {projects.length === 0 ? (
+                <p className="admin-empty">No projects yet. Add your first project.</p>
+              ) : (
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Goal</th>
+                      <th>Raised</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.map((project) => (
+                      <tr key={project.id}>
+                        <td className="admin-table-title">{project.title}</td>
+                        <td>
+                          <span className="admin-category-badge">
+                            {project.category.charAt(0).toUpperCase() + project.category.slice(1)}
+                          </span>
+                        </td>
+                        <td>{formatCurrency(project.goal)}</td>
+                        <td>{formatCurrency(project.currentAmount || 0)}</td>
+                        <td>
+                          <span className={`status-pill status-${project.status}`}>
+                            {project.status}
+                          </span>
+                        </td>
+                        <td className="admin-table-actions">
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-small"
+                            onClick={() => {
+                              setEditProjectId(project.id);
+                              setViewMode("edit");
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-small"
+                            onClick={() => handleDeleteClick(project.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
 
-              <label className="form-field">
-                <span className="form-label">Funding goal (KSh)</span>
-                <input
-                  type="number"
-                  name="goal"
-                  value={editValues.goal}
-                  onChange={handleEditChange}
-                  min="0"
-                />
-              </label>
+          {viewMode === "add" && (
+            <form className="admin-edit-form" onSubmit={handleAddProject}>
+              <div className="admin-edit-layout">
+                <div className="admin-edit-main">
+                  <label className="form-field">
+                    <span className="form-label">Project Title *</span>
+                    <input
+                      type="text"
+                      name="title"
+                      value={newProject.title}
+                      onChange={handleNewProjectChange}
+                      placeholder="Enter project title"
+                      required
+                    />
+                  </label>
 
-              <label className="form-field form-field-wide">
-                <span className="form-label">Project title</span>
-                <input
-                  type="text"
-                  name="title"
-                  value={editValues.title}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
+                  <label className="form-field">
+                    <span className="form-label">Description *</span>
+                    <textarea
+                      name="description"
+                      value={newProject.description}
+                      onChange={handleNewProjectChange}
+                      rows="5"
+                      placeholder="Describe what this project will accomplish..."
+                      required
+                    />
+                  </label>
 
-              <label className="form-field">
-                <span className="form-label">Cover image URL</span>
-                <input
-                  type="url"
-                  name="imageUrl"
-                  value={editValues.imageUrl}
-                  onChange={handleEditChange}
-                  placeholder="https://images.example.com/cover.jpg"
-                />
-              </label>
+                  <div className="admin-edit-row">
+                    <label className="form-field">
+                      <span className="form-label">Category</span>
+                      <select
+                        name="category"
+                        value={newProject.category}
+                        onChange={handleNewProjectChange}
+                      >
+                        <option value="education">Education</option>
+                        <option value="health">Health & Medical</option>
+                        <option value="environment">Environment</option>
+                        <option value="community">Community</option>
+                        <option value="technology">Technology</option>
+                        <option value="arts">Arts & Culture</option>
+                        <option value="sports">Sports & Recreation</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </label>
 
-              <div className="admin-image-preview">
-                {editValues.imageUrl ? (
-                  <img
-                    src={editValues.imageUrl}
-                    alt="Project cover preview"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span>No cover image yet.</span>
-                )}
+                    <label className="form-field">
+                      <span className="form-label">Funding Goal (KSh) *</span>
+                      <input
+                        type="number"
+                        name="goal"
+                        value={newProject.goal}
+                        onChange={handleNewProjectChange}
+                        min="0"
+                        placeholder="12000"
+                        required
+                      />
+                    </label>
+                  </div>
+
+                  <label className="form-field">
+                    <span className="form-label">Gallery URLs (comma-separated)</span>
+                    <input
+                      type="text"
+                      name="galleryUrls"
+                      value={newProject.galleryUrls}
+                      onChange={handleNewProjectChange}
+                      placeholder="https://example.com/1.jpg, https://example.com/2.jpg"
+                    />
+                  </label>
+                </div>
+
+                <div className="admin-edit-sidebar">
+                  <div className="admin-edit-preview-card">
+                    <label className="form-label" htmlFor="new-project-cover">
+                      Cover image URL
+                    </label>
+                    <div className="admin-edit-preview">
+                      {newProject.imageUrl ? (
+                        <img
+                          src={newProject.imageUrl}
+                          alt="Project cover preview"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="admin-edit-placeholder">
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                          </svg>
+                          <span>No cover image</span>
+                        </div>
+                      )}
+                    </div>
+                    <input
+                      type="url"
+                      id="new-project-cover"
+                      name="imageUrl"
+                      value={newProject.imageUrl}
+                      onChange={handleNewProjectChange}
+                      placeholder="https://images.example.com/cover.jpg"
+                      className="admin-edit-url-input"
+                      aria-label="Cover image URL"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <label className="form-field form-field-wide">
-                <span className="form-label">Gallery image URLs</span>
-                <input
-                  type="text"
-                  name="galleryUrls"
-                  value={editValues.galleryUrls}
-                  onChange={handleEditChange}
-                  placeholder="https://images.example.com/1.jpg, https://images.example.com/2.jpg"
-                />
-              </label>
+              <div className="admin-form-actions">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setViewMode("table")}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Create Project
+                </button>
+              </div>
+            </form>
+          )}
 
-              <label className="form-field form-field-wide">
-                <span className="form-label">Project description</span>
-                <textarea
-                  name="description"
-                  value={editValues.description}
-                  onChange={handleEditChange}
-                  rows="4"
-                />
-              </label>
-            </div>
+          {viewMode === "edit" && (
+            <form className="admin-edit-form" onSubmit={handleEditSubmit}>
+              <div className="admin-edit-layout">
+                <div className="admin-edit-main">
+                  <label className="form-field">
+                    <span className="form-label">Select Project</span>
+                    <select
+                      name="projectId"
+                      value={editProjectId}
+                      onChange={(event) => setEditProjectId(event.target.value)}
+                    >
+                      {projects.map((project) => (
+                        <option key={project.id} value={project.id}>
+                          {project.title}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
 
-            <div className="admin-form-actions">
-              <button type="submit" className="btn btn-primary">
-                Save updates
+                  <label className="form-field">
+                    <span className="form-label">Project Title</span>
+                    <input
+                      type="text"
+                      name="title"
+                      value={editValues.title}
+                      onChange={handleEditChange}
+                      required
+                    />
+                  </label>
+
+                  <label className="form-field">
+                    <span className="form-label">Description</span>
+                    <textarea
+                      name="description"
+                      value={editValues.description}
+                      onChange={handleEditChange}
+                      rows="5"
+                      placeholder="Describe what this project will accomplish..."
+                    />
+                  </label>
+
+                  <div className="admin-edit-row">
+                    <label className="form-field">
+                      <span className="form-label">Category</span>
+                      <select
+                        name="category"
+                        value={editValues.category}
+                        onChange={handleEditChange}
+                      >
+                        <option value="education">Education</option>
+                        <option value="health">Health & Medical</option>
+                        <option value="environment">Environment</option>
+                        <option value="community">Community</option>
+                        <option value="technology">Technology</option>
+                        <option value="arts">Arts & Culture</option>
+                        <option value="sports">Sports & Recreation</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </label>
+
+                    <label className="form-field">
+                      <span className="form-label">Status</span>
+                      <select
+                        name="status"
+                        value={editValues.status}
+                        onChange={handleEditChange}
+                      >
+                        <option value="active">Active</option>
+                        <option value="review">Review</option>
+                        <option value="funded">Funded</option>
+                        <option value="draft">Draft</option>
+                      </select>
+                    </label>
+
+                    <label className="form-field">
+                      <span className="form-label">Funding Goal (KSh)</span>
+                      <input
+                        type="number"
+                        name="goal"
+                        value={editValues.goal}
+                        onChange={handleEditChange}
+                        min="0"
+                      />
+                    </label>
+                  </div>
+
+                  <label className="form-field">
+                    <span className="form-label">Gallery URLs (comma-separated)</span>
+                    <input
+                      type="text"
+                      name="galleryUrls"
+                      value={editValues.galleryUrls}
+                      onChange={handleEditChange}
+                      placeholder="https://example.com/1.jpg, https://example.com/2.jpg"
+                    />
+                  </label>
+                </div>
+
+                <div className="admin-edit-sidebar">
+                  <div className="admin-edit-preview-card">
+                    <span className="form-label">Cover Image</span>
+                    <div className="admin-edit-preview">
+                      {editValues.imageUrl ? (
+                        <img
+                          src={editValues.imageUrl}
+                          alt="Project cover preview"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="admin-edit-placeholder">
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                          </svg>
+                          <span>No cover image</span>
+                        </div>
+                      )}
+                    </div>
+                    <input
+                      type="url"
+                      name="imageUrl"
+                      value={editValues.imageUrl}
+                      onChange={handleEditChange}
+                      placeholder="https://images.example.com/cover.jpg"
+                      className="admin-edit-url-input"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="admin-form-actions">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setViewMode("table")}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          )}
+        </article>
+
+        <Modal
+          isOpen={Boolean(deleteConfirmId)}
+          onClose={handleCancelDelete}
+          title="Delete Project"
+          footer={
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleCancelDelete}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleConfirmDelete}
+              >
+                Delete
               </button>
             </div>
-          </form>
-        </article>
+          }
+        >
+          <p>Are you sure you want to delete "{getProjectTitle(deleteConfirmId)}"?</p>
+          <p className="admin-warning-text">
+            This action cannot be undone. All project data will be permanently removed.
+          </p>
+        </Modal>
 
         <article className="admin-card">
           <h3>Funding health</h3>
@@ -614,7 +1064,235 @@ export default function AdminDashboard() {
             ))}
           </div>
         </article>
-      </section>
+
+        <article className="admin-card admin-card-wide">
+          <div className="admin-section-header">
+            <div>
+              <h3>Donor Records</h3>
+              <p className="admin-card-subtitle">
+                Recent donations and donor information.
+              </p>
+            </div>
+            <span className="admin-badge">{donations.length} total</span>
+          </div>
+          <form className="admin-donor-form form-card" onSubmit={handleDonorSubmit}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Donor name</span>
+                <input
+                  type="text"
+                  name="donorName"
+                  value={donorValues.donorName}
+                  onChange={handleDonorChange}
+                  placeholder="Donor name"
+                  required
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Email</span>
+                <input
+                  type="email"
+                  name="donorEmail"
+                  value={donorValues.donorEmail}
+                  onChange={handleDonorChange}
+                  placeholder="donor@email.com"
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Project</span>
+                <select
+                  name="projectId"
+                  value={donorValues.projectId}
+                  onChange={handleDonorChange}
+                  required
+                >
+                  {projects.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="form-field">
+                <span className="form-label">Amount (KSh)</span>
+                <input
+                  type="number"
+                  name="amount"
+                  value={donorValues.amount}
+                  onChange={handleDonorChange}
+                  min="1"
+                  placeholder="500"
+                  required
+                />
+              </label>
+              <label className="form-field form-field-wide">
+                <span className="form-label">Message</span>
+                <textarea
+                  name="message"
+                  value={donorValues.message}
+                  onChange={handleDonorChange}
+                  rows="3"
+                  placeholder="Optional note from the donor"
+                />
+              </label>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Add donor
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => resetDonorForm()}
+              >
+                Clear
+              </button>
+            </div>
+          </form>
+          <div className="admin-table-container">
+            {donations.length === 0 ? (
+              <p className="admin-empty">No donations recorded yet.</p>
+            ) : (
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Donor</th>
+                    <th>Email</th>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getRecentDonations(10).map((donation) => (
+                    <tr key={donation.id}>
+                      <td className="admin-table-title">{donation.donorName}</td>
+                      <td>{donation.donorEmail || "—"}</td>
+                      <td>{donation.projectTitle}</td>
+                      <td>{formatCurrency(donation.amount)}</td>
+                      <td className="admin-row-meta">
+                        {new Date(donation.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </article>
+
+        <article className="admin-card admin-card-wide">
+          <div className="admin-section-header">
+            <div>
+              <h3>User Feedback</h3>
+              <p className="admin-card-subtitle">
+                Community suggestions and feedback submissions.
+              </p>
+            </div>
+            <span className="admin-badge">
+              {feedbackList.filter((f) => f.status === "new").length} new
+            </span>
+          </div>
+          <form className="admin-feedback-form form-card" onSubmit={handleFeedbackSubmit}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Name</span>
+                <input
+                  type="text"
+                  name="name"
+                  value={feedbackValues.name}
+                  onChange={handleFeedbackChange}
+                  placeholder="Visitor name"
+                  required
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  value={feedbackValues.email}
+                  onChange={handleFeedbackChange}
+                  placeholder="email@example.com"
+                />
+              </label>
+              <label className="form-field form-field-wide">
+                <span className="form-label">Message</span>
+                <textarea
+                  name="message"
+                  value={feedbackValues.message}
+                  onChange={handleFeedbackChange}
+                  rows="3"
+                  placeholder="Feedback summary"
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Log feedback
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => resetFeedback()}
+              >
+                Clear
+              </button>
+            </div>
+          </form>
+          <div className="admin-feedback-list">
+            {feedbackList.length === 0 ? (
+              <p className="admin-empty">No feedback received yet.</p>
+            ) : (
+              feedbackList.map((feedback) => (
+                <div key={feedback.id} className="admin-feedback-card">
+                  <div className="admin-feedback-header">
+                    <div>
+                      <p className="admin-row-title">{feedback.name}</p>
+                      <span className="admin-row-meta">{feedback.email}</span>
+                    </div>
+                    <div className="admin-feedback-meta">
+                      <span className={`status-pill status-${feedback.status === "new" ? "active" : "funded"}`}>
+                        {feedback.status}
+                      </span>
+                      <span className="admin-row-meta">
+                        {new Date(feedback.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="admin-feedback-message">{feedback.message}</p>
+                  <div className="admin-feedback-actions">
+                    {feedback.status === "new" && (
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-small"
+                        onClick={() => {
+                          updateFeedbackStatus(feedback.id, "reviewed");
+                          showToast("Feedback marked as reviewed.", "success");
+                        }}
+                      >
+                        Mark Reviewed
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-small"
+                      onClick={() => {
+                        removeFeedback(feedback.id);
+                        showToast("Feedback removed.", "success");
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </article>
+        </section>
+      </div>
     </div>
   );
 }
