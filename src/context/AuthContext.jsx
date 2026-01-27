@@ -1,44 +1,21 @@
-import { createContext, useCallback, useMemo } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
-
-const adminUsers = [
-  {
-    id: "owner-simon",
-    name: "Simon Maina",
-    email: "mainawaititu2021@gmail.com",
-    password: "simon-2026",
-    role: "CEO",
-  },
-  {
-    id: "admin-ashanti",
-    name: "Ashanti Kweyu",
-    email: "kashiku789@gmail.com",
-    password: "ashanti-2026",
-    role: "Admin",
-  },
-  {
-    id: "admin-ian",
-    name: "Ian Kipchirchir",
-    email: "iankipchirchir51@gmail.com",
-    password: "ian-2026",
-    role: "Admin",
-  },
-  {
-    id: "admin-denis",
-    name: "Denis Kipruto",
-    email: "kypvega@gmail.com",
-    password: "denis-2026",
-    role: "Admin",
-  },
-];
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useLocalStorage("cdh-admin-user", null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [adminUsers, setAdminUsers] = useState([]);
+
+  // Fetch admin users from db.json
+  useEffect(() => {
+    fetch("http://localhost:3002/admins")
+      .then((res) => res.json())
+      .then((data) => setAdminUsers(data))
+      .catch((err) => console.error("Failed to load admins:", err));
+  }, []);
 
   const signIn = useCallback(
-    (email, password) => {
+    async (email, password) => {
       const normalizedEmail = email.trim().toLowerCase();
       const user = adminUsers.find(
         (admin) =>
@@ -60,12 +37,12 @@ export function AuthProvider({ children }) {
       setCurrentUser(safeUser);
       return { ok: true, user: safeUser };
     },
-    [setCurrentUser]
+    [adminUsers]
   );
 
   const signOut = useCallback(() => {
     setCurrentUser(null);
-  }, [setCurrentUser]);
+  }, []);
 
   const value = useMemo(
     () => ({ currentUser, signIn, signOut }),
