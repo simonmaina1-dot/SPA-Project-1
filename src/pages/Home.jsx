@@ -1,36 +1,16 @@
+<<<<<<< HEAD
+import { useState, useEffect } from "react";
+=======
 import { useState, useMemo, useEffect, useContext, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+>>>>>>> 08a4c76ad0bf3fdead094e97eb8d15fc719b5d48
 import useProjects from "../hooks/useProjects";
 import ProjectCard from "../components/ProjectCard";
-import { ToastContext } from "../context/ToastContext";
-import useFeedback from "../hooks/useFeedback";
-import useForm from "../hooks/useForm";
 
-
-/**
- * Home Page - Main landing page displaying community projects
- * 
- * KEY FEATURES:
- * - Project search functionality
- * - Category filtering
- * - Featured projects section
- * - Loading state handling
- * - Empty state when no projects exist
- * - Toast notifications for user feedback
- * - Modal for project actions
- * - Scroll-triggered stats animation
- * 
- * WHY useMemo for filtering?
- * - Prevents unnecessary recalculation on re-renders
- * - Only recalculates when search query or filter changes
- * - Performance optimization
- * 
- * WHY useEffect?
- * - Side effects like showing welcome toast on mount
- * - Intersection Observer for scroll animations
- * - Cleanup not needed here since we only run once
- */
 export default function Home() {
+<<<<<<< HEAD
+  const { projects, isLoading } = useProjects();
+=======
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
   const { feedbackList, addFeedback } = useFeedback();
@@ -45,24 +25,19 @@ export default function Home() {
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+>>>>>>> 08a4c76ad0bf3fdead094e97eb8d15fc719b5d48
 
-  const handleFeedbackSubmit = (event) => {
-    event.preventDefault();
+  const [search, setSearch] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState([]);
 
-    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
-      showToast("Add your name and feedback message.", "warning");
-      return;
-    }
-
-    addFeedback(feedbackValues);
-    showToast("Thanks for sharing your feedback!", "success");
-    resetFeedback();
-  };
-
-
-  // Show welcome toast on first mount
+  // Update filtered projects when projects or search changes
   useEffect(() => {
+<<<<<<< HEAD
+    const result = projects.filter((project) =>
+      project.title.toLowerCase().includes(search.toLowerCase())
+=======
     if (projects.length > 0) {
       showToast(`Welcome! ${projects.length} projects available`, "info");
     }
@@ -174,57 +149,41 @@ export default function Home() {
           <p>Loading projects...</p>
         </div>
       </div>
+>>>>>>> 08a4c76ad0bf3fdead094e97eb8d15fc719b5d48
     );
+    setFilteredProjects(result);
+  }, [projects, search]);
+
+  if (isLoading) {
+    return <p>Loading projects...</p>;
   }
 
 
   return (
-    <div className="page home-page">
-      {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
-          <h1>Community Donation Hub</h1>
-          <p className="hero-subtitle">
-            Support meaningful projects making a difference in our community
-          </p>
-          
-          {/* Stats Dashboard with Scroll Animation */}
-          <div 
-            ref={statsRef} 
-            className={`stats-dashboard${statsVisible ? " visible" : ""}`}
-          >
-            <div className="stat-card">
-              <span className="stat-value">{projects.length}</span>
-              <span className="stat-label">Projects</span>
-            </div>
-            <div className="stat-card">
-              <span className="stat-value">{formatCurrency(totalStats.totalRaised)}</span>
-              <span className="stat-label">Total Raised</span>
-            </div>
-            <div className="stat-card">
-              <span className="stat-value">{totalStats.totalDonors}</span>
-              <span className="stat-label">Donors</span>
-            </div>
-            <div className="stat-card">
-              <span className="stat-value">{totalStats.fundedCount}</span>
-              <span className="stat-label">Funded</span>
-            </div>
-          </div>
+    <div className="home-page">
+      <h1>Community Donation Hub</h1>
+      <p>Support projects that help your community</p>
+
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search projects..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {/* Projects */}
+      {filteredProjects.length === 0 ? (
+        <p>No projects found.</p>
+      ) : (
+        <div className="projects-grid">
+          {filteredProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
         </div>
-      </section>
-
-
-      {/* Featured Projects (only show if there are projects) */}
-      {featuredProjects.length > 0 && projects.length >= 3 && (
-        <section className="featured-section">
-          <h2>Featured Projects</h2>
-          <div className="featured-grid">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} featured />
-            ))}
-          </div>
-        </section>
       )}
+<<<<<<< HEAD
+=======
 
 
       {/* Search and Filter Section */}
@@ -361,71 +320,7 @@ export default function Home() {
           </article>
         </div>
       </section>
-
-      {/* Feedback Section */}
-      <section className="feedback-section">
-        <article className="admin-card admin-card-wide">
-          <div className="admin-section-header">
-            <div>
-              <h3>User Feedback</h3>
-              <p className="admin-card-subtitle">
-                Community suggestions and feedback submissions.
-              </p>
-            </div>
-            <span className="admin-badge">
-              {feedbackList.filter((f) => f.status === "new").length} new
-            </span>
-          </div>
-          <form className="admin-feedback-form form-card" onSubmit={handleFeedbackSubmit}>
-            <div className="form-grid">
-              <label className="form-field">
-                <span className="form-label">Name</span>
-                <input
-                  type="text"
-                  name="name"
-                  value={feedbackValues.name}
-                  onChange={handleFeedbackChange}
-                  placeholder="Visitor name"
-                  required
-                />
-              </label>
-              <label className="form-field">
-                <span className="form-label">Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  value={feedbackValues.email}
-                  onChange={handleFeedbackChange}
-                  placeholder="email@example.com"
-                />
-              </label>
-              <label className="form-field form-field-wide">
-                <span className="form-label">Message</span>
-                <textarea
-                  name="message"
-                  value={feedbackValues.message}
-                  onChange={handleFeedbackChange}
-                  rows="3"
-                  placeholder="Feedback summary"
-                  required
-                />
-              </label>
-            </div>
-            <div className="form-actions">
-              <button type="submit" className="btn btn-primary">
-                Log feedback
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => resetFeedback()}
-              >
-                Clear
-              </button>
-            </div>
-          </form>
-        </article>
-      </section>
+>>>>>>> 08a4c76ad0bf3fdead094e97eb8d15fc719b5d48
     </div>
   );
 }
