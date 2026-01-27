@@ -152,10 +152,6 @@ export default function AdminDashboard() {
     showToast("Project approved and back to active status.", "success");
   };
 
-  const handleReminder = (projectTitle) => {
-    showToast(`Reminder sent to ${projectTitle}.`, "info");
-  };
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
@@ -928,13 +924,6 @@ export default function AdminDashboard() {
                     {formatCurrency(project.goal)}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => handleReminder(project.title)}
-                >
-                  Send reminder
-                </button>
               </div>
             ))}
           </div>
