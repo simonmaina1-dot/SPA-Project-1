@@ -9,13 +9,6 @@ const adminUsers = [
     password: "simon-2026",
     role: "CEO",
   },
-    {
-    id: "auditor-george",
-    name: "George Okumu",
-    email: "george.okumu@moringaschool.com",
-    password: "george-2026",
-    role: "Auditor",
-  },
   {
     id: "admin-ashanti",
     name: "Ashanti Kweyu",
