@@ -102,6 +102,7 @@ export default function ProjectDetails() {
       isOpen
       onClose={() => navigate("/projects")}
       title="Project details"
+      hideHeader
     >
       <div className="project-details-page">
       {/* Hero Section with Image Gallery */}

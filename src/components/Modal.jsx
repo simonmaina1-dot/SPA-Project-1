@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 
-export default function Modal({ isOpen, onClose, title, children, footer }) {
+export default function Modal({
+  isOpen,
+  onClose,
+  title,
+  children,
+  footer,
+  hideHeader = false,
+}) {
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -23,17 +30,19 @@ export default function Modal({ isOpen, onClose, title, children, footer }) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(event) => event.stopPropagation()}>
-        <header className="modal-header">
-          <h3>{title}</h3>
-          <button
-            type="button"
-            className="icon-button"
-            onClick={onClose}
-            aria-label="Close"
-          >
-            x
-          </button>
-        </header>
+        {!hideHeader && (
+          <header className="modal-header">
+            <h3>{title}</h3>
+            <button
+              type="button"
+              className="icon-button"
+              onClick={onClose}
+              aria-label="Close"
+            >
+              x
+            </button>
+          </header>
+        )}
         <div className="modal-body">{children}</div>
         {footer && <footer className="modal-footer">{footer}</footer>}
       </div>
