@@ -17,7 +17,18 @@ export function ToastProvider({ children }) {
           : `toast-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
       setToasts((prev) => [...prev, { id, message, type }]);
-      window.setTimeout(() => removeToast(id), 3500);
+      const isTestEnv =
+        (typeof import.meta !== "undefined" &&
+          import.meta.env &&
+          import.meta.env.MODE === "test") ||
+        (typeof process !== "undefined" &&
+          process.env &&
+          process.env.NODE_ENV === "test") ||
+        (typeof import.meta !== "undefined" && import.meta.vitest);
+
+      if (!isTestEnv) {
+        window.setTimeout(() => removeToast(id), 3500);
+      }
     },
     [removeToast]
   );

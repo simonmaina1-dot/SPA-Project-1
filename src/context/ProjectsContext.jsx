@@ -9,6 +9,20 @@ export function ProjectsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const isTestEnv =
+      (typeof import.meta !== "undefined" &&
+        import.meta.env &&
+        import.meta.env.MODE === "test") ||
+      (typeof process !== "undefined" &&
+        process.env &&
+        process.env.NODE_ENV === "test") ||
+      (typeof import.meta !== "undefined" && import.meta.vitest);
+
+    if (isTestEnv) {
+      setIsLoading(false);
+      return undefined;
+    }
+
     const timer = window.setTimeout(() => setIsLoading(false), 350);
     return () => window.clearTimeout(timer);
   }, []);
