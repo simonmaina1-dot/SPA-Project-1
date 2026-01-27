@@ -1840,6 +1840,10 @@ body {
   padding: 2rem 2.5rem 4rem;
 }
 
+.admin-content .page-header {
+  margin-bottom: 2rem;
+}
+
 .admin-grid {
   display: grid;
   gap: 1.5rem;
