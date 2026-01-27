@@ -2,16 +2,27 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
+import useForm from "../hooks/useForm";
+import Modal from "../components/Modal";
+
+const donationInitialValues = {
+  name: "",
+  email: "",
+  amount: "",
+  note: "",
+};
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
-  const { projects, formatCurrency } = useProjects();
+  const { projects, formatCurrency, addDonation } = useProjects();
   const { showToast } = useContext(ToastContext);
   
   const project = projects.find((item) => item.id === projectId);
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set());
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const { values, handleChange, reset } = useForm(donationInitialValues);
 
   // Build gallery images from galleryCount
   const galleryCount = Number(project?.galleryCount) || 0;
@@ -35,6 +46,21 @@ export default function ProjectDetails() {
     }
 
     window.prompt("Copy this link:", shareUrl);
+  };
+
+  const handleDonateSubmit = (event) => {
+    event.preventDefault();
+    const amount = Number(values.amount);
+
+    if (!amount || amount <= 0) {
+      showToast("Enter a valid donation amount.", "warning");
+      return;
+    }
+
+    addDonation(projectId, amount);
+    showToast("Thanks for supporting this project!", "success");
+    reset();
+    setIsDonateOpen(false);
   };
 
   // Auto-slide gallery images
@@ -216,12 +242,16 @@ export default function ProjectDetails() {
                 </div>
               </div>
 
-              <Link to={`/donate/${project.id}`} className="donate-button">
+              <button
+                type="button"
+                className="donate-button"
+                onClick={() => setIsDonateOpen(true)}
+              >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" fill="currentColor"/>
                 </svg>
                 Donate Now
-              </Link>
+              </button>
 
               <div className="share-section">
                 <p className="share-label">Share this project</p>
@@ -253,6 +283,75 @@ export default function ProjectDetails() {
           </aside>
         </div>
       </section>
+
+      <Modal
+        isOpen={isDonateOpen}
+        onClose={() => setIsDonateOpen(false)}
+        title="Support this project"
+        footer={
+          <div className="modal-actions">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setIsDonateOpen(false)}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary" form="donate-form">
+              Donate
+            </button>
+          </div>
+        }
+      >
+        <form className="form-card" id="donate-form" onSubmit={handleDonateSubmit}>
+          <div className="form-grid">
+            <label className="form-field">
+              <span className="form-label">Full name</span>
+              <input
+                type="text"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                required
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-label">Email</span>
+              <input
+                type="email"
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                placeholder="your-name@email.com"
+                required
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-label">Amount (KSh)</span>
+              <input
+                type="number"
+                name="amount"
+                value={values.amount}
+                onChange={handleChange}
+                min="1"
+                placeholder="500"
+                required
+              />
+            </label>
+            <label className="form-field form-field-wide">
+              <span className="form-label">Message</span>
+              <textarea
+                name="note"
+                value={values.note}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Leave encouragement for the project team"
+              />
+            </label>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }
