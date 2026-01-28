@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "json-server --watch db.json --port 3001",
+    "server": "json-server --watch db.json --port 3002",
     "test": "vitest",
     "test:run": "vitest run"
   },
@@ -30,7 +30,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "jsdom": "^26.1.0",
-    "json-server": "^1.0.0-beta.5",
+    "json-server": "^0.17.4",
     "vite": "^5.4.11",
     "vitest": "^2.1.9"
   }

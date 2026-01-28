@@ -5,10 +5,10 @@
       "title": "Neighborhood Learning Lab",
       "description": "A pop-up classroom with devices, tutors, and weekend workshops for local youth.",
       "category": "education",
-      "imageUrl": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [
-        "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
-        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80"
+      "imageFile": "cover.jpg",
+      "galleryFiles": [
+        "1.jpg",
+        "2.jpg"
       ],
       "goal": 12000,
       "currentAmount": 6800,
@@ -20,13 +20,14 @@
       "title": "Community Solar Garden",
       "description": "Shared solar panels for residents who cannot install their own rooftop systems.",
       "category": "environment",
-      "imageUrl": "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [
-        "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
-        "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=900&q=80"
+      "imageFile": "cover.jpg",
+      "galleryFiles": [
+        "1.jpg",
+        "2.jpg",
+        "3.jpg"
       ],
       "goal": 30000,
-      "currentAmount": 21400,
+      "currentAmount": 18500,
       "donorCount": 96,
       "status": "active"
     },
@@ -35,11 +36,14 @@
       "title": "Mobile Health Clinic",
       "description": "Monthly wellness visits and screenings for underserved blocks.",
       "category": "health",
-      "imageUrl": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [],
+      "imageFile": "cover.jpg",
+      "galleryFiles": [
+        "1.jpg",
+        "2.jpg"
+      ],
       "goal": 18000,
-      "currentAmount": 18000,
-      "donorCount": 73,
+      "currentAmount": 62990,
+      "donorCount": 74,
       "status": "funded"
     },
     {
@@ -47,8 +51,11 @@
       "title": "After-School Arts Collective",
       "description": "Studio space, supplies, and mentorship for emerging community artists.",
       "category": "arts",
-      "imageUrl": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [],
+      "imageFile": "cover.jpg",
+      "galleryFiles": [
+        "1.jpg",
+        "2.jpg"
+      ],
       "goal": 9500,
       "currentAmount": 4100,
       "donorCount": 28,
@@ -59,8 +66,11 @@
       "title": "Clean Water Refill Station",
       "description": "Install a public water refill kiosk to cut plastic waste and improve access.",
       "category": "community",
-      "imageUrl": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [],
+      "imageFile": "cover.jpg",
+      "galleryFiles": [
+        "1.jpg",
+        "2.jpg"
+      ],
       "goal": 15000,
       "currentAmount": 5200,
       "donorCount": 31,
@@ -71,23 +81,14 @@
       "title": "Neighborhood Food Pantry Fridge",
       "description": "A solar-powered community fridge stocked weekly with fresh groceries.",
       "category": "community",
-      "imageUrl": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [],
+      "imageFile": "cover.jpg",
+      "galleryFiles": [
+        "1.jpg",
+        "2.jpg"
+      ],
       "goal": 8000,
       "currentAmount": 7600,
       "donorCount": 54,
-      "status": "active"
-    },
-    {
-      "id": "p-1007",
-      "title": "Girls in Tech Kit Drive",
-      "description": "Starter kits and mentorship sessions for girls exploring coding and robotics.",
-      "category": "technology",
-      "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [],
-      "goal": 14000,
-      "currentAmount": 9300,
-      "donorCount": 61,
       "status": "active"
     },
     {
@@ -95,12 +96,131 @@
       "title": "Youth Soccer Equipment Drive",
       "description": "Uniforms, cones, and balls for weekly practice in neighborhood parks.",
       "category": "sports",
-      "imageUrl": "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=900&q=80",
-      "galleryUrls": [],
+      "imageFile": "cover.jpg",
+      "galleryFiles": [
+        "1.jpg",
+        "2.jpg",
+        "3.jpg"
+      ],
       "goal": 6000,
       "currentAmount": 2500,
       "donorCount": 19,
       "status": "active"
+    }
+  ],
+  "admins": [
+    {
+      "id": "owner-simon",
+      "name": "Simon Maina",
+      "email": "mainawaititu2021@gmail.com",
+      "password": "simon-2026",
+      "role": "CEO"
+    },
+    {
+      "id": "auditor-george",
+      "name": "George Okumu",
+      "email": "george.okumu@moringaschool.com",
+      "password": "george-2026",
+      "role": "Auditor"
+    },
+    {
+      "id": "admin-ashanti",
+      "name": "Ashanti Kweyu",
+      "email": "kashiku789@gmail.com",
+      "password": "ashanti-2026",
+      "role": "Admin"
+    },
+    {
+      "id": "admin-ian",
+      "name": "Ian Kipchirchir",
+      "email": "iankipchirchir51@gmail.com",
+      "password": "ian-2026",
+      "role": "Admin"
+    },
+    {
+      "id": "admin-denis",
+      "name": "Denis Kipruto",
+      "email": "kypvega@gmail.com",
+      "password": "denis-2026",
+      "role": "Admin"
+    }
+  ],
+  "donations": [
+    {
+      "id": "d-1001",
+      "projectId": "p-1001",
+      "projectTitle": "Neighborhood Learning Lab",
+      "donorName": "Anonymous",
+      "donorEmail": "",
+      "amount": 500,
+      "message": "Keep up the great work!",
+      "createdAt": "2026-01-26T09:00:00Z"
+    },
+    {
+      "id": "d-1002",
+      "projectId": "p-1002",
+      "projectTitle": "Community Solar Garden",
+      "donorName": "Mary Wanjiku",
+      "donorEmail": "mary.w@email.com",
+      "amount": 2000,
+      "message": "Happy to support clean energy!",
+      "createdAt": "2026-01-25T16:30:00Z"
+    },
+    {
+      "id": "d-1003",
+      "projectId": "p-1001",
+      "projectTitle": "Neighborhood Learning Lab",
+      "donorName": "James Kimani",
+      "donorEmail": "jkimani@email.com",
+      "amount": 1500,
+      "message": "",
+      "createdAt": "2026-01-25T11:45:00Z"
+    },
+    {
+      "id": "d-1004",
+      "projectId": "p-1006",
+      "projectTitle": "Neighborhood Food Pantry Fridge",
+      "donorName": "Grace Achieng",
+      "donorEmail": "grace.a@email.com",
+      "amount": 800,
+      "message": "For the community!",
+      "createdAt": "2026-01-24T14:20:00Z"
+    },
+    {
+      "id": "d-1769524029588",
+      "projectId": "p-1003",
+      "projectTitle": "Mobile Health Clinic",
+      "donorName": "Ashanti Kweyu",
+      "donorEmail": "kashi@gmail.com",
+      "amount": 44990,
+      "message": "Buy more medical equipmemts",
+      "createdAt": "2026-01-27T14:27:09.588Z"
+    }
+  ],
+  "feedback": [
+    {
+      "id": "f-1001",
+      "name": "Jane Mwangi",
+      "email": "jane.mwangi@email.com",
+      "message": "Love the platform! Would be great to have email notifications for project updates.",
+      "createdAt": "2026-01-25T10:30:00Z",
+      "status": "new"
+    },
+    {
+      "id": "f-1002",
+      "name": "Peter Ochieng",
+      "email": "peter.o@email.com",
+      "message": "The donation process is smooth. Can we add M-Pesa integration?",
+      "createdAt": "2026-01-24T14:15:00Z",
+      "status": "reviewed"
+    },
+    {
+      "id": "f-1769523897843",
+      "name": "ian koech",
+      "email": "iankipchirchir51@gmail.com",
+      "message": "can we change the location of the neighbourhood lab to somewhere big",
+      "createdAt": "2026-01-27T14:24:57.843Z",
+      "status": "new"
     }
   ]
 }

@@ -1,214 +1,211 @@
-import { createContext, useCallback, useMemo, useState, useEffect } from "react";
-import useLocalStorageState from "../hooks/useLocalStorageState";
 
-const seedProjects = [
-  {
-    id: "p-1001",
-    title: "Neighborhood Learning Lab",
-    description:
-      "A pop-up classroom with devices, tutors, and weekend workshops for local youth.",
-    category: "education",
-    imageUrl:
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80",
-    ],
-    goal: 12000,
-    currentAmount: 6800,
-    donorCount: 42,
-    status: "active",
-  },
-  {
-    id: "p-1002",
-    title: "Community Solar Garden",
-    description:
-      "Shared solar panels for residents who cannot install their own rooftop systems.",
-    category: "environment",
-    imageUrl:
-      "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [
-      "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=900&q=80",
-    ],
-    goal: 30000,
-    currentAmount: 21400,
-    donorCount: 96,
-    status: "active",
-  },
-  {
-    id: "p-1003",
-    title: "Mobile Health Clinic",
-    description:
-      "Monthly wellness visits and screenings for underserved blocks.",
-    category: "health",
-    imageUrl:
-      "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [],
-    goal: 18000,
-    currentAmount: 18000,
-    donorCount: 73,
-    status: "funded",
-  },
-  {
-    id: "p-1004",
-    title: "After-School Arts Collective",
-    description:
-      "Studio space, supplies, and mentorship for emerging community artists.",
-    category: "arts",
-    imageUrl:
-      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [],
-    goal: 9500,
-    currentAmount: 4100,
-    donorCount: 28,
-    status: "active",
-  },
-  {
-    id: "p-1005",
-    title: "Clean Water Refill Station",
-    description:
-      "Install a public water refill kiosk to cut plastic waste and improve access.",
-    category: "community",
-    imageUrl:
-      "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [],
-    goal: 15000,
-    currentAmount: 5200,
-    donorCount: 31,
-    status: "active",
-  },
-  {
-    id: "p-1006",
-    title: "Neighborhood Food Pantry Fridge",
-    description:
-      "A solar-powered community fridge stocked weekly with fresh groceries.",
-    category: "community",
-    imageUrl:
-      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [],
-    goal: 8000,
-    currentAmount: 7600,
-    donorCount: 54,
-    status: "active",
-  },
-  {
-    id: "p-1007",
-    title: "Girls in Tech Kit Drive",
-    description:
-      "Starter kits and mentorship sessions for girls exploring coding and robotics.",
-    category: "technology",
-    imageUrl:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [],
-    goal: 14000,
-    currentAmount: 9300,
-    donorCount: 61,
-    status: "active",
-  },
-  {
-    id: "p-1008",
-    title: "Youth Soccer Equipment Drive",
-    description:
-      "Uniforms, cones, and balls for weekly practice in neighborhood parks.",
-    category: "sports",
-    imageUrl:
-      "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=900&q=80",
-    galleryUrls: [],
-    goal: 6000,
-    currentAmount: 2500,
-    donorCount: 19,
-    status: "active",
-  },
-];
+import { createContext, useCallback, useMemo, useState, useEffect } from "react";
+import { seedProjects } from "../data/seedData";
 
 export const ProjectsContext = createContext(null);
 
+const API_BASE = "http://localhost:3002";
+
+const normalizeProject = (project) => {
+  const imageUrl =
+    project.imageUrl ||
+    (project.imageFile ? `/project-images/${project.id}/${project.imageFile}` : "");
+  const galleryUrls = Array.isArray(project.galleryUrls)
+    ? project.galleryUrls.filter(Boolean)
+    : Array.isArray(project.galleryFiles)
+      ? project.galleryFiles.map(
+          (file) => `/project-images/${project.id}/${file}`
+        )
+      : [];
+
+  return {
+    ...project,
+    imageUrl,
+    galleryUrls,
+    galleryCount:
+      Number(project.galleryCount) ||
+      (Array.isArray(project.galleryFiles) ? project.galleryFiles.length : 0) ||
+      galleryUrls.length,
+  };
+};
+
 export function ProjectsProvider({ children }) {
-  const [projects, setProjects] = useLocalStorageState(
-    "cdh-projects",
-    seedProjects
-  );
+  const [projects, setProjects] = useState(seedProjects);
   const [isLoading, setIsLoading] = useState(true);
+  const [apiAvailable, setApiAvailable] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLoading(false), 350);
-    return () => window.clearTimeout(timer);
+    let isActive = true;
+    const loadProjects = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/projects`);
+        if (!res.ok) {
+          throw new Error("API unavailable");
+        }
+        const data = await res.json();
+        if (!isActive) return;
+        setProjects(data.map(normalizeProject));
+        setApiAvailable(true);
+      } catch (err) {
+        console.warn("Using local seed projects.", err);
+        if (!isActive) return;
+        setProjects(seedProjects);
+        setApiAvailable(false);
+      } finally {
+        if (isActive) setIsLoading(false);
+      }
+    };
+
+    loadProjects();
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const addProject = useCallback(
-    (project) => {
+    async (project) => {
       const id = `p-${Date.now()}`;
-      const goal = Number(project.goal) || 0;
-      const imageUrl = project.imageUrl ? project.imageUrl.trim() : "";
       const galleryUrls = Array.isArray(project.galleryUrls)
         ? project.galleryUrls.filter(Boolean)
         : (project.galleryUrls || "")
             .split(",")
             .map((item) => item.trim())
             .filter(Boolean);
-      const newProject = {
+
+      const newProject = normalizeProject({
         id,
         title: project.title.trim(),
         description: project.description.trim(),
         category: project.category || "community",
-        imageUrl,
+        imageUrl: project.imageUrl ? project.imageUrl.trim() : "",
         galleryUrls,
-        goal,
+        galleryCount: Number(project.galleryCount) || 0,
+        goal: Number(project.goal) || 0,
         currentAmount: Number(project.currentAmount) || 0,
         donorCount: Number(project.donorCount) || 0,
-        status: goal > 0 ? "active" : "draft",
-      };
+        status: project.goal > 0 ? "active" : "draft",
+      });
+
+      if (apiAvailable) {
+        try {
+          const res = await fetch(`${API_BASE}/projects`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newProject),
+          });
+          if (!res.ok) throw new Error("Failed to add project");
+          const saved = await res.json();
+          setProjects((prev) => [normalizeProject(saved), ...prev]);
+          return id;
+        } catch (err) {
+          console.error(err);
+          setApiAvailable(false);
+        }
+      }
 
       setProjects((prev) => [newProject, ...prev]);
       return id;
     },
-    [setProjects]
+    [apiAvailable]
   );
 
   const updateProject = useCallback(
-    (id, updates) => {
+    async (id, updates) => {
       setProjects((prev) =>
         prev.map((project) =>
-          project.id === id ? { ...project, ...updates } : project
+          project.id === id ? normalizeProject({ ...project, ...updates }) : project
         )
       );
+
+      if (!apiAvailable) return;
+
+      const projectToUpdate = projects.find((project) => project.id === id);
+      if (!projectToUpdate) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/projects/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...projectToUpdate, ...updates }),
+        });
+        if (!res.ok) throw new Error("Failed to update project");
+        const saved = await res.json();
+        setProjects((prev) =>
+          prev.map((project) =>
+            project.id === id ? normalizeProject(saved) : project
+          )
+        );
+      } catch (err) {
+        console.error(err);
+        setApiAvailable(false);
+      }
     },
-    [setProjects]
+    [apiAvailable, projects]
   );
 
   const removeProject = useCallback(
-    (id) => {
+    async (id) => {
       setProjects((prev) => prev.filter((project) => project.id !== id));
+
+      if (!apiAvailable) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/projects/${id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Failed to delete project");
+      } catch (err) {
+        console.error(err);
+        setApiAvailable(false);
+      }
     },
-    [setProjects]
+    [apiAvailable]
   );
 
   const addDonation = useCallback(
-    (id, amount) => {
+    async (id, amount) => {
+      const target = projects.find((project) => project.id === id);
+      if (!target) return;
+
+      const currentAmount = Number(target.currentAmount) || 0;
+      const donorCount = Number(target.donorCount) || 0;
+      const nextAmount = currentAmount + amount;
+      const isFunded = target.goal && nextAmount >= target.goal;
+      const nextStatus =
+        target.status === "review" ? "review" : isFunded ? "funded" : "active";
+
+      const updatedProject = normalizeProject({
+        ...target,
+        currentAmount: nextAmount,
+        donorCount: donorCount + 1,
+        status: nextStatus,
+      });
+
       setProjects((prev) =>
-        prev.map((project) => {
-          if (project.id !== id) {
-            return project;
-          }
-
-          const currentAmount = Number(project.currentAmount) || 0;
-          const donorCount = Number(project.donorCount) || 0;
-          const nextAmount = currentAmount + amount;
-          const isFunded = project.goal && nextAmount >= project.goal;
-          const nextStatus =
-            project.status === "review" ? "review" : isFunded ? "funded" : "active";
-
-          return {
-            ...project,
-            currentAmount: nextAmount,
-            donorCount: donorCount + 1,
-            status: nextStatus,
-          };
-        })
+        prev.map((project) => (project.id === id ? updatedProject : project))
       );
+
+      if (!apiAvailable) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/projects/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedProject),
+        });
+        if (!res.ok) throw new Error("Failed to add donation");
+        const saved = await res.json();
+        setProjects((prev) =>
+          prev.map((project) =>
+            project.id === id ? normalizeProject(saved) : project
+          )
+        );
+      } catch (err) {
+        console.error(err);
+        setApiAvailable(false);
+      }
     },
-    [setProjects]
+    [apiAvailable, projects]
   );
 
   const getFeaturedProjects = useCallback(() => {
@@ -217,7 +214,6 @@ export function ProjectsProvider({ children }) {
       const bProgress = b.goal ? b.currentAmount / b.goal : 0;
       return bProgress - aProgress;
     });
-
     return sorted.slice(0, 3);
   }, [projects]);
 
