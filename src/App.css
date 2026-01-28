@@ -2461,7 +2461,7 @@ body {
 
 .admin-breakdown-row {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.8rem;
 }
 
 .admin-breakdown-bar {
