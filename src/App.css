@@ -2634,7 +2634,7 @@ body {
 
 .feedback-form-card .form-actions {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   margin-top: 0.5rem;
   flex-wrap: wrap;
 }
