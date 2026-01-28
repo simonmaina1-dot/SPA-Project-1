@@ -2273,6 +2273,54 @@ body {
   margin: 0 auto;
 }
 
+/* Admin Login Form */
+.admin-login {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border);
+}
+
+.admin-login .form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-login .form-field {
+  width: 100%;
+}
+
+.admin-login .form-actions {
+  margin-top: 8px;
+}
+
+.admin-login .btn-primary {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 15px;
+}
+
+.admin-page .page-header {
+  text-align: center;
+  max-width: 420px;
+  margin: 0 auto 0;
+}
+
+.admin-page .page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.admin-page .page-header p {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+}
+
 .admin-content .page-header {
   margin-bottom: 2rem;
 }
