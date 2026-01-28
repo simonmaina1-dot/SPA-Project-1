@@ -5,9 +5,8 @@
       "title": "Neighborhood Learning Lab",
       "description": "A pop-up classroom with devices, tutors, and weekend workshops for local youth.",
       "category": "education",
-      "imageFile": "cover.jpg",
+      "imageFile": "1.jpg",
       "galleryFiles": [
-        "1.jpg",
         "2.jpg"
       ],
       "goal": 12000,
@@ -20,9 +19,8 @@
       "title": "Community Solar Garden",
       "description": "Shared solar panels for residents who cannot install their own rooftop systems.",
       "category": "environment",
-      "imageFile": "cover.jpg",
+      "imageFile": "1.jpg",
       "galleryFiles": [
-        "1.jpg",
         "2.jpg",
         "3.jpg"
       ],
@@ -36,9 +34,8 @@
       "title": "Mobile Health Clinic",
       "description": "Monthly wellness visits and screenings for underserved blocks.",
       "category": "health",
-      "imageFile": "cover.jpg",
+      "imageFile": "1.jpg",
       "galleryFiles": [
-        "1.jpg",
         "2.jpg"
       ],
       "goal": 18000,
@@ -51,9 +48,8 @@
       "title": "After-School Arts Collective",
       "description": "Studio space, supplies, and mentorship for emerging community artists.",
       "category": "arts",
-      "imageFile": "cover.jpg",
+      "imageFile": "1.jpg",
       "galleryFiles": [
-        "1.jpg",
         "2.jpg"
       ],
       "goal": 9500,
@@ -66,9 +62,8 @@
       "title": "Clean Water Refill Station",
       "description": "Install a public water refill kiosk to cut plastic waste and improve access.",
       "category": "community",
-      "imageFile": "cover.jpg",
+      "imageFile": "1.jpg",
       "galleryFiles": [
-        "1.jpg",
         "2.jpg"
       ],
       "goal": 15000,
@@ -81,9 +76,8 @@
       "title": "Neighborhood Food Pantry Fridge",
       "description": "A solar-powered community fridge stocked weekly with fresh groceries.",
       "category": "community",
-      "imageFile": "cover.jpg",
+      "imageFile": "1.jpg",
       "galleryFiles": [
-        "1.jpg",
         "2.jpg"
       ],
       "goal": 8000,
@@ -96,9 +90,8 @@
       "title": "Youth Soccer Equipment Drive",
       "description": "Uniforms, cones, and balls for weekly practice in neighborhood parks.",
       "category": "sports",
-      "imageFile": "cover.jpg",
+      "imageFile": "1.jpg",
       "galleryFiles": [
-        "1.jpg",
         "2.jpg",
         "3.jpg"
       ],
