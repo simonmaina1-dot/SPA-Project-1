@@ -3,11 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { ToastContext } from "../context/ToastContext";
 
-const roleOptions = [
-  { value: "user", label: "User" },
-  { value: "donor", label: "Donor" },
-];
-
 export default function SignUp() {
   const { showToast } = useContext(ToastContext);
   const { registerAccount, currentUser } = useAuth();
@@ -16,7 +11,6 @@ export default function SignUp() {
     name: "",
     email: "",
     password: "",
-    role: "user",
   });
   const [signupError, setSignupError] = useState("");
 
@@ -37,12 +31,12 @@ export default function SignUp() {
     }
 
     showToast(`Welcome, ${result.user.name}!`, "success");
-    setSignupValues({ name: "", email: "", password: "", role: "user" });
-    navigate("/account");
+    setSignupValues({ name: "", email: "", password: "" });
+    navigate("/user-dashboard");
   };
 
   if (currentUser) {
-    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/account";
+    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/user-dashboard";
     return (
       <div className="page account-page">
         <section className="page-header">
@@ -53,7 +47,7 @@ export default function SignUp() {
           <div className="account-card">
             <div className="account-actions">
               <Link to={accountDestination} className="btn btn-primary">
-                Go to {currentUser.isAdmin ? "dashboard" : "account"}
+                Go to dashboard
               </Link>
               <Link to="/" className="btn btn-secondary">
                 Back home
@@ -69,7 +63,7 @@ export default function SignUp() {
     <div className="page account-page">
       <section className="page-header">
         <h1>Create account</h1>
-        <p>Set up a user or donor account to get started.</p>
+        <p>Create your user account to get started.</p>
       </section>
 
       <div className="account-grid account-grid-single">
@@ -112,20 +106,6 @@ export default function SignUp() {
               />
             </label>
 
-            <label className="form-field">
-              <span className="form-label">Role</span>
-              <select
-                name="role"
-                value={signupValues.role}
-                onChange={handleSignupChange}
-              >
-                {roleOptions.map((role) => (
-                  <option key={role.value} value={role.value}>
-                    {role.label}
-                  </option>
-                ))}
-              </select>
-            </label>
           </div>
 
           {signupError && <p className="form-error">{signupError}</p>}

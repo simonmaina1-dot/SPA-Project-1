@@ -35,11 +35,11 @@ export default function SignIn() {
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
     setLoginValues({ email: "", password: "", role: "user" });
-    navigate(isAdminLogin ? "/dashboard" : "/account");
+    navigate(isAdminLogin ? "/dashboard" : "/user-dashboard");
   };
 
   if (currentUser) {
-    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/account";
+    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/user-dashboard";
     return (
       <div className="page account-page">
         <section className="page-header">
@@ -50,7 +50,7 @@ export default function SignIn() {
           <div className="account-card">
             <div className="account-actions">
               <Link to={accountDestination} className="btn btn-primary">
-                Go to {currentUser.isAdmin ? "dashboard" : "account"}
+                Go to dashboard
               </Link>
               <Link to="/" className="btn btn-secondary">
                 Back home
@@ -66,7 +66,7 @@ export default function SignIn() {
     <div className="page account-page">
       <section className="page-header">
         <h1>Sign in</h1>
-        <p>Access your user, donor, or admin account.</p>
+        <p>Access your user or admin account.</p>
       </section>
 
       <div className="account-grid account-grid-single">
@@ -104,7 +104,7 @@ export default function SignIn() {
                 value={loginValues.role}
                 onChange={handleLoginChange}
               >
-                <option value="user">User/Donor</option>
+                <option value="user">User</option>
                 <option value="admin">Admin</option>
               </select>
             </label>

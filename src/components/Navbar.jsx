@@ -125,7 +125,7 @@ export default function Navbar() {
           </Link>
           {currentUser ? (
             <Link
-              to={currentUser.isAdmin ? "/dashboard" : "/account"}
+              to={currentUser.isAdmin ? "/dashboard" : "/user-dashboard"}
               className="btn btn-secondary nav-cta"
               onClick={() => setMenuOpen(false)}
             >

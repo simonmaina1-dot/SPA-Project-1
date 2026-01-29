@@ -12,7 +12,7 @@ export default function AdminAccessGuard({
   children,
 }) {
   if (currentUser && !currentUser.isAdmin) {
-    return <Navigate to="/account" replace />;
+    return <Navigate to="/user-dashboard" replace />;
   }
 
   if (!currentUser) {

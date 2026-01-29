@@ -2446,6 +2446,89 @@ body {
   margin-top: 20px;
 }
 
+.user-dashboard-page .page-header {
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto 0;
+}
+
+.user-dashboard-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin: 32px auto 0;
+  max-width: 1100px;
+}
+
+.user-card {
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.user-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.user-card-subtitle {
+  margin: 6px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.user-list-row:last-child {
+  border-bottom: none;
+}
+
+.user-row-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.user-row-meta {
+  margin: 4px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.user-row-amount {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.user-empty {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.user-card-actions {
+  margin-top: 16px;
+}
+
 .admin-content .page-header {
   margin-bottom: 2rem;
 }

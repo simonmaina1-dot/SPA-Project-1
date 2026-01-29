@@ -4,6 +4,7 @@ import useForm from "../hooks/useForm";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import Modal from "../components/Modal";
+import useAuth from "../hooks/useAuth";
 
 const initialValues = {
   title: "",
@@ -18,6 +19,7 @@ export default function AddProject() {
   const { values, handleChange, reset } = useForm(initialValues);
   const { addProject } = useProjects();
   const { showToast } = useContext(ToastContext);
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
@@ -34,7 +36,17 @@ export default function AddProject() {
       return;
     }
 
-    const newId = addProject(values);
+    const newId = addProject({
+      ...values,
+      createdAt: new Date().toISOString(),
+      createdBy: currentUser
+        ? {
+            id: currentUser.id,
+            name: currentUser.name,
+            email: currentUser.email,
+          }
+        : null,
+    });
     showToast("Project created and ready for donors.", "success");
     reset();
     setStep(1);

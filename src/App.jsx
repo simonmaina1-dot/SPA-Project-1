@@ -6,7 +6,7 @@ import AddProject from "./pages/AddProject";
 import ProjectDetails from "./pages/ProjectDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import Donate from "./pages/Donate";
-import AccountAccess from "./pages/AccountAccess";
+import UserDashboard from "./pages/UserDashboard";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import "./App.css";
@@ -36,9 +36,10 @@ export default function App() {
           <Route path="/add" element={<AddProject />} />
           <Route path="/projects/:projectId" element={<ProjectDetails />} />
           <Route path="/donate/:projectId" element={<Donate />} />
-          <Route path="/account" element={<AccountAccess />} />
+          <Route path="/account" element={<Navigate to="/user-dashboard" replace />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<NotFound />} />

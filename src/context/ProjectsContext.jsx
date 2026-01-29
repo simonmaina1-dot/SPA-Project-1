@@ -1,4 +1,3 @@
-
 import { createContext, useCallback, useMemo, useState, useEffect } from "react";
 
 // Create the ProjectsContext
@@ -12,13 +11,13 @@ export function ProjectsProvider({ children }) {
 
   // Fetch projects from JSON Server when component mounts
   useEffect(() => {
-    fetch("http://localhost:3002/projects") 
-      .then(res => res.json())
-      .then(data => {
-        setProjects(data); 
-        setIsLoading(false); 
+    fetch("http://localhost:3002/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        setProjects(data);
+        setIsLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Failed to fetch projects:", err);
         setIsLoading(false);
       });
@@ -44,6 +43,8 @@ export function ProjectsProvider({ children }) {
       currentAmount: Number(project.currentAmount) || 0,
       donorCount: Number(project.donorCount) || 0,
       status: project.goal > 0 ? "active" : "draft",
+      createdAt: project.createdAt || new Date().toISOString(),
+      createdBy: project.createdBy || null,
     };
 
     // Send new project to JSON Server
@@ -52,18 +53,18 @@ export function ProjectsProvider({ children }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProject),
     })
-      .then(res => res.json())
-      .then(savedProject => {
+      .then((res) => res.json())
+      .then((savedProject) => {
         setProjects((prev) => [savedProject, ...prev]); // Update state with new project
       })
-      .catch(err => console.error("Failed to add project:", err));
+      .catch((err) => console.error("Failed to add project:", err));
 
     return id;
   }, []);
 
   // Update an existing project (PUT request)
   const updateProject = useCallback((id, updates) => {
-    const projectToUpdate = projects.find(p => p.id === id);
+    const projectToUpdate = projects.find((p) => p.id === id);
     if (!projectToUpdate) return;
 
     const updatedProject = { ...projectToUpdate, ...updates };
@@ -73,13 +74,13 @@ export function ProjectsProvider({ children }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
     })
-      .then(res => res.json())
-      .then(savedProject => {
+      .then((res) => res.json())
+      .then((savedProject) => {
         setProjects((prev) =>
-          prev.map((project) => project.id === id ? savedProject : project)
+          prev.map((project) => (project.id === id ? savedProject : project))
         );
       })
-      .catch(err => console.error("Failed to update project:", err));
+      .catch((err) => console.error("Failed to update project:", err));
   }, [projects]);
 
   // Remove a project via DELETE request
@@ -90,12 +91,12 @@ export function ProjectsProvider({ children }) {
       .then(() => {
         setProjects((prev) => prev.filter((project) => project.id !== id));
       })
-      .catch(err => console.error("Failed to delete project:", err));
+      .catch((err) => console.error("Failed to delete project:", err));
   }, []);
 
   // Add a donation to a project via PATCH request
   const addDonation = useCallback((id, amount) => {
-    const projectToUpdate = projects.find(p => p.id === id);
+    const projectToUpdate = projects.find((p) => p.id === id);
     if (!projectToUpdate) return;
 
     const currentAmount = Number(projectToUpdate.currentAmount) || 0;
@@ -116,13 +117,13 @@ export function ProjectsProvider({ children }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
     })
-      .then(res => res.json())
-      .then(savedProject => {
+      .then((res) => res.json())
+      .then((savedProject) => {
         setProjects((prev) =>
-          prev.map((project) => project.id === id ? savedProject : project)
+          prev.map((project) => (project.id === id ? savedProject : project))
         );
       })
-      .catch(err => console.error("Failed to add donation:", err));
+      .catch((err) => console.error("Failed to add donation:", err));
   }, [projects]);
 
   // Get top 3 featured projects based on progress
@@ -145,16 +146,28 @@ export function ProjectsProvider({ children }) {
   }, []);
 
   // Memoize context value
-  const value = useMemo(() => ({
-    projects,
-    isLoading,
-    addProject,
-    updateProject,
-    removeProject,
-    addDonation,
-    getFeaturedProjects,
-    formatCurrency,
-  }), [projects, isLoading, addProject, updateProject, removeProject, addDonation, getFeaturedProjects, formatCurrency]);
+  const value = useMemo(
+    () => ({
+      projects,
+      isLoading,
+      addProject,
+      updateProject,
+      removeProject,
+      addDonation,
+      getFeaturedProjects,
+      formatCurrency,
+    }),
+    [
+      projects,
+      isLoading,
+      addProject,
+      updateProject,
+      removeProject,
+      addDonation,
+      getFeaturedProjects,
+      formatCurrency,
+    ]
+  );
 
   // Provide context to children
   return (
