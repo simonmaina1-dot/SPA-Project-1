@@ -4,6 +4,12 @@ import { seedAdmins, seedUsers } from "../data/seedData";
 export const AuthContext = createContext(null);
 
 const normalizeEmail = (value) => value.trim().toLowerCase();
+const normalizeUserRole = (role) => (role === "donor" || !role ? "user" : role);
+const normalizeUsers = (list = []) =>
+  list.map((user) => ({
+    ...user,
+    role: normalizeUserRole(user.role),
+  }));
 const toSafeUser = (user, overrides = {}) => ({
   id: user.id,
   name: user.name,
@@ -17,7 +23,6 @@ function useAuthValue({
   signInAdmin,
   signInUser,
   registerAccount,
-  switchRole,
   signOut,
 }) {
   return useMemo(
@@ -26,17 +31,16 @@ function useAuthValue({
       signInAdmin,
       signInUser,
       registerAccount,
-      switchRole,
       signOut,
     }),
-    [currentUser, signInAdmin, signInUser, registerAccount, switchRole, signOut]
+    [currentUser, signInAdmin, signInUser, registerAccount, signOut]
   );
 }
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [adminUsers, setAdminUsers] = useState(seedAdmins);
-  const [users, setUsers] = useState(seedUsers);
+  const [users, setUsers] = useState(() => normalizeUsers(seedUsers));
   const [adminsApiAvailable, setAdminsApiAvailable] = useState(false);
   const [usersApiAvailable, setUsersApiAvailable] = useState(false);
 
@@ -72,12 +76,12 @@ export function AuthProvider({ children }) {
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
-        setUsers(data);
+        setUsers(normalizeUsers(data));
         setUsersApiAvailable(true);
       } catch (err) {
         console.warn("Using local seed users.", err);
         if (!isActive) return;
-        setUsers(seedUsers);
+        setUsers(normalizeUsers(seedUsers));
         setUsersApiAvailable(false);
       }
     };
@@ -129,17 +133,13 @@ export function AuthProvider({ children }) {
   );
 
   const registerAccount = useCallback(
-    async ({ name, email, password, role }) => {
+    async ({ name, email, password }) => {
       const trimmedName = name.trim();
       const normalizedEmail = normalizeEmail(email);
       const trimmedPassword = password.trim();
 
       if (!trimmedName || !normalizedEmail || !trimmedPassword) {
         return { ok: false, message: "All fields are required." };
-      }
-
-      if (!["user", "donor"].includes(role)) {
-        return { ok: false, message: "Select either user or donor." };
       }
 
       const emailTaken =
@@ -157,7 +157,7 @@ export function AuthProvider({ children }) {
         name: trimmedName,
         email: normalizedEmail,
         password: trimmedPassword,
-        role,
+        role: "user",
       };
 
       setUsers((prev) => [newUser, ...prev]);
@@ -180,58 +180,7 @@ export function AuthProvider({ children }) {
       setCurrentUser(safeUser);
       return { ok: true, user: safeUser };
     },
-    [adminUsers, adminsApiAvailable, users, usersApiAvailable]
-  );
-
-  const switchRole = useCallback(
-    async (nextRole) => {
-      if (!currentUser) {
-        return { ok: false, message: "Sign in to update your role." };
-      }
-
-      if (!"user donor".split(" ").includes(currentUser.role)) {
-        return { ok: false, message: "Only users or donors can change roles." };
-      }
-
-      if (!"user donor".split(" ").includes(nextRole)) {
-        return { ok: false, message: "Select either user or donor." };
-      }
-
-      if (currentUser.role === nextRole) {
-        return { ok: false, message: "Role is already set." };
-      }
-
-      const updatedUser = { ...currentUser, role: nextRole };
-      setUsers((prev) =>
-        prev.map((account) =>
-          account.id === currentUser.id ||
-          account.email.toLowerCase() === currentUser.email.toLowerCase()
-            ? { ...account, role: nextRole }
-            : account
-        )
-      );
-      setCurrentUser(updatedUser);
-
-      if (usersApiAvailable) {
-        try {
-          const res = await fetch(
-            `http://localhost:3002/users/${currentUser.id}`,
-            {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ role: nextRole }),
-            }
-          );
-          if (!res.ok) throw new Error("Failed to update user role");
-        } catch (err) {
-          console.error(err);
-          setUsersApiAvailable(false);
-        }
-      }
-
-      return { ok: true, user: updatedUser };
-    },
-    [currentUser, usersApiAvailable]
+    [adminUsers, users, usersApiAvailable]
   );
 
   const signOut = useCallback(() => {
@@ -243,7 +192,6 @@ export function AuthProvider({ children }) {
     signInAdmin,
     signInUser,
     registerAccount,
-    switchRole,
     signOut,
   });
 
