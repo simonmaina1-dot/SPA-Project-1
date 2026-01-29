@@ -27,3 +27,4 @@ export const seedProjects = (db.projects || []).map((project) => {
 export const seedAdmins = db.admins || [];
 export const seedDonations = db.donations || [];
 export const seedFeedback = db.feedback || [];
+export const seedUsers = db.users || [];

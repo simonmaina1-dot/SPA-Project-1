@@ -30,6 +30,7 @@ const loadCollections = () => ({
   projects: readJson(path.join(collectionsDir, "projects.json"), []),
   feedback: readJson(path.join(collectionsDir, "feedback.json"), []),
   admins: readJson(path.join(collectionsDir, "admins.json"), []),
+  users: readJson(path.join(collectionsDir, "users.json"), []),
 });
 
 const loadDonations = () => {
@@ -51,6 +52,7 @@ const db = {
   donations: loadDonations(),
   feedback: collections.feedback,
   admins: collections.admins,
+  users: collections.users,
 };
 
 const server = jsonServer.create();
@@ -65,6 +67,7 @@ const syncDataToDisk = () => {
   const nextDonations = router.db.get("donations").value() || [];
   const nextFeedback = router.db.get("feedback").value() || [];
   const nextAdmins = router.db.get("admins").value() || [];
+  const nextUsers = router.db.get("users").value() || [];
 
   fs.writeFileSync(
     path.join(collectionsDir, "projects.json"),
@@ -77,6 +80,10 @@ const syncDataToDisk = () => {
   fs.writeFileSync(
     path.join(collectionsDir, "admins.json"),
     JSON.stringify(nextAdmins, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(collectionsDir, "users.json"),
+    JSON.stringify(nextUsers, null, 2)
   );
 
   const projectIds = new Set(nextProjects.map((project) => project.id));
@@ -135,6 +142,7 @@ const syncDataToDisk = () => {
         donations: nextDonations,
         feedback: nextFeedback,
         admins: nextAdmins,
+        users: nextUsers,
       },
       null,
       2
