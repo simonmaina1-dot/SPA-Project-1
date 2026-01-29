@@ -11,27 +11,17 @@ import useForm from "../hooks/useForm";
  * Home Page - Main landing page displaying community projects
  * 
  * KEY FEATURES:
+ * - Only shows admin-approved projects for public viewing
  * - Project search functionality
  * - Category filtering
  * - Featured projects section
  * - Loading state handling
  * - Empty state when no projects exist
  * - Toast notifications for user feedback
- * - Modal for project actions
  * - Scroll-triggered stats animation
- * 
- * WHY useMemo for filtering?
- * - Prevents unnecessary recalculation on re-renders
- * - Only recalculates when search query or filter changes
- * - Performance optimization
- * 
- * WHY useEffect?
- * - Side effects like showing welcome toast on mount
- * - Intersection Observer for scroll animations
- * - Cleanup not needed here since we only run once
  */
 export default function Home() {
-  const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
+  const { projects, isLoading, getFeaturedProjects, getApprovedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
   const { feedbackList, addFeedback } = useFeedback();
   const {
@@ -41,14 +31,14 @@ export default function Home() {
   } = useForm({ name: "", email: "", message: "" });
   const location = useLocation();
   const aboutRef = useRef(null);
-  const statsRef = useRef(null); // Reference for stats animation
+  const statsRef = useRef(null);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [statsVisible, setStatsVisible] = useState(false); // Track stats visibility
+  const [statsVisible, setStatsVisible] = useState(false);
   const [expandedCards, setExpandedCards] = useState({});
 
-  // Toggle expanded state for about cards (only one open at a time)
+  // Toggle expanded state for about cards
   const toggleCard = (cardId) => {
     setExpandedCards((prev) =>
       prev[cardId] ? {} : { [cardId]: true }
@@ -68,14 +58,13 @@ export default function Home() {
     resetFeedback();
   };
 
-
   // Show welcome toast on first mount
   useEffect(() => {
-    if (projects.length > 0) {
-      showToast(`Welcome! ${projects.length} projects available`, "info");
+    const approvedProjects = getApprovedProjects();
+    if (approvedProjects.length > 0) {
+      showToast(`Welcome! ${approvedProjects.length} projects available`, "info");
     }
-  }, [projects.length, showToast]); // Run when projects length or showToast changes
-
+  }, [getApprovedProjects, showToast]);
 
   // Smooth scroll to about section
   useEffect(() => {
@@ -85,8 +74,7 @@ export default function Home() {
     aboutRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [location.hash]);
 
-
-  // Intersection Observer for stats animation on scroll
+  // Intersection Observer for stats animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -97,8 +85,8 @@ export default function Home() {
         });
       },
       { 
-        threshold: 0.2, // Trigger when 20% of element is visible
-        rootMargin: '0px 0px -50px 0px' // Trigger slightly before fully visible
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
       }
     );
 
@@ -113,20 +101,19 @@ export default function Home() {
     };
   }, []);
 
+  // Get only approved projects for public display
+  const approvedProjects = useMemo(() => {
+    return getApprovedProjects();
+  }, [getApprovedProjects]);
 
   // Filter projects based on search and category
-  // useMemo ensures this only runs when dependencies change
   const filteredProjects = useMemo(() => {
-    let result = projects;
+    let result = approvedProjects;
 
-
-    // Apply category filter first
     if (selectedCategory !== "all") {
       result = result.filter((p) => p.category === selectedCategory);
     }
 
-
-    // Then apply search filter
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
@@ -136,28 +123,23 @@ export default function Home() {
       );
     }
 
-
     return result;
-  }, [projects, searchQuery, selectedCategory]);
+  }, [approvedProjects, searchQuery, selectedCategory]);
 
-
-  // Get featured projects for the hero section
+  // Get featured projects
   const featuredProjects = useMemo(() => {
     return getFeaturedProjects();
   }, [getFeaturedProjects]);
 
-
-  // Calculate total funding stats
+  // Calculate total funding stats (only from approved projects)
   const totalStats = useMemo(() => {
-    const totalRaised = projects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
-    const totalGoal = projects.reduce((sum, p) => sum + (p.goal || 0), 0);
-    const totalDonors = projects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
-    const fundedCount = projects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
-
+    const totalRaised = approvedProjects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
+    const totalGoal = approvedProjects.reduce((sum, p) => sum + (p.goal || 0), 0);
+    const totalDonors = approvedProjects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
+    const fundedCount = approvedProjects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
 
     return { totalRaised, totalGoal, totalDonors, fundedCount };
-  }, [projects]);
-
+  }, [approvedProjects]);
 
   // Categories for filter dropdown
   const categories = [
@@ -172,7 +154,6 @@ export default function Home() {
     { value: "other", label: "Other" }
   ];
 
-
   // Loading state
   if (isLoading) {
     return (
@@ -184,7 +165,6 @@ export default function Home() {
       </div>
     );
   }
-
 
   return (
     <div className="page home-page">
@@ -202,7 +182,7 @@ export default function Home() {
             className={`stats-dashboard${statsVisible ? " visible" : ""}`}
           >
             <div className="stat-card">
-              <span className="stat-value">{projects.length}</span>
+              <span className="stat-value">{approvedProjects.length}</span>
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-card">
@@ -221,9 +201,8 @@ export default function Home() {
         </div>
       </section>
 
-
-      {/* Featured Projects (only show if there are projects) */}
-      {featuredProjects.length > 0 && projects.length >= 3 && (
+      {/* Featured Projects */}
+      {featuredProjects.length > 0 && approvedProjects.length >= 3 && (
         <section className="featured-section" id="featured">
           <h2>Featured Projects</h2>
           <div className="featured-grid">
@@ -233,7 +212,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
 
       {/* Search and Filter Section */}
       <section className="search-section">
@@ -251,7 +229,6 @@ export default function Home() {
           </svg>
         </div>
 
-
         <div className="filter-bar">
           <label htmlFor="category-filter">Filter by:</label>
           <select
@@ -267,7 +244,6 @@ export default function Home() {
             ))}
           </select>
 
-
           {(searchQuery || selectedCategory !== "all") && (
             <button
               className="btn btn-text"
@@ -282,7 +258,6 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Projects Grid */}
       <section className="projects-section" id="all-projects">
         <div className="section-header">
@@ -293,7 +268,6 @@ export default function Home() {
             {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} found
           </span>
         </div>
-
 
         {filteredProjects.length === 0 ? (
           <div className="empty-state">
@@ -319,9 +293,9 @@ export default function Home() {
                   </svg>
                 </div>
                 <h3>No projects yet</h3>
-                <p>Be the first to create a project and start fundraising!</p>
-                <Link to="/add" className="btn btn-primary">
-                  Create Project
+                <p>Projects are pending admin verification before going live.</p>
+                <Link to="/submit-project" className="btn btn-primary">
+                  Submit a Project
                 </Link>
               </>
             )}
@@ -334,7 +308,6 @@ export default function Home() {
           </div>
         )}
       </section>
-
 
       {/* About Section */}
       <section className="about-section" id="about" ref={aboutRef}>
@@ -538,3 +511,4 @@ export default function Home() {
     </div>
   );
 }
+

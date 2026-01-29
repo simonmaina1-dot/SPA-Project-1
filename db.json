@@ -14,7 +14,8 @@
       "goal": 12000,
       "currentAmount": 6800,
       "donorCount": 42,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1002",
@@ -31,7 +32,8 @@
       "goal": 30000,
       "currentAmount": 18500,
       "donorCount": 96,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1003",
@@ -47,7 +49,8 @@
       "goal": 18000,
       "currentAmount": 17560,
       "donorCount": 74,
-      "status": "funded"
+      "status": "funded",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1004",
@@ -63,7 +66,8 @@
       "goal": 9500,
       "currentAmount": 4100,
       "donorCount": 28,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1005",
@@ -79,7 +83,8 @@
       "goal": 15000,
       "currentAmount": 5200,
       "donorCount": 31,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1006",
@@ -95,7 +100,8 @@
       "goal": 8000,
       "currentAmount": 7600,
       "donorCount": 54,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1007",
@@ -109,38 +115,8 @@
       "goal": 22000,
       "currentAmount": 6400,
       "donorCount": 36,
-      "status": "active"
-    },
-    {
-      "id": "p-1008",
-      "title": "Youth Soccer Equipment Drive",
-      "description": "Uniforms, cones, and balls for weekly practice in neighborhood parks.",
-      "category": "sports",
-      "imageUrl": "https://images.pexels.com/photos/35571154/pexels-photo-35571154.jpeg?cs=srgb&dl=pexels-dacostashotit-35571154.jpg&fm=jpg",
-      "imageFile": "cover.jpg",
-      "galleryFiles": [
-        "1.jpg",
-        "2.jpg",
-        "3.jpg"
-      ],
-      "goal": 6000,
-      "currentAmount": 2500,
-      "donorCount": 19,
-      "status": "active"
-    },
-    {
-      "id": "p-1009",
-      "title": "Neighborhood Tech Makerspace",
-      "description": "After-school robotics, design, and coding studio with shared tools and mentors.",
-      "category": "education",
-      "imageUrl": "https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg",
-      "galleryUrls": [
-        "https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg"
-      ],
-      "goal": 25000,
-      "currentAmount": 8200,
-      "donorCount": 45,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     }
   ],
   "admins": [

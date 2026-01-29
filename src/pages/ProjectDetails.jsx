@@ -117,12 +117,28 @@ export default function ProjectDetails() {
     setLoadedImages((prev) => new Set([...prev, index]));
   };
 
+  // Check if project exists and is approved
   if (!project) {
     return (
       <div className="page project-details-page">
         <section className="empty-state">
           <h2>Project not found</h2>
           <p>The project you are looking for does not exist.</p>
+          <Link to="/" className="btn btn-primary">
+            Back to projects
+          </Link>
+        </section>
+      </div>
+    );
+  }
+
+  // Only show approved projects publicly
+  if (project.verificationStatus !== "approved") {
+    return (
+      <div className="page project-details-page">
+        <section className="empty-state">
+          <h2>Project Pending Verification</h2>
+          <p>This project is currently pending admin verification and is not yet visible to the public.</p>
           <Link to="/" className="btn btn-primary">
             Back to projects
           </Link>

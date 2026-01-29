@@ -1,5 +1,6 @@
-import { createContext, useCallback, useMemo, useState, useEffect } from "react";
+import { createContext, useCallback, useMemo, useState, useEffect, useContext } from "react";
 import { defaultCriteriaMet } from "../data/projectCriteria";
+import { VerificationContext } from "./VerificationContext";
 
 // Create the ProjectsContext
 export const ProjectsContext = createContext(null);
@@ -22,8 +23,14 @@ const normalizeProject = (project) => {
     ownerEmail,
     ownerPhone,
     identityDocument: project.identityDocument || "",
-    verificationStatus: project.verificationStatus || "verified",
+    // verificationStatus: "pending" = awaiting review
+    // verificationStatus: "under_review" = admin is reviewing
+    // verificationStatus: "approved" = admin approved, visible to public
+    // verificationStatus: "rejected" = admin rejected, not visible
+    verificationStatus: project.verificationStatus || "pending",
     verificationNotes: project.verificationNotes || "",
+    adminReviewer: project.adminReviewer || null,
+    reviewedAt: project.reviewedAt || null,
     criteriaMet,
     fundUsage: Array.isArray(project.fundUsage) ? project.fundUsage : [],
   };
@@ -161,14 +168,52 @@ export function ProjectsProvider({ children }) {
       .catch((err) => console.error("Failed to add donation:", err));
   }, [projects]);
 
-  // Get top 3 featured projects based on progress
+  // Get top 3 featured projects based on progress (only approved projects)
   const getFeaturedProjects = useCallback(() => {
-    const sorted = [...projects].sort((a, b) => {
+    const approvedProjects = projects.filter((p) => p.verificationStatus === "approved");
+    const sorted = [...approvedProjects].sort((a, b) => {
       const aProgress = a.goal ? a.currentAmount / a.goal : 0;
       const bProgress = b.goal ? b.currentAmount / b.goal : 0;
       return bProgress - aProgress;
     });
     return sorted.slice(0, 3);
+  }, [projects]);
+
+  // Get only approved projects (for public display)
+  const getApprovedProjects = useCallback(() => {
+    return projects.filter((p) => p.verificationStatus === "approved");
+  }, [projects]);
+
+  // Get projects pending verification (for admin review)
+  const getPendingVerificationProjects = useCallback(() => {
+    return projects.filter((p) => p.verificationStatus === "pending" || p.verificationStatus === "under_review");
+  }, [projects]);
+
+  // Update project verification status (admin action)
+  const updateVerificationStatus = useCallback((projectId, status, reviewerId, notes) => {
+    const projectToUpdate = projects.find((p) => p.id === projectId);
+    if (!projectToUpdate) return;
+
+    const updatedProject = normalizeProject({
+      ...projectToUpdate,
+      verificationStatus: status,
+      adminReviewer: reviewerId,
+      reviewedAt: new Date().toISOString(),
+      verificationNotes: notes || "",
+    });
+
+    fetch(`http://localhost:3002/projects/${projectId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedProject),
+    })
+      .then((res) => res.json())
+      .then((savedProject) => {
+        setProjects((prev) =>
+          prev.map((project) => (project.id === projectId ? savedProject : project))
+        );
+      })
+      .catch((err) => console.error("Failed to update verification status:", err));
   }, [projects]);
 
   // Format currency in Kenyan Shillings
@@ -190,6 +235,9 @@ export function ProjectsProvider({ children }) {
       removeProject,
       addDonation,
       getFeaturedProjects,
+      getApprovedProjects,
+      getPendingVerificationProjects,
+      updateVerificationStatus,
       formatCurrency,
     }),
     [
@@ -200,6 +248,9 @@ export function ProjectsProvider({ children }) {
       removeProject,
       addDonation,
       getFeaturedProjects,
+      getApprovedProjects,
+      getPendingVerificationProjects,
+      updateVerificationStatus,
       formatCurrency,
     ]
   );
