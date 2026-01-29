@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
+import useAuth from "../hooks/useAuth";
 
 const navItems = [
   { to: "/#featured", label: "Featured Projects", hash: "featured" },
@@ -13,6 +14,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const scrollToElement = useCallback((hash) => {
     const element = document.getElementById(hash);
@@ -121,9 +123,27 @@ export default function Navbar() {
           <Link to="/add" className="btn btn-primary nav-cta" onClick={() => setMenuOpen(false)}>
             Start a Project
           </Link>
-          <Link to="/dashboard" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
-            Admin Page
-          </Link>
+          {currentUser ? (
+            <Link
+              to="/account"
+              className="btn btn-secondary nav-cta"
+              onClick={() => setMenuOpen(false)}
+            >
+              {currentUser.name} ({currentUser.role})
+            </Link>
+          ) : (
+            <>
+              <Link to="/account#signup" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
+                Sign up
+              </Link>
+              <Link to="/account#signin" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
+                Sign in
+              </Link>
+              <Link to="/dashboard" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
+                Admin Page
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>
