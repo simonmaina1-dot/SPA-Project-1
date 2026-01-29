@@ -38,7 +38,7 @@ export default function AdminDashboard() {
     imageUrl: "",
     galleryUrls: "",
   });
-  const [viewMode, setViewMode] = useState("add");
+  const [viewMode, setViewMode] = useState("table");
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [deleteFeedbackId, setDeleteFeedbackId] = useState(null);
   const [newProject, setNewProject] = useState({
@@ -341,7 +341,10 @@ export default function AdminDashboard() {
 
       <div className="admin-content">
         <section className="page-header">
-          <h1>Admin Dashboard</h1>
+          <div className="admin-header-row">
+            <h1>Admin Dashboard</h1>
+            <span className="admin-role-pill">{currentUser.role}</span>
+          </div>
           <p>
             Monitor campaigns, manage approvals, and keep community fundraising on
             track.

@@ -2280,9 +2280,9 @@ body {
 
 /* Admin Login Form */
 .admin-login {
-  max-width: 420px;
+  max-width: 360px;
   margin: 40px auto;
-  padding: 32px;
+  padding: 24px;
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
@@ -2305,8 +2305,38 @@ body {
 
 .admin-login .btn-primary {
   width: 100%;
-  padding: 14px 24px;
-  font-size: 15px;
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+.admin-login .form-field input {
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
+.admin-login .form-label {
+  font-size: 0.8rem;
+}
+
+.admin-header-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.admin-role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(29, 185, 84, 0.12);
+  color: #137a3c;
+  border: 1px solid rgba(29, 185, 84, 0.25);
 }
 
 .admin-page .page-header {
@@ -2341,8 +2371,13 @@ body {
   max-width: 1100px;
 }
 
+.account-grid-single {
+  max-width: 520px;
+  justify-items: center;
+}
+
 .account-card {
-  padding: 32px;
+  padding: 24px;
   background: #ffffff;
   border-radius: 16px;
   border: 1px solid var(--color-border);
@@ -2350,23 +2385,40 @@ body {
   scroll-margin-top: 100px;
 }
 
+.account-card--narrow {
+  width: 100%;
+  max-width: 420px;
+}
+
 .account-card h2 {
-  margin-bottom: 16px;
-  font-size: 20px;
+  margin-bottom: 12px;
+  font-size: 18px;
 }
 
 .account-card .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .account-card .form-actions {
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .account-card .btn-primary {
   width: 100%;
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+.account-card .form-field input,
+.account-card .form-field select {
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
+.account-card .form-label {
+  font-size: 0.8rem;
 }
 
 .account-meta {
