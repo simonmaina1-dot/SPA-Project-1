@@ -342,6 +342,17 @@ export default function AdminDashboard() {
     removeFeedback,
     showToast,
   };
+  const vettingProps = {
+    projects,
+    updateProject,
+    formatCurrency,
+    showToast,
+  };
+  const fundTrackingProps = {
+    projects,
+    donations,
+    formatCurrency,
+  };
 
   return (
     <AdminAccessGuard
@@ -368,6 +379,8 @@ export default function AdminDashboard() {
             onFlag={handleFlag}
             projectManagementProps={projectManagementProps}
             feedbackProps={feedbackProps}
+            vettingProps={vettingProps}
+            fundTrackingProps={fundTrackingProps}
           />
         </div>
       </div>

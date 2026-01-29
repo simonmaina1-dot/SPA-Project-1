@@ -4,6 +4,8 @@ import AdminProjectManagement from "./AdminProjectManagement";
 import AdminInsightsGrid from "./AdminInsightsGrid";
 import AdminTopDonorsTable from "./AdminTopDonorsTable";
 import AdminFeedbackList from "./AdminFeedbackList";
+import AdminVettingQueue from "./AdminVettingQueue";
+import AdminFundTracking from "./AdminFundTracking";
 
 export default function AdminDashboardGrid({
   projects,
@@ -15,6 +17,8 @@ export default function AdminDashboardGrid({
   onFlag,
   projectManagementProps,
   feedbackProps,
+  vettingProps,
+  fundTrackingProps,
 }) {
   return (
     <section className="admin-grid">
@@ -35,6 +39,10 @@ export default function AdminDashboardGrid({
         onApprove={onApprove}
         onFlag={onFlag}
       />
+
+      <AdminVettingQueue {...vettingProps} />
+
+      <AdminFundTracking {...fundTrackingProps} />
 
       <AdminTopDonorsTable
         donorMetrics={donorMetrics}
