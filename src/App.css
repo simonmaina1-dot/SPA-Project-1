@@ -3253,6 +3253,521 @@ body {
 }
 
 /* ==========================================
+   SUBMIT PROJECT PAGE
+   ========================================== */
+.submit-project-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 40px 24px;
+}
+
+.submit-project-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.submit-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.submit-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: 'Google Sans', sans-serif;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+}
+
+.submit-header p {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Progress Bar */
+.submit-progress-container {
+  margin-bottom: 32px;
+}
+
+.submit-progress-bar {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.submit-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.submit-progress-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* Step Indicator */
+.submit-step-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.submit-step-indicator::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 40px;
+  right: 40px;
+  height: 2px;
+  background: var(--color-border);
+  z-index: 0;
+}
+
+.submit-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+  position: relative;
+  z-index: 1;
+}
+
+.submit-step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition: all 0.3s ease;
+}
+
+.submit-step.completed .submit-step-number {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.submit-step.active .submit-step-number {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(29, 185, 84, 0.2);
+}
+
+.submit-step.completed {
+  cursor: pointer;
+}
+
+.submit-step-title {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  max-width: 80px;
+}
+
+.submit-step.active .submit-step-title {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Form Content */
+.submit-form-content {
+  background: var(--color-surface);
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+}
+
+.submit-form-section h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+
+.submit-section-description {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.submit-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.submit-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.submit-form-field-wide {
+  grid-column: 1 / -1;
+}
+
+.submit-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.submit-form-hint {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.submit-form-field input,
+.submit-form-field select,
+.submit-form-field textarea {
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--color-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.submit-form-field input:focus,
+.submit-form-field select:focus,
+.submit-form-field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+}
+
+.submit-form-field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-form-error {
+  font-size: 12px;
+  color: var(--color-danger);
+}
+
+.submit-form-error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(234, 67, 53, 0.1);
+  border-radius: 8px;
+  color: var(--color-danger);
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+/* File Upload */
+.submit-file-upload {
+  position: relative;
+}
+
+.submit-file-upload input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.submit-file-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  border: 2px dashed var(--color-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.submit-file-upload-label:hover {
+  border-color: var(--color-primary);
+  background: rgba(29, 185, 84, 0.05);
+}
+
+.submit-file-upload-label svg {
+  color: var(--color-text-secondary);
+}
+
+.submit-file-upload-label small {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.submit-file-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-success) !important;
+}
+
+.submit-file-preview svg {
+  color: var(--color-success) !important;
+}
+
+/* Criteria Checklist */
+.submit-criteria-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.submit-criteria-item {
+  padding: 20px;
+  background: var(--color-bg);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.submit-criteria-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.submit-criteria-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.submit-criteria-description {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Checkbox */
+.submit-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.submit-checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.submit-checkbox-custom {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--color-border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.submit-checkbox-label input:checked + .submit-checkbox-custom {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.submit-checkbox-label input:checked + .submit-checkbox-custom::after {
+  content: '';
+  width: 6px;
+  height: 10px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+.submit-checkbox-text {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+/* Review Section */
+.submit-review {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.submit-review-section {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.submit-review-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.submit-review-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 16px 0;
+}
+
+.submit-review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.submit-review-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.submit-review-item-wide {
+  grid-column: 1 / -1;
+}
+
+.submit-review-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.submit-review-value {
+  font-size: 15px;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.submit-review-criteria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.submit-review-criteria-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--color-bg);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.submit-review-criteria-item.agreed {
+  background: rgba(29, 185, 84, 0.1);
+  color: var(--color-success);
+}
+
+.submit-terms {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--color-bg);
+  border-radius: 8px;
+}
+
+/* Form Actions */
+.submit-form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.submit-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .submit-step-indicator {
+    overflow-x: auto;
+    padding-bottom: 16px;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+
+  .submit-step-indicator::before {
+    display: none;
+  }
+
+  .submit-step {
+    flex-shrink: 0;
+  }
+
+  .submit-form-grid,
+  .submit-review-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-form-content {
+    padding: 24px;
+  }
+
+  .submit-header h1 {
+    font-size: 24px;
+  }
+
+  .submit-criteria-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .submit-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .submit-form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================
    FEEDBACK SECTION (Home Page)
    ========================================== */
 .feedback-section {
@@ -3489,3 +4004,395 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ==========================================
+   ADMIN VERIFICATION STYLES
+   ========================================== */
+.admin-verification-stats {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border: 1px solid #86efac;
+}
+
+.admin-verification-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.admin-verification-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-verification-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.admin-verification-value.verified {
+  color: #10b981;
+}
+
+.admin-verification-value.rejected {
+  color: #ef4444;
+}
+
+.admin-verification-label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Verification status badge */
+.verification-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Owner info in table */
+.admin-owner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-owner-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.admin-owner-email {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* Text utilities */
+.text-success {
+  color: var(--color-success) !important;
+}
+
+.text-danger {
+  color: var(--color-danger) !important;
+}
+
+/* ==========================================
+   VETTING MODAL STYLES
+   ========================================== */
+.vetting-review {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vetting-project-info h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: var(--color-text-primary);
+}
+
+.vetting-owner {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.vetting-section {
+  padding: 16px;
+  background: var(--color-bg);
+  border-radius: 8px;
+}
+
+.vetting-section h5 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--color-text-primary);
+}
+
+.vetting-section p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.vetting-doc-link {
+  margin-top: 8px !important;
+}
+
+.vetting-doc-link a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.vetting-doc-link a:hover {
+  text-decoration: underline;
+}
+
+.vetting-criteria-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vetting-criteria-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.vetting-criteria-item.met {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.vetting-criteria-item.not-met {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.vetting-criteria-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.vetting-criteria-item.met .vetting-criteria-icon {
+  background: #10b981;
+  color: white;
+}
+
+.vetting-criteria-item.not-met .vetting-criteria-icon {
+  background: #ef4444;
+  color: white;
+}
+
+.vetting-criteria-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vetting-criteria-content strong {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.vetting-criteria-content span {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.vetting-actions-preview {
+  padding: 16px;
+  background: var(--color-bg);
+  border-radius: 8px;
+}
+
+.vetting-action-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0 0 12px 0;
+}
+
+.vetting-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vetting-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.vetting-btn.vet-reject {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.vetting-btn.vet-reject.active,
+.vetting-btn.vet-reject:hover {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+.vetting-btn.vet-review {
+  background: #fef3c7;
+  color: #d97706;
+  border-color: #fde68a;
+}
+
+.vetting-btn.vet-review.active,
+.vetting-btn.vet-review:hover {
+  background: #d97706;
+  color: white;
+  border-color: #d97706;
+}
+
+.vetting-btn.vet-approve {
+  background: #dcfce7;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+.vetting-btn.vet-approve.active,
+.vetting-btn.vet-approve:hover {
+  background: #16a34a;
+  color: white;
+  border-color: #16a34a;
+}
+
+/* ==========================================
+   FUND TRACKING MODAL STYLES
+   ========================================== */
+.fund-tracking-details {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fund-project-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: var(--color-text-primary);
+}
+
+.fund-project-header p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.fund-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.fund-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  background: var(--color-bg);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.fund-summary-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fund-summary-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.fund-expenses-section h5 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--color-text-primary);
+}
+
+.fund-expenses-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.fund-expenses-table th,
+.fund-expenses-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.fund-expenses-table th {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--color-bg);
+}
+
+.fund-expenses-table td {
+  color: var(--color-text-primary);
+}
+
+.no-expenses {
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border-radius: 8px;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Responsive for verification styles */
+@media (max-width: 768px) {
+  .admin-verification-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fund-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vetting-buttons {
+    flex-direction: column;
+  }
+
+  .vetting-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-verification-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
