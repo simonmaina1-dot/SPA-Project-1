@@ -235,15 +235,52 @@ export default function ProjectDetails() {
 
             <div className="details-section">
               <h2>About This Project</h2>
-              <p>
-                This community-driven initiative aims to make a lasting impact on our neighborhood. 
-                Every contribution helps us move closer to our goal and creates positive change for those who need it most.
-              </p>
+              <p>{project.description}</p>
               <ul className="features-list">
+                {project.category === "education" && (
+                  <>
+                    <li>✓ Learning resources for all ages</li>
+                    <li>✓ Qualified tutors and mentors</li>
+                    <li>✓ Safe and accessible spaces</li>
+                  </>
+                )}
+                {project.category === "health" && (
+                  <>
+                    <li>✓ Professional medical staff</li>
+                    <li>✓ Free or low-cost services</li>
+                    <li>✓ Regular community outreach</li>
+                  </>
+                )}
+                {project.category === "environment" && (
+                  <>
+                    <li>✓ Sustainable solutions</li>
+                    <li>✓ Reduced carbon footprint</li>
+                    <li>✓ Long-term cost savings</li>
+                  </>
+                )}
+                {project.category === "community" && (
+                  <>
+                    <li>✓ Open to all residents</li>
+                    <li>✓ Volunteer-driven operations</li>
+                    <li>✓ Addressing local needs</li>
+                  </>
+                )}
+                {project.category === "arts" && (
+                  <>
+                    <li>✓ Creative expression space</li>
+                    <li>✓ Professional mentorship</li>
+                    <li>✓ Supplies and materials included</li>
+                  </>
+                )}
+                {project.category === "sports" && (
+                  <>
+                    <li>✓ Equipment for all skill levels</li>
+                    <li>✓ Coached training sessions</li>
+                    <li>✓ Building teamwork and fitness</li>
+                  </>
+                )}
                 <li>✓ 100% transparent donation tracking</li>
                 <li>✓ Regular progress updates</li>
-                <li>✓ Community-led decision making</li>
-                <li>✓ Direct local impact</li>
               </ul>
             </div>
           </div>
