@@ -1,7 +1,33 @@
 import { createContext, useCallback, useMemo, useState, useEffect } from "react";
+import { defaultCriteriaMet } from "../data/projectCriteria";
 
 // Create the ProjectsContext
 export const ProjectsContext = createContext(null);
+
+const normalizeProject = (project) => {
+  const createdBy = project.createdBy || null;
+  const ownerId = project.ownerId || createdBy?.id || "";
+  const ownerName = project.ownerName || createdBy?.name || "";
+  const ownerEmail = project.ownerEmail || createdBy?.email || "";
+  const ownerPhone = project.ownerPhone || "";
+  const criteriaMet = {
+    ...defaultCriteriaMet,
+    ...(project.criteriaMet || {}),
+  };
+
+  return {
+    ...project,
+    ownerId,
+    ownerName,
+    ownerEmail,
+    ownerPhone,
+    identityDocument: project.identityDocument || "",
+    verificationStatus: project.verificationStatus || "verified",
+    verificationNotes: project.verificationNotes || "",
+    criteriaMet,
+    fundUsage: Array.isArray(project.fundUsage) ? project.fundUsage : [],
+  };
+};
 
 export function ProjectsProvider({ children }) {
   // State to hold projects fetched from JSON Server
@@ -14,7 +40,7 @@ export function ProjectsProvider({ children }) {
     fetch("http://localhost:3002/projects")
       .then((res) => res.json())
       .then((data) => {
-        setProjects(data);
+        setProjects(data.map(normalizeProject));
         setIsLoading(false);
       })
       .catch((err) => {
@@ -26,7 +52,7 @@ export function ProjectsProvider({ children }) {
   // Add a new project (POST request)
   const addProject = useCallback((project) => {
     const id = `p-${Date.now()}`; // Generate unique ID
-    const newProject = {
+    const newProject = normalizeProject({
       id,
       title: project.title.trim(),
       description: project.description.trim(),
@@ -45,7 +71,16 @@ export function ProjectsProvider({ children }) {
       status: project.goal > 0 ? "active" : "draft",
       createdAt: project.createdAt || new Date().toISOString(),
       createdBy: project.createdBy || null,
-    };
+      ownerId: project.ownerId || project.createdBy?.id || "",
+      ownerName: project.ownerName || project.createdBy?.name || "",
+      ownerEmail: project.ownerEmail || project.createdBy?.email || "",
+      ownerPhone: project.ownerPhone || "",
+      identityDocument: project.identityDocument || "",
+      verificationStatus: project.verificationStatus || "pending",
+      verificationNotes: project.verificationNotes || "",
+      criteriaMet: project.criteriaMet || defaultCriteriaMet,
+      fundUsage: project.fundUsage || [],
+    });
 
     // Send new project to JSON Server
     fetch("http://localhost:3002/projects", {
@@ -67,7 +102,7 @@ export function ProjectsProvider({ children }) {
     const projectToUpdate = projects.find((p) => p.id === id);
     if (!projectToUpdate) return;
 
-    const updatedProject = { ...projectToUpdate, ...updates };
+    const updatedProject = normalizeProject({ ...projectToUpdate, ...updates });
 
     fetch(`http://localhost:3002/projects/${id}`, {
       method: "PUT",
@@ -105,12 +140,12 @@ export function ProjectsProvider({ children }) {
     const isFunded = projectToUpdate.goal && nextAmount >= projectToUpdate.goal;
     const nextStatus = isFunded ? "funded" : "active";
 
-    const updatedProject = {
+    const updatedProject = normalizeProject({
       ...projectToUpdate,
       currentAmount: nextAmount,
       donorCount: donorCount + 1,
       status: nextStatus,
-    };
+    });
 
     fetch(`http://localhost:3002/projects/${id}`, {
       method: "PATCH",

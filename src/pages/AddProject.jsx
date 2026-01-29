@@ -36,6 +36,7 @@ export default function AddProject() {
       return;
     }
 
+    const isAdmin = Boolean(currentUser?.isAdmin);
     const newId = addProject({
       ...values,
       createdAt: new Date().toISOString(),
@@ -46,6 +47,19 @@ export default function AddProject() {
             email: currentUser.email,
           }
         : null,
+      ownerId: currentUser?.id || "",
+      ownerName: currentUser?.name || "",
+      ownerEmail: currentUser?.email || "",
+      ownerPhone: currentUser?.phone || "",
+      verificationStatus: isAdmin ? "verified" : "submitted",
+      verificationNotes: "",
+      criteriaMet: {
+        communityImpact: true,
+        budgetClarity: true,
+        timelineReady: true,
+        stakeholderSupport: true,
+      },
+      fundUsage: [],
     });
     showToast("Project created and ready for donors.", "success");
     reset();
@@ -70,6 +84,16 @@ export default function AddProject() {
     reset();
     setStep(1);
   };
+
+  if (!currentUser) {
+    navigate("/signin");
+    return null;
+  }
+
+  if (!currentUser.isAdmin) {
+    navigate("/submit-project");
+    return null;
+  }
 
   return (
     <div className="page add-project-page">
