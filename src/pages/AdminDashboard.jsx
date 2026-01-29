@@ -6,6 +6,7 @@ import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
 import AdminAccessGuard from "../components/admin/AdminAccessGuard";
 import AdminNavbar from "../components/admin/AdminNavbar";
+import AdminDashboardHeader from "../components/admin/AdminDashboardHeader";
 import AdminSnapshotCard from "../components/admin/AdminSnapshotCard";
 import AdminRecentActivity from "../components/admin/AdminRecentActivity";
 import AdminProjectManagement from "../components/admin/AdminProjectManagement";
@@ -336,16 +337,7 @@ export default function AdminDashboard() {
         <AdminNavbar currentUser={currentUser} onSignOut={signOut} />
 
         <div className="admin-content">
-          <section className="page-header">
-            <div className="admin-header-row">
-              <h1>Admin Dashboard</h1>
-              <span className="admin-role-pill">{currentUser.role}</span>
-            </div>
-            <p>
-              Monitor campaigns, manage approvals, and keep community fundraising on
-              track.
-            </p>
-          </section>
+          <AdminDashboardHeader role={currentUser.role} />
 
           <section className="admin-grid">
             <AdminSnapshotCard
