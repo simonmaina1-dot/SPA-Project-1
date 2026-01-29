@@ -317,7 +317,7 @@ export default function AdminDashboard() {
     return project?.title || "this project";
   };
 
-  if (!currentUser || currentUser.role !== "admin") {
+  if (!currentUser || !currentUser.isAdmin) {
     return (
       <AdminLoginView
         credentials={credentials}

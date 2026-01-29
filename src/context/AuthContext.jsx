@@ -4,11 +4,12 @@ import { seedAdmins, seedUsers } from "../data/seedData";
 export const AuthContext = createContext(null);
 
 const normalizeEmail = (value) => value.trim().toLowerCase();
-const toSafeUser = (user) => ({
+const toSafeUser = (user, overrides = {}) => ({
   id: user.id,
   name: user.name,
   email: user.email,
   role: user.role,
+  ...overrides,
 });
 
 export function AuthProvider({ children }) {
@@ -79,7 +80,7 @@ export function AuthProvider({ children }) {
         return { ok: false, message: "Invalid admin credentials." };
       }
 
-      const safeUser = toSafeUser(user);
+      const safeUser = toSafeUser(user, { isAdmin: true });
       setCurrentUser(safeUser);
       return { ok: true, user: safeUser };
     },
@@ -99,7 +100,7 @@ export function AuthProvider({ children }) {
         return { ok: false, message: "Invalid email or password." };
       }
 
-      const safeUser = toSafeUser(user);
+      const safeUser = toSafeUser(user, { isAdmin: false });
       setCurrentUser(safeUser);
       return { ok: true, user: safeUser };
     },
@@ -155,7 +156,7 @@ export function AuthProvider({ children }) {
           }
         }
 
-        const safeUser = toSafeUser(newAdmin);
+        const safeUser = toSafeUser(newAdmin, { isAdmin: true });
         setCurrentUser(safeUser);
         return { ok: true, user: safeUser };
       }
@@ -184,7 +185,7 @@ export function AuthProvider({ children }) {
         }
       }
 
-      const safeUser = toSafeUser(newUser);
+      const safeUser = toSafeUser(newUser, { isAdmin: false });
       setCurrentUser(safeUser);
       return { ok: true, user: safeUser };
     },
