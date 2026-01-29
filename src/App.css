@@ -761,8 +761,12 @@ body {
 .funding-percentage {
   font-size: 18px;
   font-weight: 500;
-  color: #ffffff;
 }
+
+.funding-percentage .progress-meta {
+  color: var(--color-text-secondary);
+}
+
 
 .funding-bar {
   width: 100%;
