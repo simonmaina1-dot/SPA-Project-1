@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import useProjects from "../hooks/useProjects";
+import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useForm from "../hooks/useForm";
 import Modal from "../components/Modal";
@@ -15,6 +16,7 @@ const donationInitialValues = {
 export default function ProjectDetails() {
   const { projectId } = useParams();
   const { projects, formatCurrency, addDonation } = useProjects();
+  const { getDonationsByProject } = useDonations();
   const { showToast } = useContext(ToastContext);
   
   const project = projects.find((item) => item.id === projectId);
@@ -22,6 +24,7 @@ export default function ProjectDetails() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [isDonorsOpen, setIsDonorsOpen] = useState(false);
   const { values, handleChange, reset } = useForm(donationInitialValues);
 
   const galleryImages = [];
@@ -131,6 +134,13 @@ export default function ProjectDetails() {
   const progress = project.goal
     ? Math.min(100, Math.round((project.currentAmount / project.goal) * 100))
     : 0;
+  const projectDonations = getDonationsByProject(projectId);
+  const sortedDonations = [...projectDonations].sort((a, b) => {
+    if (!a?.createdAt && !b?.createdAt) return 0;
+    if (!a?.createdAt) return 1;
+    if (!b?.createdAt) return -1;
+    return b.createdAt.localeCompare(a.createdAt);
+  });
 
   return (
     <div className="page project-details-page">
@@ -212,13 +222,18 @@ export default function ProjectDetails() {
                 </div>
               </div>
 
-              <div className="meta-card">
+              <button
+                type="button"
+                className="meta-card meta-card-button"
+                onClick={() => setIsDonorsOpen(true)}
+              >
                 <div className="meta-icon">👥</div>
                 <div className="meta-content">
                   <span className="meta-label">Total Donors</span>
                   <span className="meta-value">{project.donorCount || 0}</span>
+                  <span className="meta-hint">View donors</span>
                 </div>
-              </div>
+              </button>
 
               <div className="meta-card">
                 <div className="meta-icon">
@@ -436,6 +451,49 @@ export default function ProjectDetails() {
             </label>
           </div>
         </form>
+      </Modal>
+
+      <Modal
+        isOpen={isDonorsOpen}
+        onClose={() => setIsDonorsOpen(false)}
+        title="Donor list"
+        footer={
+          <div className="modal-actions">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setIsDonorsOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+        }
+      >
+        <div className="donor-list">
+          {sortedDonations.length === 0 ? (
+            <p className="donor-empty">No donations yet.</p>
+          ) : (
+            <ul className="donor-rows">
+              {sortedDonations.map((donation) => (
+                <li key={donation.id} className="donor-row">
+                  <div>
+                    <p className="donor-name">
+                      {donation.donorName?.trim() || "Anonymous"}
+                    </p>
+                    <p className="donor-meta">
+                      {donation.createdAt
+                        ? new Date(donation.createdAt).toLocaleDateString()
+                        : "Date unavailable"}
+                    </p>
+                  </div>
+                  <div className="donor-amount">
+                    {formatCurrency(donation.amount || 0)}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </Modal>
     </div>
   );
