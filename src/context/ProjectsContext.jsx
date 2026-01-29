@@ -193,8 +193,10 @@ export function ProjectsProvider({ children }) {
 
   // Get top 3 featured projects based on progress (only verified projects)
   const getFeaturedProjects = useCallback(() => {
-    const approvedProjects = projects.filter((p) => p.verificationStatus === "verified");
-    const sorted = [...approvedProjects].sort((a, b) => {
+    const visibleProjects = projects.filter(
+      (project) => project.verificationStatus === "verified"
+    );
+    const sorted = [...visibleProjects].sort((a, b) => {
       const aProgress = a.goal ? a.currentAmount / a.goal : 0;
       const bProgress = b.goal ? b.currentAmount / b.goal : 0;
       return bProgress - aProgress;
