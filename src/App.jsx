@@ -6,6 +6,7 @@ import AddProject from "./pages/AddProject";
 import ProjectDetails from "./pages/ProjectDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import Donate from "./pages/Donate";
+import AccountAccess from "./pages/AccountAccess";
 import "./App.css";
 
 function NotFound() {
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/add" element={<AddProject />} />
           <Route path="/projects/:projectId" element={<ProjectDetails />} />
           <Route path="/donate/:projectId" element={<Donate />} />
+          <Route path="/account" element={<AccountAccess />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<NotFound />} />
