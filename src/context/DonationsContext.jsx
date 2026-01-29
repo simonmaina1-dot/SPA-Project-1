@@ -3,8 +3,15 @@ import { seedDonations } from "../data/seedData";
 
 export const DonationsContext = createContext(null);
 
+const normalizeDonation = (donation) => ({
+  ...donation,
+  source: donation.source || donation.method || "card",
+});
+
 export function DonationsProvider({ children }) {
-  const [donations, setDonations] = useState(seedDonations);
+  const [donations, setDonations] = useState(
+    seedDonations.map(normalizeDonation)
+  );
   const [apiAvailable, setApiAvailable] = useState(false);
 
   useEffect(() => {
@@ -15,12 +22,12 @@ export function DonationsProvider({ children }) {
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
-        setDonations(data);
+        setDonations(data.map(normalizeDonation));
         setApiAvailable(true);
       } catch (err) {
         console.warn("Using local seed donations.", err);
         if (!isActive) return;
-        setDonations(seedDonations);
+        setDonations(seedDonations.map(normalizeDonation));
         setApiAvailable(false);
       }
     };
@@ -33,7 +40,7 @@ export function DonationsProvider({ children }) {
 
   // Add a new donation (POST to JSON Server)
   const addDonation = useCallback(async (donation) => {
-    const newDonation = {
+    const newDonation = normalizeDonation({
       id: `d-${Date.now()}`,
       projectId: donation.projectId,
       projectTitle: donation.projectTitle,
@@ -41,8 +48,9 @@ export function DonationsProvider({ children }) {
       donorEmail: donation.donorEmail?.trim() || "",
       amount: Number(donation.amount) || 0,
       message: donation.message?.trim() || "",
+      source: donation.source || donation.method || "card",
       createdAt: new Date().toISOString(),
-    };
+    });
 
     setDonations((prev) => [newDonation, ...prev]);
 
