@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import useFeedback from "../hooks/useFeedback";
+import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
 import Modal from "../components/Modal";
@@ -15,6 +16,7 @@ export default function AdminDashboard() {
     removeProject,
   } = useProjects();
   const { feedbackList, updateFeedbackStatus, removeFeedback } = useFeedback();
+  const { donations, getRecentDonations } = useDonations();
   const { showToast } = useContext(ToastContext);
   const { currentUser, signIn, signOut } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
@@ -105,6 +107,51 @@ export default function AdminDashboard() {
       reviewQueue,
     };
   }, [projects]);
+
+  // Calculate top donors (repeat donors with highest total contributions)
+  const donorMetrics = useMemo(() => {
+    const donorMap = {};
+
+    donations.forEach((donation) => {
+      const email = donation.donorEmail?.toLowerCase() || "";
+      const name = donation.donorName || "Anonymous";
+
+      // Skip anonymous donations for tracking
+      if (!email || name === "Anonymous") return;
+
+      if (!donorMap[email]) {
+        donorMap[email] = {
+          name,
+          email,
+          totalAmount: 0,
+          donationCount: 0,
+          lastDonation: donation.createdAt,
+        };
+      }
+
+      donorMap[email].totalAmount += donation.amount || 0;
+      donorMap[email].donationCount += 1;
+      if (donation.createdAt > donorMap[email].lastDonation) {
+        donorMap[email].lastDonation = donation.createdAt;
+      }
+    });
+
+    const allDonors = Object.values(donorMap);
+    const topDonors = [...allDonors]
+      .sort((a, b) => b.totalAmount - a.totalAmount)
+      .slice(0, 10);
+
+    const repeatDonors = allDonors.filter((d) => d.donationCount > 1);
+    const uniqueDonorCount = allDonors.length;
+    const repeatDonorCount = repeatDonors.length;
+
+    return {
+      topDonors,
+      repeatDonors,
+      uniqueDonorCount,
+      repeatDonorCount,
+    };
+  }, [donations]);
 
   useEffect(() => {
     if (!projects.length) {
@@ -1041,6 +1088,58 @@ export default function AdminDashboard() {
             </div>
           </article>
         </div>
+
+        <article className="admin-card admin-card-wide">
+          <div className="admin-section-header">
+            <div>
+              <h3>Top Donors</h3>
+              <p className="admin-card-subtitle">
+                {donorMetrics.uniqueDonorCount} unique donors • {donorMetrics.repeatDonorCount} repeat donors
+              </p>
+            </div>
+          </div>
+          <div className="admin-table-container">
+            {donorMetrics.topDonors.length === 0 ? (
+              <p className="admin-empty">No donor data yet.</p>
+            ) : (
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Donor</th>
+                    <th>Total Donated</th>
+                    <th>Donations</th>
+                    <th>Last Donation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {donorMetrics.topDonors.map((donor) => (
+                    <tr key={donor.email}>
+                      <td className="admin-table-title">
+                        <div>
+                          <p>{donor.name}</p>
+                          <span className="admin-row-meta">{donor.email}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <strong>{formatCurrency(donor.totalAmount)}</strong>
+                      </td>
+                      <td>
+                        {donor.donationCount > 1 ? (
+                          <span className="admin-pill">{donor.donationCount}x</span>
+                        ) : (
+                          donor.donationCount
+                        )}
+                      </td>
+                      <td className="admin-row-meta">
+                        {new Date(donor.lastDonation).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </article>
 
         <article className="admin-card admin-card-wide">
           <div className="admin-section-header">
