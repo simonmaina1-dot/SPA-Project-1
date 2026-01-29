@@ -12,6 +12,27 @@ const toSafeUser = (user, overrides = {}) => ({
   ...overrides,
 });
 
+function useAuthValue({
+  currentUser,
+  signInAdmin,
+  signInUser,
+  registerAccount,
+  switchRole,
+  signOut,
+}) {
+  return useMemo(
+    () => ({
+      currentUser,
+      signInAdmin,
+      signInUser,
+      registerAccount,
+      switchRole,
+      signOut,
+    }),
+    [currentUser, signInAdmin, signInUser, registerAccount, switchRole, signOut]
+  );
+}
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [adminUsers, setAdminUsers] = useState(seedAdmins);
@@ -217,17 +238,14 @@ export function AuthProvider({ children }) {
     setCurrentUser(null);
   }, []);
 
-  const value = useMemo(
-    () => ({
-      currentUser,
-      signInAdmin,
-      signInUser,
-      registerAccount,
-      switchRole,
-      signOut,
-    }),
-    [currentUser, signInAdmin, signInUser, registerAccount, switchRole, signOut]
-  );
+  const value = useAuthValue({
+    currentUser,
+    signInAdmin,
+    signInUser,
+    registerAccount,
+    switchRole,
+    signOut,
+  });
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
