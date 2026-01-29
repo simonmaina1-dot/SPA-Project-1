@@ -2179,6 +2179,10 @@ body {
   padding-top: 72px;
 }
 
+.main-content--flush {
+  padding-top: 0;
+}
+
 /* Mobile Responsive Navbar */
 @media (max-width: 768px) {
   .navbar {
@@ -2511,6 +2515,121 @@ body {
   display: flex;
   gap: 12px;
   margin-top: 20px;
+}
+
+.submit-project-page .page-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 0;
+}
+
+.submit-project-wrapper {
+  max-width: 1100px;
+  margin: 32px auto 0;
+  display: grid;
+  gap: 24px;
+}
+
+.submit-steps {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.submit-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.submit-step.active {
+  border-color: var(--color-primary);
+  color: var(--color-text);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.submit-step-index {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(29, 185, 84, 0.12);
+  color: var(--color-primary);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+}
+
+.submit-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  padding: 24px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+}
+
+.submit-section h2 {
+  margin-top: 0;
+}
+
+.submit-hint {
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+}
+
+.criteria-section {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px dashed var(--color-border);
+  background: var(--color-bg);
+}
+
+.criteria-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.criteria-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.submit-review .review-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.review-label {
+  margin: 0;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+
+.review-value {
+  margin: 4px 0 0;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.review-block {
+  grid-column: 1 / -1;
+}
+
+.submit-actions {
+  justify-content: flex-end;
 }
 
 .user-dashboard-page .page-header {
