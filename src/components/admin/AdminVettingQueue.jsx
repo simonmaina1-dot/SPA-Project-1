@@ -5,7 +5,7 @@ const statusLabels = {
   pending: "Pending",
   submitted: "Submitted",
   under_review: "Under review",
-  verified: "Verified",
+  verified: "Reviewed",
   rejected: "Rejected",
 };
 
@@ -98,7 +98,7 @@ export default function AdminVettingQueue({
 
     const message =
       nextStatus === "verified"
-        ? "Project verified and published."
+        ? "Project reviewed and published."
         : nextStatus === "rejected"
           ? "Submission rejected with notes sent."
           : "Vetting status updated.";
@@ -232,7 +232,7 @@ export default function AdminVettingQueue({
                     className="btn btn-primary"
                     onClick={() => handleAction(project, "verified")}
                   >
-                    Verify
+                    Mark reviewed
                   </button>
                   <button
                     type="button"

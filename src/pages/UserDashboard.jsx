@@ -1,5 +1,6 @@
 import { useContext, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import ProjectCard from "../components/ProjectCard";
 import useAuth from "../hooks/useAuth";
 import useDonations from "../hooks/useDonations";
 import useProjects from "../hooks/useProjects";
@@ -21,6 +22,7 @@ export default function UserDashboard() {
   const { donations } = useDonations();
   const { projects, formatCurrency, updateProject } = useProjects();
   const { showToast } = useContext(ToastContext);
+  const [dashboardView, setDashboardView] = useState("user");
   const [usageDrafts, setUsageDrafts] = useState({});
   const buildUsageDraft = useMemo(
     () => () => ({
@@ -98,6 +100,24 @@ export default function UserDashboard() {
       .slice(0, 6);
   }, [myDonations, myProjects]);
 
+  const verifiedProjects = useMemo(
+    () => projects.filter((project) => project.verificationStatus === "verified"),
+    [projects]
+  );
+
+  const verifiedStats = useMemo(() => {
+    const totalRaised = verifiedProjects.reduce(
+      (sum, project) => sum + (project.currentAmount || 0),
+      0
+    );
+    const donorCount = verifiedProjects.reduce(
+      (sum, project) => sum + (project.donorCount || 0),
+      0
+    );
+
+    return { totalRaised, donorCount };
+  }, [verifiedProjects]);
+
   const updateUsageDraft = (projectId, field, value) => {
     setUsageDrafts((prev) => ({
       ...prev,
@@ -135,10 +155,56 @@ export default function UserDashboard() {
   return (
     <div className="page user-dashboard-page">
       <section className="page-header">
-        <h1>Your dashboard</h1>
+        <h1>{dashboardView === "donor" ? "Donor dashboard" : "Your dashboard"}</h1>
         <p>Welcome back, {currentUser.name}.</p>
+        <div className="dashboard-toggle">
+          <button
+            type="button"
+            className={`btn btn-secondary btn-small${dashboardView === "user" ? " active" : ""}`}
+            onClick={() => setDashboardView("user")}
+          >
+            My account
+          </button>
+          <button
+            type="button"
+            className={`btn btn-secondary btn-small${dashboardView === "donor" ? " active" : ""}`}
+            onClick={() => setDashboardView("donor")}
+          >
+            Donor dashboard
+          </button>
+          <button type="button" className="btn btn-secondary btn-small" onClick={signOut}>
+            Sign out
+          </button>
+        </div>
       </section>
 
+      {dashboardView === "donor" ? (
+        <div className="user-dashboard-grid">
+      <section className="user-card user-card-wide">
+        <div className="user-card-header">
+          <div>
+            <h2>Verified projects</h2>
+            <p className="user-card-subtitle">
+              {verifiedProjects.length} reviewed projects ·{" "}
+              {formatCurrency(verifiedStats.totalRaised)} raised
+            </p>
+          </div>
+        </div>
+
+        {verifiedProjects.length ? (
+          <div className="donor-projects-grid">
+            {verifiedProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        ) : (
+          <p className="user-empty">
+            No reviewed projects yet. Check back soon.
+          </p>
+        )}
+      </section>
+        </div>
+      ) : (
       <div className="user-dashboard-grid">
         <section className="user-card">
           <div className="user-card-header">
@@ -388,13 +454,9 @@ export default function UserDashboard() {
             <p className="user-empty">No recent activity yet.</p>
           )}
 
-          <div className="user-card-actions">
-            <button type="button" className="btn btn-secondary" onClick={signOut}>
-              Sign out
-            </button>
-          </div>
         </section>
       </div>
+      )}
     </div>
   );
 }
