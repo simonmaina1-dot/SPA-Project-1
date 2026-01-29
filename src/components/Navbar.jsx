@@ -133,10 +133,10 @@ export default function Navbar() {
             </Link>
           ) : (
             <>
-              <Link to="/account#signup" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
+              <Link to="/signup" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
                 Sign up
               </Link>
-              <Link to="/account#signin" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
+              <Link to="/signin" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
                 Sign in
               </Link>
               <Link to="/dashboard" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
