@@ -9,12 +9,10 @@ export function ProjectsProvider({ children }) {
   // Use localStorage to persist projects across page refreshes
   const [storedProjects, setStoredProjects] = useLocalStorage("cdh-projects", null);
   
+  // State to hold projects (initialize from localStorage or seed data)
   const [projects, setProjects] = useState(storedProjects || seedProjects);
-  // State to hold projects fetched from JSON Server
-  const [projects, setProjects] = useState([]);
   // State to track loading status
   const [isLoading, setIsLoading] = useState(true);
-  const [apiAvailable, setApiAvailable] = useState(false);
 
   // Sync projects to localStorage whenever they change
   useEffect(() => {
