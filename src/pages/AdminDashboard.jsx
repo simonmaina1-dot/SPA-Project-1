@@ -2,6 +2,8 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import useFeedback from "../hooks/useFeedback";
+import useForm from "../hooks/useForm";
+import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
 import Modal from "../components/Modal";
@@ -14,7 +16,9 @@ export default function AdminDashboard() {
     addProject,
     removeProject,
   } = useProjects();
-  const { feedbackList, updateFeedbackStatus, removeFeedback } = useFeedback();
+  const { feedbackList, addFeedback, updateFeedbackStatus, removeFeedback } =
+    useFeedback();
+  const { donations, getRecentDonations, addDonation } = useDonations();
   const { showToast } = useContext(ToastContext);
   const { currentUser, signIn, signOut } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,7 +36,6 @@ export default function AdminDashboard() {
   });
   const [viewMode, setViewMode] = useState("add");
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
-  const [deleteFeedbackId, setDeleteFeedbackId] = useState(null);
   const [newProject, setNewProject] = useState({
     title: "",
     description: "",
@@ -41,6 +44,23 @@ export default function AdminDashboard() {
     imageUrl: "",
     galleryUrls: "",
   });
+  const {
+    values: donorValues,
+    handleChange: handleDonorChange,
+    reset: resetDonorForm,
+    setFieldValue: setDonorFieldValue,
+  } = useForm({
+    donorName: "",
+    donorEmail: "",
+    projectId: "",
+    amount: "",
+    message: "",
+  });
+  const {
+    values: feedbackValues,
+    handleChange: handleFeedbackChange,
+    reset: resetFeedback,
+  } = useForm({ name: "", email: "", message: "" });
 
   const metrics = useMemo(() => {
     const totalRaised = projects.reduce(
@@ -149,6 +169,10 @@ export default function AdminDashboard() {
   const handleApprove = (projectId) => {
     updateProject(projectId, { status: "active" });
     showToast("Project approved and back to active status.", "success");
+  };
+
+  const handleReminder = (projectTitle) => {
+    showToast(`Reminder sent to ${projectTitle}.`, "info");
   };
 
   const handleChange = (event) => {
@@ -264,6 +288,65 @@ export default function AdminDashboard() {
     return project?.title || "this project";
   };
 
+  const handleFeedbackSubmit = (event) => {
+    event.preventDefault();
+    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
+      showToast("Please add a name and message.", "warning");
+      return;
+    }
+    addFeedback(feedbackValues);
+    showToast("Feedback logged.", "success");
+    resetFeedback();
+  };
+
+  useEffect(() => {
+    if (!projects.length || donorValues.projectId) {
+      return;
+    }
+    setDonorFieldValue("projectId", projects[0].id);
+  }, [projects, donorValues.projectId, setDonorFieldValue]);
+
+  const handleDonorSubmit = (event) => {
+    event.preventDefault();
+    if (!donorValues.donorName.trim() || !donorValues.amount) {
+      showToast("Add a donor name and amount.", "warning");
+      return;
+    }
+
+    const project = projects.find((item) => item.id === donorValues.projectId);
+    if (!project) {
+      showToast("Select a project to attribute the donation.", "warning");
+      return;
+    }
+
+    const amount = Number(donorValues.amount);
+    if (!amount || amount <= 0) {
+      showToast("Enter a valid donation amount.", "warning");
+      return;
+    }
+
+    addDonation({
+      projectId: project.id,
+      projectTitle: project.title,
+      donorName: donorValues.donorName,
+      donorEmail: donorValues.donorEmail,
+      amount,
+      message: donorValues.message,
+    });
+
+    updateProject(project.id, {
+      currentAmount: (project.currentAmount || 0) + amount,
+      donorCount: (project.donorCount || 0) + 1,
+      status:
+        project.goal && (project.currentAmount || 0) + amount >= project.goal
+          ? "funded"
+          : project.status || "active",
+    });
+
+    showToast("Donor record added.", "success");
+    resetDonorForm();
+  };
+
   if (!currentUser) {
     return (
       <div className="page admin-page">
@@ -314,67 +397,10 @@ export default function AdminDashboard() {
                   />
                   <button
                     type="button"
-                    className="password-toggle"
+                    className="btn btn-secondary password-toggle"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                    title={showPassword ? "Hide password" : "Show password"}
                   >
-                    {showPassword ? (
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M3 3l18 18"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M10.5 10.5a2.5 2.5 0 003 3"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M6.5 6.5A10.5 10.5 0 002 12c2.1 3.6 5.7 6 10 6 1.5 0 2.9-.3 4.2-.8"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M9.8 5.4A9.7 9.7 0 0112 5c4.3 0 7.9 2.4 10 7-1 1.7-2.2 3.1-3.7 4.1"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    ) : (
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M2 12c2.2-4 5.8-6.5 10-6.5S19.8 8 22 12c-2.2 4-5.8 6.5-10 6.5S4.2 16 2 12z"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="3.5"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                        />
-                      </svg>
-                    )}
-                    <span className="sr-only">
-                      {showPassword ? "Hide password" : "Show password"}
-                    </span>
+                    {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
               </label>
@@ -427,7 +453,7 @@ export default function AdminDashboard() {
         </section>
 
         <section className="admin-grid">
-        <article className="admin-card admin-card-snapshot">
+        <article className="admin-card admin-card-wide admin-card-snapshot">
           <h3>Platform snapshot</h3>
           <div className="admin-stats">
             <div className="admin-stat">
@@ -460,41 +486,6 @@ export default function AdminDashboard() {
               </span>
               <span className="admin-stat-label">Remaining need</span>
             </div>
-          </div>
-        </article>
-
-        <article className="admin-card admin-card-activity">
-          <h3>Recent activity</h3>
-          <div className="admin-timeline">
-            {projects
-              .filter(
-                (project) =>
-                  !["Community Solar Garden", "Mobile Health Clinic"].includes(
-                    project.title
-                  )
-              )
-              .slice(0, 5)
-              .map((project, index) => (
-              <div key={project.id} className="admin-activity">
-                <span className="admin-activity-dot" />
-                <div>
-                  <p className="admin-row-title">
-                    {project.title} received a donation
-                  </p>
-                  <span className="admin-row-meta">
-                    {formatCurrency(Math.round((project.currentAmount || 0) / 4))} -{" "}
-                    {project.category}
-                  </span>
-                  <span className="admin-activity-time">
-                    {index === 0
-                      ? "Just now"
-                      : index === 1
-                        ? "Today"
-                        : "This week"}
-                  </span>
-                </div>
-              </div>
-              ))}
           </div>
         </article>
 
@@ -888,159 +879,307 @@ export default function AdminDashboard() {
           </p>
         </Modal>
 
-        <div className="admin-insights-grid admin-card-wide">
-          <article className="admin-card">
-            <h3>Funding health</h3>
-            <p className="admin-card-subtitle">
-              Track platform-wide progress toward the full fundraising goal.
-            </p>
-            <div className="admin-health">
-              <div className="admin-health-header">
-                <span className="admin-health-value">
-                  {Math.min(100, Math.round(metrics.completion * 100))}%
-                </span>
-                <span className="admin-health-label">of total goal funded</span>
+        <article className="admin-card">
+          <h3>Funding health</h3>
+          <p className="admin-card-subtitle">
+            Track platform-wide progress toward the full fundraising goal.
+          </p>
+          <div className="admin-health">
+            <div className="admin-health-header">
+              <span className="admin-health-value">
+                {Math.min(100, Math.round(metrics.completion * 100))}%
+              </span>
+              <span className="admin-health-label">of total goal funded</span>
+            </div>
+            <div className="progress-bar large">
+              <div
+                className="progress-fill"
+                style={{
+                  width: `${Math.min(100, Math.round(metrics.completion * 100))}%`,
+                }}
+              />
+            </div>
+            <div className="admin-health-meta">
+              <span>{formatCurrency(metrics.totalRaised)} raised</span>
+              <span>{formatCurrency(metrics.totalGoal)} goal</span>
+            </div>
+          </div>
+          <div className="admin-health-grid">
+            <div className="admin-health-card">
+              <span className="admin-health-title">Average donation</span>
+              <span className="admin-health-stat">
+                {formatCurrency(metrics.averageDonation)}
+              </span>
+            </div>
+            <div className="admin-health-card">
+              <span className="admin-health-title">Active campaigns</span>
+              <span className="admin-health-stat">{metrics.activeCount}</span>
+            </div>
+          </div>
+        </article>
+
+        <article className="admin-card">
+          <h3>Category focus</h3>
+          <p className="admin-card-subtitle">
+            Where new projects are concentrated this cycle.
+          </p>
+          <div className="admin-breakdown">
+            {metrics.categoryBreakdown.length === 0 && (
+              <p className="admin-empty">No project categories yet.</p>
+            )}
+            {metrics.categoryBreakdown.map((item) => (
+              <div key={item.category} className="admin-breakdown-row">
+                <div className="admin-breakdown-label">
+                  <span className="admin-row-title">
+                    {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                  </span>
+                  <span className="admin-row-meta">{item.count} projects</span>
+                </div>
+                <div className="admin-breakdown-bar">
+                  <div
+                    className="admin-breakdown-fill"
+                    style={{
+                      width: `${(item.count / metrics.maxCategoryCount) * 100}%`,
+                    }}
+                  />
+                </div>
               </div>
-              <div className="progress-bar large">
-                <div
-                  className="progress-fill"
-                  style={{
-                    width: `${Math.min(100, Math.round(metrics.completion * 100))}%`,
-                  }}
+            ))}
+          </div>
+        </article>
+
+        <article className="admin-card">
+          <h3>Review queue</h3>
+          <p className="admin-card-subtitle">
+            {metrics.reviewQueue.length > 0
+              ? `${metrics.reviewQueue.length} project(s) flagged for review.`
+              : "No projects flagged. Quick check-in list below."}
+          </p>
+          <div className="admin-list">
+            {reviewList.map((project) => (
+              <div key={project.id} className="admin-row">
+                <div>
+                  <p className="admin-row-title">{project.title}</p>
+                  <span className="admin-row-meta">
+                    {project.category} - {project.donorCount || 0} donors
+                  </span>
+                </div>
+                <div className="admin-row-actions">
+                  {project.status === "review" ? (
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => handleApprove(project.id)}
+                    >
+                      Approve
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => handleFlag(project.id)}
+                    >
+                      Flag
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="admin-card">
+          <h3>Needs attention</h3>
+          <p className="admin-card-subtitle">
+            Projects below 40% funded that may need outreach.
+          </p>
+          <div className="admin-list">
+            {metrics.needsAttention.length === 0 && (
+              <p className="admin-empty">All projects are tracking well.</p>
+            )}
+            {metrics.needsAttention.map((project) => (
+              <div key={project.id} className="admin-row">
+                <div>
+                  <p className="admin-row-title">{project.title}</p>
+                  <span className="admin-row-meta">
+                    {project.progress}% funded - {formatCurrency(project.currentAmount)} of{" "}
+                    {formatCurrency(project.goal)}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => handleReminder(project.title)}
+                >
+                  Send reminder
+                </button>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="admin-card">
+          <h3>Top performers</h3>
+          <p className="admin-card-subtitle">
+            Highest funded campaigns right now.
+          </p>
+          <div className="admin-list">
+            {metrics.topProjects.map((project) => (
+              <div key={project.id} className="admin-row">
+                <div>
+                  <p className="admin-row-title">{project.title}</p>
+                  <span className="admin-row-meta">
+                    {formatCurrency(project.currentAmount)} raised
+                  </span>
+                </div>
+                <span className="admin-pill">{project.progress}% funded</span>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="admin-card admin-card-wide">
+          <h3>Recent activity</h3>
+          <div className="admin-timeline">
+            {projects.map((project, index) => (
+              <div key={project.id} className="admin-activity">
+                <span className="admin-activity-dot" />
+                <div>
+                  <p className="admin-row-title">
+                    {project.title} received a donation
+                  </p>
+                  <span className="admin-row-meta">
+                    {formatCurrency(Math.round((project.currentAmount || 0) / 4))} -{" "}
+                    {project.category}
+                  </span>
+                  <span className="admin-activity-time">
+                    {index === 0
+                      ? "Just now"
+                      : index === 1
+                        ? "Today"
+                        : "This week"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="admin-card admin-card-wide">
+          <div className="admin-section-header">
+            <div>
+              <h3>Donor Records</h3>
+              <p className="admin-card-subtitle">
+                Recent donations and donor information.
+              </p>
+            </div>
+            <span className="admin-badge">{donations.length} total</span>
+          </div>
+          <form className="admin-donor-form form-card" onSubmit={handleDonorSubmit}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Donor name</span>
+                <input
+                  type="text"
+                  name="donorName"
+                  value={donorValues.donorName}
+                  onChange={handleDonorChange}
+                  placeholder="Donor name"
+                  required
                 />
-              </div>
-              <div className="admin-health-meta">
-                <span>{formatCurrency(metrics.totalRaised)} raised</span>
-                <span>{formatCurrency(metrics.totalGoal)} goal</span>
-              </div>
+              </label>
+              <label className="form-field">
+                <span className="form-label">Email</span>
+                <input
+                  type="email"
+                  name="donorEmail"
+                  value={donorValues.donorEmail}
+                  onChange={handleDonorChange}
+                  placeholder="donor@email.com"
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Project</span>
+                <select
+                  name="projectId"
+                  value={donorValues.projectId}
+                  onChange={handleDonorChange}
+                  required
+                >
+                  {projects.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="form-field">
+                <span className="form-label">Amount (KSh)</span>
+                <input
+                  type="number"
+                  name="amount"
+                  value={donorValues.amount}
+                  onChange={handleDonorChange}
+                  min="1"
+                  placeholder="500"
+                  required
+                />
+              </label>
+              <label className="form-field form-field-wide">
+                <span className="form-label">Message</span>
+                <textarea
+                  name="message"
+                  value={donorValues.message}
+                  onChange={handleDonorChange}
+                  rows="3"
+                  placeholder="Optional note from the donor"
+                />
+              </label>
             </div>
-            <div className="admin-health-grid">
-              <div className="admin-health-card">
-                <span className="admin-health-title">Average donation</span>
-                <span className="admin-health-stat">
-                  {formatCurrency(metrics.averageDonation)}
-                </span>
-              </div>
-              <div className="admin-health-card">
-                <span className="admin-health-title">Active campaigns</span>
-                <span className="admin-health-stat">{metrics.activeCount}</span>
-              </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Add donor
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => resetDonorForm()}
+              >
+                Clear
+              </button>
             </div>
-          </article>
-
-          <article className="admin-card">
-            <h3>Category focus</h3>
-            <p className="admin-card-subtitle">
-              Where new projects are concentrated this cycle.
-            </p>
-            <div className="admin-breakdown">
-              {metrics.categoryBreakdown.length === 0 && (
-                <p className="admin-empty">No project categories yet.</p>
-              )}
-              {metrics.categoryBreakdown.map((item) => (
-                <div key={item.category} className="admin-breakdown-row">
-                  <div className="admin-breakdown-label">
-                    <span className="admin-row-title">
-                      {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
-                    </span>
-                    <span className="admin-row-meta">{item.count} projects</span>
-                  </div>
-                  <div className="admin-breakdown-bar">
-                    <div
-                      className="admin-breakdown-fill"
-                      style={{
-                        width: `${(item.count / metrics.maxCategoryCount) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="admin-card">
-            <h3>Review queue</h3>
-            <p className="admin-card-subtitle">
-              {metrics.reviewQueue.length > 0
-                ? `${metrics.reviewQueue.length} project(s) flagged for review.`
-                : "No projects flagged. Quick check-in list below."}
-            </p>
-            <div className="admin-list">
-              {reviewList.map((project) => (
-                <div key={project.id} className="admin-row">
-                  <div>
-                    <p className="admin-row-title">{project.title}</p>
-                    <span className="admin-row-meta">
-                      {project.category} - {project.donorCount || 0} donors
-                    </span>
-                  </div>
-                  <div className="admin-row-actions">
-                    {project.status === "review" ? (
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={() => handleApprove(project.id)}
-                      >
-                        Approve
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={() => handleFlag(project.id)}
-                      >
-                        Flag
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="admin-card admin-card-stretch">
-            <h3>Needs attention</h3>
-            <p className="admin-card-subtitle">
-              Projects below 40% funded that may need outreach.
-            </p>
-            <div className="admin-list">
-              {metrics.needsAttention.length === 0 && (
-                <p className="admin-empty">All projects are tracking well.</p>
-              )}
-              {metrics.needsAttention.map((project) => (
-                <div key={project.id} className="admin-row">
-                  <div>
-                    <p className="admin-row-title">{project.title}</p>
-                    <span className="admin-row-meta">
-                      {project.progress}% funded - {formatCurrency(project.currentAmount)} of{" "}
-                      {formatCurrency(project.goal)}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="admin-card admin-card-stretch">
-            <h3>Top performers</h3>
-            <p className="admin-card-subtitle">
-              Highest funded campaigns right now.
-            </p>
-            <div className="admin-list">
-              {metrics.topProjects.map((project) => (
-                <div key={project.id} className="admin-row">
-                  <div>
-                    <p className="admin-row-title">{project.title}</p>
-                    <span className="admin-row-meta">
-                      {formatCurrency(project.currentAmount)} raised
-                    </span>
-                  </div>
-                  <span className="admin-pill">{project.progress}% funded</span>
-                </div>
-              ))}
-            </div>
-          </article>
-        </div>
+          </form>
+          <div className="admin-table-container">
+            {donations.length === 0 ? (
+              <p className="admin-empty">No donations recorded yet.</p>
+            ) : (
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Donor</th>
+                    <th>Email</th>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getRecentDonations(10).map((donation) => (
+                    <tr key={donation.id}>
+                      <td className="admin-table-title">{donation.donorName}</td>
+                      <td>{donation.donorEmail || "—"}</td>
+                      <td>{donation.projectTitle}</td>
+                      <td>{formatCurrency(donation.amount)}</td>
+                      <td className="admin-row-meta">
+                        {new Date(donation.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </article>
 
         <article className="admin-card admin-card-wide">
           <div className="admin-section-header">
@@ -1050,7 +1189,58 @@ export default function AdminDashboard() {
                 Community suggestions and feedback submissions.
               </p>
             </div>
+            <span className="admin-badge">
+              {feedbackList.filter((f) => f.status === "new").length} new
+            </span>
           </div>
+          <form className="admin-feedback-form form-card" onSubmit={handleFeedbackSubmit}>
+            <div className="form-grid">
+              <label className="form-field">
+                <span className="form-label">Name</span>
+                <input
+                  type="text"
+                  name="name"
+                  value={feedbackValues.name}
+                  onChange={handleFeedbackChange}
+                  placeholder="Visitor name"
+                  required
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  value={feedbackValues.email}
+                  onChange={handleFeedbackChange}
+                  placeholder="email@example.com"
+                />
+              </label>
+              <label className="form-field form-field-wide">
+                <span className="form-label">Message</span>
+                <textarea
+                  name="message"
+                  value={feedbackValues.message}
+                  onChange={handleFeedbackChange}
+                  rows="3"
+                  placeholder="Feedback summary"
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                Log feedback
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => resetFeedback()}
+              >
+                Clear
+              </button>
+            </div>
+          </form>
           <div className="admin-feedback-list">
             {feedbackList.length === 0 ? (
               <p className="admin-empty">No feedback received yet.</p>
@@ -1062,9 +1252,14 @@ export default function AdminDashboard() {
                       <p className="admin-row-title">{feedback.name}</p>
                       <span className="admin-row-meta">{feedback.email}</span>
                     </div>
-                    <span className="admin-row-meta">
-                      {new Date(feedback.createdAt).toLocaleDateString()}
-                    </span>
+                    <div className="admin-feedback-meta">
+                      <span className={`status-pill status-${feedback.status === "new" ? "active" : "funded"}`}>
+                        {feedback.status}
+                      </span>
+                      <span className="admin-row-meta">
+                        {new Date(feedback.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                   <p className="admin-feedback-message">{feedback.message}</p>
                   <div className="admin-feedback-actions">
