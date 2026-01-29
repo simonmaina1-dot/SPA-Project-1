@@ -1,14 +1,25 @@
-
 import { createContext, useCallback, useMemo, useState, useEffect } from "react";
+import { seedProjects } from "../data/seedData";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 // Create the ProjectsContext
 export const ProjectsContext = createContext(null);
 
 export function ProjectsProvider({ children }) {
+  // Use localStorage to persist projects across page refreshes
+  const [storedProjects, setStoredProjects] = useLocalStorage("cdh-projects", null);
+  
+  const [projects, setProjects] = useState(storedProjects || seedProjects);
   // State to hold projects fetched from JSON Server
   const [projects, setProjects] = useState([]);
   // State to track loading status
   const [isLoading, setIsLoading] = useState(true);
+  const [apiAvailable, setApiAvailable] = useState(false);
+
+  // Sync projects to localStorage whenever they change
+  useEffect(() => {
+    setStoredProjects(projects);
+  }, [projects, setStoredProjects]);
 
   // Fetch projects from JSON Server when component mounts
   useEffect(() => {
@@ -163,3 +174,4 @@ export function ProjectsProvider({ children }) {
     </ProjectsContext.Provider>
   );
 }
+

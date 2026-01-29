@@ -1,37 +1,44 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from "react";
-import { seedAdmins } from "../data/seedData";
+import { createContext, useCallback, useMemo } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
+
+const adminUsers = [
+  {
+    id: "owner-simon",
+    name: "Simon Maina",
+    email: "mainawaititu2021@gmail.com",
+    password: "simon-2026",
+    role: "CEO",
+  },
+  {
+    id: "admin-ashanti",
+    name: "Ashanti Kweyu",
+    email: "kashiku789@gmail.com",
+    password: "ashanti-2026",
+    role: "Admin",
+  },
+  {
+    id: "admin-ian",
+    name: "Ian Kipchirchir",
+    email: "iankipchirchir51@gmail.com",
+    password: "ian-2026",
+    role: "Admin",
+  },
+  {
+    id: "admin-denis",
+    name: "Denis Kipruto",
+    email: "kypvega@gmail.com",
+    password: "denis-2026",
+    role: "Admin",
+  },
+];
 
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [adminUsers, setAdminUsers] = useState(seedAdmins);
-
-  // Fetch admin users from db.json
-  useEffect(() => {
-    let isActive = true;
-    const loadAdmins = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/admins");
-        if (!res.ok) throw new Error("API unavailable");
-        const data = await res.json();
-        if (!isActive) return;
-        setAdminUsers(data);
-      } catch (err) {
-        console.warn("Using local seed admins.", err);
-        if (!isActive) return;
-        setAdminUsers(seedAdmins);
-      }
-    };
-
-    loadAdmins();
-    return () => {
-      isActive = false;
-    };
-  }, []);
+  const [currentUser, setCurrentUser] = useLocalStorage("cdh-admin-user", null);
 
   const signIn = useCallback(
-    async (email, password) => {
+    (email, password) => {
       const normalizedEmail = email.trim().toLowerCase();
       const user = adminUsers.find(
         (admin) =>
@@ -53,12 +60,12 @@ export function AuthProvider({ children }) {
       setCurrentUser(safeUser);
       return { ok: true, user: safeUser };
     },
-    [adminUsers]
+    [setCurrentUser]
   );
 
   const signOut = useCallback(() => {
     setCurrentUser(null);
-  }, []);
+  }, [setCurrentUser]);
 
   const value = useMemo(
     () => ({ currentUser, signIn, signOut }),
@@ -67,3 +74,4 @@ export function AuthProvider({ children }) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+
