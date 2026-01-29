@@ -117,8 +117,8 @@ export function AuthProvider({ children }) {
         return { ok: false, message: "All fields are required." };
       }
 
-      if (!"user donor admin".split(" ").includes(role)) {
-        return { ok: false, message: "Select a valid role." };
+      if (!["user", "donor"].includes(role)) {
+        return { ok: false, message: "Select either user or donor." };
       }
 
       const emailTaken =
@@ -129,36 +129,6 @@ export function AuthProvider({ children }) {
 
       if (emailTaken) {
         return { ok: false, message: "Email already registered." };
-      }
-
-      if (role === "admin") {
-        const newAdmin = {
-          id: `a-${Date.now()}`,
-          name: trimmedName,
-          email: normalizedEmail,
-          password: trimmedPassword,
-          role: "admin",
-        };
-
-        setAdminUsers((prev) => [newAdmin, ...prev]);
-
-        if (adminsApiAvailable) {
-          try {
-            const res = await fetch("http://localhost:3002/admins", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(newAdmin),
-            });
-            if (!res.ok) throw new Error("Failed to save admin account");
-          } catch (err) {
-            console.error(err);
-            setAdminsApiAvailable(false);
-          }
-        }
-
-        const safeUser = toSafeUser(newAdmin, { isAdmin: true });
-        setCurrentUser(safeUser);
-        return { ok: true, user: safeUser };
       }
 
       const newUser = {

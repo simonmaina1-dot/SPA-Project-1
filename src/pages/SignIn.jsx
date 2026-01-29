@@ -23,7 +23,8 @@ export default function SignIn() {
     event.preventDefault();
     setLoginError("");
 
-    const loginFn = loginValues.role === "admin" ? signInAdmin : signInUser;
+    const isAdminLogin = loginValues.role === "admin";
+    const loginFn = isAdminLogin ? signInAdmin : signInUser;
     const result = loginFn(loginValues.email, loginValues.password);
 
     if (!result.ok) {
@@ -34,10 +35,11 @@ export default function SignIn() {
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
     setLoginValues({ email: "", password: "", role: "user" });
-    navigate("/account");
+    navigate(isAdminLogin ? "/dashboard" : "/account");
   };
 
   if (currentUser) {
+    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/account";
     return (
       <div className="page account-page">
         <section className="page-header">
@@ -47,8 +49,8 @@ export default function SignIn() {
         <div className="account-grid">
           <div className="account-card">
             <div className="account-actions">
-              <Link to="/account" className="btn btn-primary">
-                Go to account
+              <Link to={accountDestination} className="btn btn-primary">
+                Go to {currentUser.isAdmin ? "dashboard" : "account"}
               </Link>
               <Link to="/" className="btn btn-secondary">
                 Back home
@@ -67,8 +69,8 @@ export default function SignIn() {
         <p>Access your user, donor, or admin account.</p>
       </section>
 
-      <div className="account-grid">
-        <form className="account-card" onSubmit={handleLoginSubmit}>
+      <div className="account-grid account-grid-single">
+        <form className="account-card account-card--narrow" onSubmit={handleLoginSubmit}>
           <h2>Sign in</h2>
           <div className="form-grid">
             <label className="form-field">

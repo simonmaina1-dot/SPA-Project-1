@@ -6,7 +6,6 @@ import { ToastContext } from "../context/ToastContext";
 const roleOptions = [
   { value: "user", label: "User" },
   { value: "donor", label: "Donor" },
-  { value: "admin", label: "Admin" },
 ];
 
 export default function SignUp() {
@@ -43,6 +42,7 @@ export default function SignUp() {
   };
 
   if (currentUser) {
+    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/account";
     return (
       <div className="page account-page">
         <section className="page-header">
@@ -52,8 +52,8 @@ export default function SignUp() {
         <div className="account-grid">
           <div className="account-card">
             <div className="account-actions">
-              <Link to="/account" className="btn btn-primary">
-                Go to account
+              <Link to={accountDestination} className="btn btn-primary">
+                Go to {currentUser.isAdmin ? "dashboard" : "account"}
               </Link>
               <Link to="/" className="btn btn-secondary">
                 Back home
@@ -69,11 +69,11 @@ export default function SignUp() {
     <div className="page account-page">
       <section className="page-header">
         <h1>Create account</h1>
-        <p>Set up a user, donor, or admin account to get started.</p>
+        <p>Set up a user or donor account to get started.</p>
       </section>
 
-      <div className="account-grid">
-        <form className="account-card" onSubmit={handleSignupSubmit}>
+      <div className="account-grid account-grid-single">
+        <form className="account-card account-card--narrow" onSubmit={handleSignupSubmit}>
           <h2>Sign up</h2>
           <div className="form-grid">
             <label className="form-field">

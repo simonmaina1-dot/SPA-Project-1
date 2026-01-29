@@ -125,7 +125,7 @@ export default function Navbar() {
           </Link>
           {currentUser ? (
             <Link
-              to="/account"
+              to={currentUser.isAdmin ? "/dashboard" : "/account"}
               className="btn btn-secondary nav-cta"
               onClick={() => setMenuOpen(false)}
             >
@@ -134,13 +134,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link to="/signup" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
-                Sign up
-              </Link>
-              <Link to="/signin" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
-                Sign in
-              </Link>
-              <Link to="/dashboard" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
-                Admin Page
+                Sign up / Sign in
               </Link>
             </>
           )}

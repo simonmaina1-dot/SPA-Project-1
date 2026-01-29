@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
+import { Navigate } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import useFeedback from "../hooks/useFeedback";
 import useDonations from "../hooks/useDonations";
@@ -317,7 +318,11 @@ export default function AdminDashboard() {
     return project?.title || "this project";
   };
 
-  if (!currentUser || !currentUser.isAdmin) {
+  if (currentUser && !currentUser.isAdmin) {
+    return <Navigate to="/account" replace />;
+  }
+
+  if (!currentUser) {
     return (
       <AdminLoginView
         credentials={credentials}

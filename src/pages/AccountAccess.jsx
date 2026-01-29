@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { ToastContext } from "../context/ToastContext";
 
@@ -30,13 +30,17 @@ export default function AccountAccess() {
     showToast(`Role updated to ${result.user.role}.`, "success");
   };
 
+  if (currentUser?.isAdmin) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <div className="page account-page">
       <section className="page-header">
         <h1>Account Access</h1>
         <p>
-          Create an account as a user, donor, or admin. Users and donors can
-          switch between roles anytime.
+          Create an account as a user or donor. Users and donors can switch
+          between roles anytime.
         </p>
       </section>
 
@@ -48,29 +52,22 @@ export default function AccountAccess() {
             <p className="account-meta">{currentUser.email}</p>
             <p className="account-meta">Role: {currentUser.role}</p>
 
-            {currentUser.role === "admin" ? (
-              <p className="account-note">
-                Admin accounts stay admin-only. Create a separate user or donor
-                account if needed.
-              </p>
-            ) : (
-              <form className="account-switch" onSubmit={handleRoleSwitch}>
-                <label className="form-field">
-                  <span className="form-label">Switch role</span>
-                  <select
-                    name="role"
-                    value={roleChoice}
-                    onChange={(event) => setRoleChoice(event.target.value)}
-                  >
-                    <option value="user">User</option>
-                    <option value="donor">Donor</option>
-                  </select>
-                </label>
-                <button type="submit" className="btn btn-primary">
-                  Update role
-                </button>
-              </form>
-            )}
+            <form className="account-switch" onSubmit={handleRoleSwitch}>
+              <label className="form-field">
+                <span className="form-label">Switch role</span>
+                <select
+                  name="role"
+                  value={roleChoice}
+                  onChange={(event) => setRoleChoice(event.target.value)}
+                >
+                  <option value="user">User</option>
+                  <option value="donor">Donor</option>
+                </select>
+              </label>
+              <button type="submit" className="btn btn-primary">
+                Update role
+              </button>
+            </form>
 
             <div className="account-actions">
               <button type="button" className="btn btn-secondary" onClick={signOut}>
