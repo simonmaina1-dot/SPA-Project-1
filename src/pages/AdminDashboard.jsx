@@ -1,11 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { Navigate } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import useFeedback from "../hooks/useFeedback";
 import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
-import AdminLoginView from "../components/admin/AdminLoginView";
+import AdminAccessGuard from "../components/admin/AdminAccessGuard";
 import AdminNavbar from "../components/admin/AdminNavbar";
 import AdminSnapshotCard from "../components/admin/AdminSnapshotCard";
 import AdminRecentActivity from "../components/admin/AdminRecentActivity";
@@ -318,97 +317,90 @@ export default function AdminDashboard() {
     return project?.title || "this project";
   };
 
-  if (currentUser && !currentUser.isAdmin) {
-    return <Navigate to="/account" replace />;
-  }
-
-  if (!currentUser) {
-    return (
-      <AdminLoginView
-        credentials={credentials}
-        showPassword={showPassword}
-        errorMessage={errorMessage}
-        onChange={handleChange}
-        onTogglePassword={() => setShowPassword((prev) => !prev)}
-        onSubmit={handleLogin}
-      />
-    );
-  }
-
   const reviewList =
     metrics.reviewQueue.length > 0
       ? metrics.reviewQueue
       : projects.slice(0, 3);
 
   return (
-    <div className="page admin-page">
-      <AdminNavbar currentUser={currentUser} onSignOut={signOut} />
+    <AdminAccessGuard
+      currentUser={currentUser}
+      credentials={credentials}
+      showPassword={showPassword}
+      errorMessage={errorMessage}
+      onChange={handleChange}
+      onTogglePassword={() => setShowPassword((prev) => !prev)}
+      onSubmit={handleLogin}
+    >
+      <div className="page admin-page">
+        <AdminNavbar currentUser={currentUser} onSignOut={signOut} />
 
-      <div className="admin-content">
-        <section className="page-header">
-          <div className="admin-header-row">
-            <h1>Admin Dashboard</h1>
-            <span className="admin-role-pill">{currentUser.role}</span>
-          </div>
-          <p>
-            Monitor campaigns, manage approvals, and keep community fundraising on
-            track.
-          </p>
-        </section>
+        <div className="admin-content">
+          <section className="page-header">
+            <div className="admin-header-row">
+              <h1>Admin Dashboard</h1>
+              <span className="admin-role-pill">{currentUser.role}</span>
+            </div>
+            <p>
+              Monitor campaigns, manage approvals, and keep community fundraising on
+              track.
+            </p>
+          </section>
 
-        <section className="admin-grid">
-          <AdminSnapshotCard
-            projectCount={projects.length}
-            metrics={metrics}
-            formatCurrency={formatCurrency}
-          />
+          <section className="admin-grid">
+            <AdminSnapshotCard
+              projectCount={projects.length}
+              metrics={metrics}
+              formatCurrency={formatCurrency}
+            />
 
-          <AdminRecentActivity
-            projects={projects}
-            formatCurrency={formatCurrency}
-          />
+            <AdminRecentActivity
+              projects={projects}
+              formatCurrency={formatCurrency}
+            />
 
-          <AdminProjectManagement
-            projects={projects}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-            formatCurrency={formatCurrency}
-            editProjectId={editProjectId}
-            setEditProjectId={setEditProjectId}
-            editValues={editValues}
-            onEditChange={handleEditChange}
-            onEditSubmit={handleEditSubmit}
-            newProject={newProject}
-            onNewProjectChange={handleNewProjectChange}
-            onAddProject={handleAddProject}
-            onDeleteClick={handleDeleteClick}
-            deleteConfirmId={deleteConfirmId}
-            onConfirmDelete={handleConfirmDelete}
-            onCancelDelete={handleCancelDelete}
-            getProjectTitle={getProjectTitle}
-          />
+            <AdminProjectManagement
+              projects={projects}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              formatCurrency={formatCurrency}
+              editProjectId={editProjectId}
+              setEditProjectId={setEditProjectId}
+              editValues={editValues}
+              onEditChange={handleEditChange}
+              onEditSubmit={handleEditSubmit}
+              newProject={newProject}
+              onNewProjectChange={handleNewProjectChange}
+              onAddProject={handleAddProject}
+              onDeleteClick={handleDeleteClick}
+              deleteConfirmId={deleteConfirmId}
+              onConfirmDelete={handleConfirmDelete}
+              onCancelDelete={handleCancelDelete}
+              getProjectTitle={getProjectTitle}
+            />
 
-          <AdminInsightsGrid
-            metrics={metrics}
-            reviewList={reviewList}
-            formatCurrency={formatCurrency}
-            onApprove={handleApprove}
-            onFlag={handleFlag}
-          />
+            <AdminInsightsGrid
+              metrics={metrics}
+              reviewList={reviewList}
+              formatCurrency={formatCurrency}
+              onApprove={handleApprove}
+              onFlag={handleFlag}
+            />
 
-          <AdminTopDonorsTable
-            donorMetrics={donorMetrics}
-            formatCurrency={formatCurrency}
-          />
+            <AdminTopDonorsTable
+              donorMetrics={donorMetrics}
+              formatCurrency={formatCurrency}
+            />
 
-          <AdminFeedbackList
-            feedbackList={feedbackList}
-            updateFeedbackStatus={updateFeedbackStatus}
-            removeFeedback={removeFeedback}
-            showToast={showToast}
-          />
-        </section>
+            <AdminFeedbackList
+              feedbackList={feedbackList}
+              updateFeedbackStatus={updateFeedbackStatus}
+              removeFeedback={removeFeedback}
+              showToast={showToast}
+            />
+          </section>
+        </div>
       </div>
-    </div>
+    </AdminAccessGuard>
   );
 }
