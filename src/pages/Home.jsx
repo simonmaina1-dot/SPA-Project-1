@@ -11,7 +11,8 @@ import useForm from "../hooks/useForm";
  * Home Page - Main landing page displaying community projects
  * 
  * KEY FEATURES:
- * - Only shows admin-approved projects for public viewing
+ * - Displays all existing projects (no vetting required for existing projects)
+ * - New project submissions go through vetting process
  * - Project search functionality
  * - Category filtering
  * - Featured projects section
@@ -21,7 +22,7 @@ import useForm from "../hooks/useForm";
  * - Scroll-triggered stats animation
  */
 export default function Home() {
-  const { projects, isLoading, getFeaturedProjects, getApprovedProjects, formatCurrency } = useProjects();
+  const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
   const { feedbackList, addFeedback } = useFeedback();
   const {
@@ -60,11 +61,10 @@ export default function Home() {
 
   // Show welcome toast on first mount
   useEffect(() => {
-    const approvedProjects = getApprovedProjects();
-    if (approvedProjects.length > 0) {
-      showToast(`Welcome! ${approvedProjects.length} projects available`, "info");
+    if (projects.length > 0) {
+      showToast(`Welcome! ${projects.length} projects available`, "info");
     }
-  }, [getApprovedProjects, showToast]);
+  }, [projects.length, showToast]);
 
   // Smooth scroll to about section
   useEffect(() => {
@@ -101,14 +101,9 @@ export default function Home() {
     };
   }, []);
 
-  // Get only approved projects for public display
-  const approvedProjects = useMemo(() => {
-    return getApprovedProjects();
-  }, [getApprovedProjects]);
-
   // Filter projects based on search and category
   const filteredProjects = useMemo(() => {
-    let result = approvedProjects;
+    let result = projects;
 
     if (selectedCategory !== "all") {
       result = result.filter((p) => p.category === selectedCategory);
@@ -124,22 +119,22 @@ export default function Home() {
     }
 
     return result;
-  }, [approvedProjects, searchQuery, selectedCategory]);
+  }, [projects, searchQuery, selectedCategory]);
 
   // Get featured projects
   const featuredProjects = useMemo(() => {
     return getFeaturedProjects();
   }, [getFeaturedProjects]);
 
-  // Calculate total funding stats (only from approved projects)
+  // Calculate total funding stats (from all projects)
   const totalStats = useMemo(() => {
-    const totalRaised = approvedProjects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
-    const totalGoal = approvedProjects.reduce((sum, p) => sum + (p.goal || 0), 0);
-    const totalDonors = approvedProjects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
-    const fundedCount = approvedProjects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
+    const totalRaised = projects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
+    const totalGoal = projects.reduce((sum, p) => sum + (p.goal || 0), 0);
+    const totalDonors = projects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
+    const fundedCount = projects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
 
     return { totalRaised, totalGoal, totalDonors, fundedCount };
-  }, [approvedProjects]);
+  }, [projects]);
 
   // Categories for filter dropdown
   const categories = [
@@ -182,7 +177,7 @@ export default function Home() {
             className={`stats-dashboard${statsVisible ? " visible" : ""}`}
           >
             <div className="stat-card">
-              <span className="stat-value">{approvedProjects.length}</span>
+              <span className="stat-value">{projects.length}</span>
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-card">
@@ -202,7 +197,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      {featuredProjects.length > 0 && approvedProjects.length >= 3 && (
+      {featuredProjects.length > 0 && projects.length >= 3 && (
         <section className="featured-section" id="featured">
           <h2>Featured Projects</h2>
           <div className="featured-grid">
@@ -293,7 +288,7 @@ export default function Home() {
                   </svg>
                 </div>
                 <h3>No projects yet</h3>
-                <p>Projects are pending admin verification before going live.</p>
+                <p>Be the first to create a project and start fundraising!</p>
                 <Link to="/submit-project" className="btn btn-primary">
                   Submit a Project
                 </Link>
