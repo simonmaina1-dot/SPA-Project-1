@@ -7,12 +7,7 @@ import useAuth from "../hooks/useAuth";
 import AdminAccessGuard from "../components/admin/AdminAccessGuard";
 import AdminNavbar from "../components/admin/AdminNavbar";
 import AdminDashboardHeader from "../components/admin/AdminDashboardHeader";
-import AdminSnapshotCard from "../components/admin/AdminSnapshotCard";
-import AdminRecentActivity from "../components/admin/AdminRecentActivity";
-import AdminProjectManagement from "../components/admin/AdminProjectManagement";
-import AdminInsightsGrid from "../components/admin/AdminInsightsGrid";
-import AdminTopDonorsTable from "../components/admin/AdminTopDonorsTable";
-import AdminFeedbackList from "../components/admin/AdminFeedbackList";
+import AdminDashboardGrid from "../components/admin/AdminDashboardGrid";
 
 export default function AdminDashboard() {
   const {
@@ -322,6 +317,31 @@ export default function AdminDashboard() {
     metrics.reviewQueue.length > 0
       ? metrics.reviewQueue
       : projects.slice(0, 3);
+  const projectManagementProps = {
+    projects,
+    viewMode,
+    setViewMode,
+    formatCurrency,
+    editProjectId,
+    setEditProjectId,
+    editValues,
+    onEditChange: handleEditChange,
+    onEditSubmit: handleEditSubmit,
+    newProject,
+    onNewProjectChange: handleNewProjectChange,
+    onAddProject: handleAddProject,
+    onDeleteClick: handleDeleteClick,
+    deleteConfirmId,
+    onConfirmDelete: handleConfirmDelete,
+    onCancelDelete: handleCancelDelete,
+    getProjectTitle,
+  };
+  const feedbackProps = {
+    feedbackList,
+    updateFeedbackStatus,
+    removeFeedback,
+    showToast,
+  };
 
   return (
     <AdminAccessGuard
@@ -338,59 +358,17 @@ export default function AdminDashboard() {
 
         <div className="admin-content">
           <AdminDashboardHeader role={currentUser.role} />
-
-          <section className="admin-grid">
-            <AdminSnapshotCard
-              projectCount={projects.length}
-              metrics={metrics}
-              formatCurrency={formatCurrency}
-            />
-
-            <AdminRecentActivity
-              projects={projects}
-              formatCurrency={formatCurrency}
-            />
-
-            <AdminProjectManagement
-              projects={projects}
-              viewMode={viewMode}
-              setViewMode={setViewMode}
-              formatCurrency={formatCurrency}
-              editProjectId={editProjectId}
-              setEditProjectId={setEditProjectId}
-              editValues={editValues}
-              onEditChange={handleEditChange}
-              onEditSubmit={handleEditSubmit}
-              newProject={newProject}
-              onNewProjectChange={handleNewProjectChange}
-              onAddProject={handleAddProject}
-              onDeleteClick={handleDeleteClick}
-              deleteConfirmId={deleteConfirmId}
-              onConfirmDelete={handleConfirmDelete}
-              onCancelDelete={handleCancelDelete}
-              getProjectTitle={getProjectTitle}
-            />
-
-            <AdminInsightsGrid
-              metrics={metrics}
-              reviewList={reviewList}
-              formatCurrency={formatCurrency}
-              onApprove={handleApprove}
-              onFlag={handleFlag}
-            />
-
-            <AdminTopDonorsTable
-              donorMetrics={donorMetrics}
-              formatCurrency={formatCurrency}
-            />
-
-            <AdminFeedbackList
-              feedbackList={feedbackList}
-              updateFeedbackStatus={updateFeedbackStatus}
-              removeFeedback={removeFeedback}
-              showToast={showToast}
-            />
-          </section>
+          <AdminDashboardGrid
+            projects={projects}
+            formatCurrency={formatCurrency}
+            metrics={metrics}
+            reviewList={reviewList}
+            donorMetrics={donorMetrics}
+            onApprove={handleApprove}
+            onFlag={handleFlag}
+            projectManagementProps={projectManagementProps}
+            feedbackProps={feedbackProps}
+          />
         </div>
       </div>
     </AdminAccessGuard>
