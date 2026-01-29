@@ -943,7 +943,7 @@ export default function AdminDashboard() {
                     <span className="admin-row-title">
                       {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
                     </span>
-                    <span className="admin-row-meta">{item.count} projects</span>
+                    <span className="admin-row-meta">{"  " + item.count} projects</span>
                   </div>
                   <div className="admin-breakdown-bar">
                     <div
@@ -971,7 +971,7 @@ export default function AdminDashboard() {
                   <div>
                     <p className="admin-row-title">{project.title}</p>
                     <span className="admin-row-meta">
-                      {project.category} - {project.donorCount || 0} donors
+                      {project.category.charAt(0).toUpperCase() + project.category.slice(1)} - {project.donorCount || 0} donors
                     </span>
                   </div>
                   <div className="admin-row-actions">
