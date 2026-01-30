@@ -16,6 +16,14 @@ const normalizeProject = (project) => {
     ...(project.criteriaMet || {}),
   };
 
+  // Auto-approve pre-loaded sample projects (those without an ownerId)
+  // Vetting only applies to new projects submitted via "Start New Project"
+  const hasExistingStatus = project.verificationStatus !== undefined;
+  const isPreLoadedProject = !ownerId && !createdBy;
+  const verificationStatus = hasExistingStatus
+    ? project.verificationStatus
+    : (isPreLoadedProject ? "approved" : "pending");
+
   return {
     ...project,
     ownerId,
@@ -27,7 +35,7 @@ const normalizeProject = (project) => {
     // verificationStatus: "under_review" = admin is reviewing
     // verificationStatus: "approved" = admin approved, visible to public
     // verificationStatus: "rejected" = admin rejected, not visible
-    verificationStatus: project.verificationStatus || "pending",
+    verificationStatus,
     verificationNotes: project.verificationNotes || "",
     adminReviewer: project.adminReviewer || null,
     reviewedAt: project.reviewedAt || null,
