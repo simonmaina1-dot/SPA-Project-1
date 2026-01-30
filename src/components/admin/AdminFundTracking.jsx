@@ -143,7 +143,7 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
 
         <div className="admin-fund-panel">
           <h4>Donation sources</h4>
-          <div className="admin-source-list">
+          <div className="admin-source-grid">
             {sourceSummary.length ? (
               sourceSummary.map((source) => (
                 <div key={source.source} className="admin-source-row">
@@ -162,8 +162,10 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
               <p className="admin-empty">No donation sources recorded yet.</p>
             )}
           </div>
+        </div>
 
-          <h4 className="mt-3">Recent usage reports</h4>
+        <div className="admin-fund-panel">
+          <h4>Recent usage reports</h4>
           <div className="admin-source-list">
             {recentUsage.length ? (
               recentUsage.map((entry) => (
