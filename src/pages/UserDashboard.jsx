@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "../components/common/ProjectCard";
 import useAuth from "../hooks/useAuth";
 import useDonations from "../hooks/useDonations";
 import useProjects from "../hooks/useProjects";

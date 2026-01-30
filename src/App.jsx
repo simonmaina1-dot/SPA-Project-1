@@ -1,6 +1,6 @@
 import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Toast from "./components/Toast";
+import Navbar from "./components/common/Navbar";
+import Toast from "./components/common/Toast";
 import Home from "./pages/Home";
 import AddProject from "./pages/AddProject";
 import ProjectDetails from "./pages/ProjectDetails";
