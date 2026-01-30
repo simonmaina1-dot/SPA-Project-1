@@ -222,6 +222,13 @@ export default function AdminVettingQueue({
                   </button>
                   <button
                     type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleAction(project, "rejected")}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    type="button"
                     className="btn btn-secondary"
                     onClick={() => handleAction(project, "under_review")}
                   >
@@ -229,17 +236,10 @@ export default function AdminVettingQueue({
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-success"
                     onClick={() => handleAction(project, "approved")}
                   >
                     Approve
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => handleAction(project, "rejected")}
-                  >
-                    Reject
                   </button>
                 </div>
               </div>
