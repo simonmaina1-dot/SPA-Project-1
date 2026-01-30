@@ -18,7 +18,7 @@ export function DonationsProvider({ children }) {
     let isActive = true;
     const loadDonations = async () => {
       try {
-        const res = await fetch("http://localhost:3002/donations");
+        const res = await fetch("/donations");
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
@@ -56,7 +56,7 @@ export function DonationsProvider({ children }) {
 
     if (apiAvailable) {
       try {
-        const res = await fetch("http://localhost:3002/donations", {
+        const res = await fetch("/donations", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newDonation),
