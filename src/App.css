@@ -1619,6 +1619,11 @@ body {
   animation: modalFadeIn 0.2s ease-out;
 }
 
+.modal.modal-sm {
+  max-width: 420px;
+  max-height: 70vh;
+}
+
 @keyframes modalFadeIn {
   from {
     opacity: 0;

@@ -484,6 +484,7 @@ export default function ProjectDetails() {
         isOpen={isDonorsOpen}
         onClose={() => setIsDonorsOpen(false)}
         title="Donor list"
+        className="modal-sm"
         footer={
           <div className="modal-actions">
             <button

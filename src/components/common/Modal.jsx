@@ -6,6 +6,7 @@ export default function Modal({
   title,
   children,
   footer,
+  className = "",
   hideHeader = false,
 }) {
   useEffect(() => {
@@ -29,7 +30,10 @@ export default function Modal({
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal" onClick={(event) => event.stopPropagation()}>
+      <div
+        className={`modal${className ? ` ${className}` : ""}`}
+        onClick={(event) => event.stopPropagation()}
+      >
         {!hideHeader && (
           <header className="modal-header">
             <h3>{title}</h3>
