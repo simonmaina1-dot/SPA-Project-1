@@ -237,14 +237,12 @@ export default function ProjectCard({ project, onClick, featured = false }) {
           </div>
 
           <div className="project-progress-card">
-            <div className="project-funding">
-              <span className="funding-percentage">{progress}% funded</span>
-              <div className="funding-bar">
-                <div
-                  className="funding-progress"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
+            <span className="funding-percentage">{progress}% funded</span>
+            <div className="funding-bar">
+              <div
+                className="funding-progress"
+                style={{ width: `${progress}%` }}
+              />
             </div>
           </div>
         </div>
