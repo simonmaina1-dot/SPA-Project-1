@@ -215,7 +215,6 @@ export default function Donate() {
                     <option value="card">Card</option>
                     <option value="mpesa">M-Pesa (demo)</option>
                     <option value="bank">Bank transfer (demo)</option>
-                    <option value="cash">Cash</option>
                     <option value="other">Other</option>
                   </select>
                 </label>
