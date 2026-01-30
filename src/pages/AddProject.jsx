@@ -1,11 +1,16 @@
 import { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+
 import useForm from "../hooks/useForm";
 import useProjects from "../hooks/useProjects";
+import useAuth from "../hooks/useAuth";
+
 import { ToastContext } from "../context/ToastContext";
 import Modal from "../components/Modal";
-import useAuth from "../hooks/useAuth";
+
 import { defaultCriteriaMet } from "../data/projectCriteria";
+import { addProjectSchema } from "../validations/addProjectSchema";
+import { validateForm } from "../utils/validationHelper";
 
 const initialValues = {
   title: "",
@@ -22,26 +27,30 @@ export default function AddProject() {
   const { showToast } = useContext(ToastContext);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+
   const [step, setStep] = useState(1);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (step === 1) {
-      handleNextStep();
+      await handleNextStep();
       return;
     }
 
-    if (!values.title.trim() || !values.description.trim() || !values.goal) {
-      showToast("Please complete the required fields.", "warning");
+    const { isValid, errors } = await validateForm(addProjectSchema, values);
+    if (!isValid) {
+      showToast(Object.values(errors).join(", "), "warning");
       return;
     }
 
     const isAdmin = Boolean(currentUser?.isAdmin);
+
     const criteriaMet = Object.keys(defaultCriteriaMet).reduce((acc, key) => {
       acc[key] = true;
       return acc;
     }, {});
+
     const newId = addProject({
       ...values,
       createdAt: new Date().toISOString(),
@@ -62,37 +71,32 @@ export default function AddProject() {
       criteriaMet,
       fundUsage: [],
     });
+
     showToast("Project created and ready for donors.", "success");
     reset();
     setStep(1);
     navigate(`/projects/${newId}`);
   };
 
-  const handleNextStep = () => {
-    if (!values.title.trim() || !values.description.trim() || !values.goal) {
-      showToast("Please complete the required fields.", "warning");
+  const handleNextStep = async () => {
+    const { isValid, errors } = await validateForm(addProjectSchema, values);
+    if (!isValid) {
+      showToast(Object.values(errors).join(", "), "warning");
       return;
     }
-
     setStep(2);
   };
 
-  const handleBackStep = () => {
-    setStep(1);
-  };
-
+  const handleBackStep = () => setStep(1);
   const handleReset = () => {
     reset();
     setStep(1);
   };
 
-  if (!currentUser) {
-    return <Navigate to="/signin" replace />;
-  }
-
-  if (!currentUser.isAdmin) {
-    return <Navigate to="/submit-project" replace />;
-  }
+  // Redirect if user not signed in
+  if (!currentUser) return <Navigate to="/signin" replace />;
+  // Redirect if user is not admin
+  if (!currentUser.isAdmin) return <Navigate to="/submit-project" replace />;
 
   return (
     <div className="page add-project-page">
@@ -103,7 +107,11 @@ export default function AddProject() {
         footer={
           <div className="form-actions">
             {step === 1 ? (
-              <button type="button" className="btn btn-primary" onClick={handleNextStep}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleNextStep}
+              >
                 Next
               </button>
             ) : (
@@ -124,6 +132,7 @@ export default function AddProject() {
                 </button>
               </>
             )}
+
             <button
               type="button"
               className="btn btn-secondary"
@@ -147,7 +156,11 @@ export default function AddProject() {
             : "Add visuals to help donors connect with your cause."}
         </p>
 
-        <form className="add-project-form" id="add-project-form" onSubmit={handleSubmit}>
+        <form
+          className="add-project-form"
+          id="add-project-form"
+          onSubmit={handleSubmit}
+        >
           {step === 1 ? (
             <div className="add-form-section">
               <label className="add-form-field">
