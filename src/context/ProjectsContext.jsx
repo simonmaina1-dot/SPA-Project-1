@@ -1,6 +1,5 @@
-import { createContext, useCallback, useMemo, useState, useEffect, useContext } from "react";
+import { createContext, useCallback, useMemo, useState, useEffect } from "react";
 import { defaultCriteriaMet } from "../data/projectCriteria";
-import { VerificationContext } from "./VerificationContext";
 
 // Create the ProjectsContext
 export const ProjectsContext = createContext(null);
@@ -15,14 +14,16 @@ const normalizeProject = (project) => {
     ...defaultCriteriaMet,
     ...(project.criteriaMet || {}),
   };
-
-  // Auto-approve pre-loaded sample projects (those without an ownerId)
-  // Vetting only applies to new projects submitted via "Start New Project"
-  const hasExistingStatus = project.verificationStatus !== undefined;
-  const isPreLoadedProject = !ownerId && !createdBy;
-  const verificationStatus = hasExistingStatus
-    ? project.verificationStatus
-    : (isPreLoadedProject ? "approved" : "pending");
+  const verificationStatus =
+    project.verificationStatus ||
+    (project.status === "review" ? "submitted" : "approved");
+  const goalValue = Number(project.goal) || 0;
+  const derivedStatus =
+    verificationStatus !== "approved"
+      ? "review"
+      : goalValue > 0
+        ? "active"
+        : "draft";
 
   return {
     ...project,
@@ -31,16 +32,13 @@ const normalizeProject = (project) => {
     ownerEmail,
     ownerPhone,
     identityDocument: project.identityDocument || "",
-    // verificationStatus: "pending" = awaiting review
-    // verificationStatus: "under_review" = admin is reviewing
-    // verificationStatus: "approved" = admin approved, visible to public
-    // verificationStatus: "rejected" = admin rejected, not visible
     verificationStatus,
     verificationNotes: project.verificationNotes || "",
     adminReviewer: project.adminReviewer || null,
     reviewedAt: project.reviewedAt || null,
     criteriaMet,
     fundUsage: Array.isArray(project.fundUsage) ? project.fundUsage : [],
+    status: project.status || derivedStatus,
   };
 };
 
@@ -50,9 +48,16 @@ export function ProjectsProvider({ children }) {
   // State to track loading status
   const [isLoading, setIsLoading] = useState(true);
 
+  // API URL from environment or default to local development
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3002";
+
   // Fetch projects from JSON Server when component mounts
   useEffect(() => {
+<<<<<<< HEAD
     fetch('/data/collections/projects.json')
+=======
+    fetch(`${apiUrl}/projects`)
+>>>>>>> main
       .then((res) => res.json())
       .then((data) => {
         setProjects(data.map(normalizeProject));
@@ -67,6 +72,19 @@ export function ProjectsProvider({ children }) {
   // Add a new project (POST request)
   const addProject = useCallback((project) => {
     const id = `p-${Date.now()}`; // Generate unique ID
+    const criteriaMet = {
+      ...defaultCriteriaMet,
+      ...(project.criteriaMet || {}),
+    };
+    const goalValue = Number(project.goal) || 0;
+    const verificationStatus = project.verificationStatus || "submitted";
+    const status =
+      project.status ||
+      (verificationStatus !== "approved"
+        ? "review"
+        : goalValue > 0
+          ? "active"
+          : "draft");
     const newProject = normalizeProject({
       id,
       title: project.title.trim(),
@@ -80,10 +98,10 @@ export function ProjectsProvider({ children }) {
             .map((item) => item.trim())
             .filter(Boolean),
       galleryCount: Number(project.galleryCount) || 0,
-      goal: Number(project.goal) || 0,
+      goal: goalValue,
       currentAmount: Number(project.currentAmount) || 0,
       donorCount: Number(project.donorCount) || 0,
-      status: project.goal > 0 ? "active" : "draft",
+      status,
       createdAt: project.createdAt || new Date().toISOString(),
       createdBy: project.createdBy || null,
       ownerId: project.ownerId || project.createdBy?.id || "",
@@ -91,21 +109,21 @@ export function ProjectsProvider({ children }) {
       ownerEmail: project.ownerEmail || project.createdBy?.email || "",
       ownerPhone: project.ownerPhone || "",
       identityDocument: project.identityDocument || "",
-      verificationStatus: project.verificationStatus || "pending",
+      verificationStatus,
       verificationNotes: project.verificationNotes || "",
-      criteriaMet: project.criteriaMet || defaultCriteriaMet,
-      fundUsage: project.fundUsage || [],
+      criteriaMet,
+      fundUsage: Array.isArray(project.fundUsage) ? project.fundUsage : [],
     });
 
     // Send new project to JSON Server
-    fetch("http://localhost:3002/projects", {
+    fetch(`${apiUrl}/projects`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProject),
     })
       .then((res) => res.json())
       .then((savedProject) => {
-        setProjects((prev) => [savedProject, ...prev]); // Update state with new project
+        setProjects((prev) => [normalizeProject(savedProject), ...prev]); // Update state with new project
       })
       .catch((err) => console.error("Failed to add project:", err));
 
@@ -119,7 +137,7 @@ export function ProjectsProvider({ children }) {
 
     const updatedProject = normalizeProject({ ...projectToUpdate, ...updates });
 
-    fetch(`http://localhost:3002/projects/${id}`, {
+    fetch(`${apiUrl}/projects/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
@@ -127,15 +145,17 @@ export function ProjectsProvider({ children }) {
       .then((res) => res.json())
       .then((savedProject) => {
         setProjects((prev) =>
-          prev.map((project) => (project.id === id ? savedProject : project))
+          prev.map((project) =>
+            project.id === id ? normalizeProject(savedProject) : project
+          )
         );
       })
       .catch((err) => console.error("Failed to update project:", err));
-  }, [projects]);
+  }, [projects, apiUrl]);
 
   // Remove a project via DELETE request
   const removeProject = useCallback((id) => {
-    fetch(`http://localhost:3002/projects/${id}`, {
+    fetch(`${apiUrl}/projects/${id}`, {
       method: "DELETE",
     })
       .then(() => {
@@ -162,7 +182,7 @@ export function ProjectsProvider({ children }) {
       status: nextStatus,
     });
 
-    fetch(`http://localhost:3002/projects/${id}`, {
+    fetch(`${apiUrl}/projects/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
@@ -170,16 +190,20 @@ export function ProjectsProvider({ children }) {
       .then((res) => res.json())
       .then((savedProject) => {
         setProjects((prev) =>
-          prev.map((project) => (project.id === id ? savedProject : project))
+          prev.map((project) =>
+            project.id === id ? normalizeProject(savedProject) : project
+          )
         );
       })
       .catch((err) => console.error("Failed to add donation:", err));
-  }, [projects]);
+  }, [projects, apiUrl]);
 
   // Get top 3 featured projects based on progress (only approved projects)
   const getFeaturedProjects = useCallback(() => {
-    const approvedProjects = projects.filter((p) => p.verificationStatus === "approved");
-    const sorted = [...approvedProjects].sort((a, b) => {
+    const visibleProjects = projects.filter(
+      (project) => project.verificationStatus === "approved"
+    );
+    const sorted = [...visibleProjects].sort((a, b) => {
       const aProgress = a.goal ? a.currentAmount / a.goal : 0;
       const bProgress = b.goal ? b.currentAmount / b.goal : 0;
       return bProgress - aProgress;
@@ -194,7 +218,9 @@ export function ProjectsProvider({ children }) {
 
   // Get projects pending verification (for admin review)
   const getPendingVerificationProjects = useCallback(() => {
-    return projects.filter((p) => p.verificationStatus === "pending" || p.verificationStatus === "under_review");
+    return projects.filter((p) =>
+      ["submitted", "under_review", "pending"].includes(p.verificationStatus)
+    );
   }, [projects]);
 
   // Update project verification status (admin action)
@@ -210,7 +236,7 @@ export function ProjectsProvider({ children }) {
       verificationNotes: notes || "",
     });
 
-    fetch(`http://localhost:3002/projects/${projectId}`, {
+    fetch(`${apiUrl}/projects/${projectId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
@@ -222,7 +248,7 @@ export function ProjectsProvider({ children }) {
         );
       })
       .catch((err) => console.error("Failed to update verification status:", err));
-  }, [projects]);
+  }, [projects, apiUrl]);
 
   // Format currency in Kenyan Shillings
   const formatCurrency = useCallback((amount) => {

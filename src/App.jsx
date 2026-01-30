@@ -1,4 +1,4 @@
-import { Routes, Route, Link, Navigate } from "react-router-dom";
+import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Toast from "./components/Toast";
 import Home from "./pages/Home";
@@ -7,6 +7,7 @@ import ProjectDetails from "./pages/ProjectDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import Donate from "./pages/Donate";
 import UserDashboard from "./pages/UserDashboard";
+import SubmitProject from "./pages/SubmitProject";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import "./App.css";
@@ -26,14 +27,18 @@ function NotFound() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const hideMainNav = location.pathname.startsWith("/dashboard");
+
   return (
     <div className="app-shell">
-      <Navbar />
-      <main className="main-content">
+      {!hideMainNav && <Navbar />}
+      <main className={`main-content${hideMainNav ? " main-content--flush" : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<Home />} />
           <Route path="/add" element={<AddProject />} />
+          <Route path="/submit-project" element={<SubmitProject />} />
           <Route path="/projects/:projectId" element={<ProjectDetails />} />
           <Route path="/donate/:projectId" element={<Donate />} />
           <Route path="/account" element={<Navigate to="/user-dashboard" replace />} />

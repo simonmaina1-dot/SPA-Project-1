@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import useFeedback from "../hooks/useFeedback";
 import useDonations from "../hooks/useDonations";
@@ -21,6 +22,7 @@ export default function AdminDashboard() {
   const { donations, getRecentDonations } = useDonations();
   const { showToast } = useContext(ToastContext);
   const { currentUser, signInAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -45,6 +47,13 @@ export default function AdminDashboard() {
     imageUrl: "",
     galleryUrls: "",
   });
+
+  // Handle sign out and navigate to homepage
+  const handleSignOut = () => {
+    signOut();
+    navigate("/");
+    showToast("Signed out successfully.", "info");
+  };
 
   const metrics = useMemo(() => {
     const totalRaised = projects.reduce(
@@ -342,6 +351,17 @@ export default function AdminDashboard() {
     removeFeedback,
     showToast,
   };
+  const vettingProps = {
+    projects,
+    updateProject,
+    formatCurrency,
+    showToast,
+  };
+  const fundTrackingProps = {
+    projects,
+    donations,
+    formatCurrency,
+  };
 
   return (
     <AdminAccessGuard
@@ -354,7 +374,7 @@ export default function AdminDashboard() {
       onSubmit={handleLogin}
     >
       <div className="page admin-page">
-        <AdminNavbar currentUser={currentUser} onSignOut={signOut} />
+        <AdminNavbar currentUser={currentUser} onSignOut={handleSignOut} />
 
         <div className="admin-content">
           <AdminDashboardHeader role={currentUser.role} />
@@ -368,6 +388,8 @@ export default function AdminDashboard() {
             onFlag={handleFlag}
             projectManagementProps={projectManagementProps}
             feedbackProps={feedbackProps}
+            vettingProps={vettingProps}
+            fundTrackingProps={fundTrackingProps}
           />
         </div>
       </div>

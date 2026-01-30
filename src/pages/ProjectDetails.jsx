@@ -5,6 +5,7 @@ import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useForm from "../hooks/useForm";
 import Modal from "../components/Modal";
+import useAuth from "../hooks/useAuth";
 
 const donationInitialValues = {
   name: "",
@@ -18,6 +19,7 @@ export default function ProjectDetails() {
   const { projects, formatCurrency, addDonation } = useProjects();
   const { getDonationsByProject } = useDonations();
   const { showToast } = useContext(ToastContext);
+  const { currentUser } = useAuth();
   
   const project = projects.find((item) => item.id === projectId);
   
@@ -123,6 +125,31 @@ export default function ProjectDetails() {
         <section className="empty-state">
           <h2>Project not found</h2>
           <p>The project you are looking for does not exist.</p>
+          <Link to="/" className="btn btn-primary">
+            Back to projects
+          </Link>
+        </section>
+      </div>
+    );
+  }
+
+  const isOwner = Boolean(
+    currentUser &&
+      (project.ownerEmail || project.createdBy?.email || "")
+        .toLowerCase()
+        .trim() === currentUser.email?.toLowerCase()
+  );
+
+  if (
+    project.verificationStatus !== "approved" &&
+    !currentUser?.isAdmin &&
+    !isOwner
+  ) {
+    return (
+      <div className="page project-details-page">
+        <section className="empty-state">
+          <h2>Project under review</h2>
+          <p>This submission is being verified and is not public yet.</p>
           <Link to="/" className="btn btn-primary">
             Back to projects
           </Link>

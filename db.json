@@ -14,7 +14,8 @@
       "goal": 12000,
       "currentAmount": 6800,
       "donorCount": 42,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1002",
@@ -31,7 +32,8 @@
       "goal": 30000,
       "currentAmount": 18500,
       "donorCount": 96,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1003",
@@ -47,7 +49,8 @@
       "goal": 18000,
       "currentAmount": 17560,
       "donorCount": 74,
-      "status": "funded"
+      "status": "funded",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1004",
@@ -63,7 +66,8 @@
       "goal": 9500,
       "currentAmount": 4100,
       "donorCount": 28,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1005",
@@ -79,7 +83,8 @@
       "goal": 15000,
       "currentAmount": 5200,
       "donorCount": 31,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1006",
@@ -95,7 +100,8 @@
       "goal": 8000,
       "currentAmount": 7600,
       "donorCount": 54,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1007",
@@ -109,7 +115,8 @@
       "goal": 22000,
       "currentAmount": 6400,
       "donorCount": 36,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1008",
@@ -126,7 +133,8 @@
       "goal": 6000,
       "currentAmount": 2500,
       "donorCount": 19,
-      "status": "active"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
       "id": "p-1009",
@@ -140,44 +148,78 @@
       "goal": 25000,
       "currentAmount": 8200,
       "donorCount": 45,
-      "status": "active"
-    }
-  ],
-  "admins": [
-    {
-      "id": "owner-simon",
-      "name": "Simon Maina",
-      "email": "mainawaititu2021@gmail.com",
-      "password": "simon-2026",
-      "role": "CEO"
+      "status": "active",
+      "verificationStatus": "approved"
     },
     {
-      "id": "auditor-george",
-      "name": "George Okumu",
-      "email": "george.okumu@moringaschool.com",
-      "password": "george-2026",
-      "role": "Auditor"
+      "id": "p-1769763147677",
+      "title": "test",
+      "description": "testing dashboard",
+      "category": "community",
+      "imageUrl": "",
+      "galleryUrls": [],
+      "galleryCount": 0,
+      "goal": 456000,
+      "currentAmount": 0,
+      "donorCount": 0,
+      "status": "active",
+      "createdAt": "2026-01-30T08:52:27.677Z",
+      "createdBy": {
+        "id": "owner-simon",
+        "name": "Simon Maina",
+        "email": "mainawaititu2021@gmail.com"
+      },
+      "ownerId": "owner-simon",
+      "ownerName": "Simon Maina",
+      "ownerEmail": "mainawaititu2021@gmail.com",
+      "ownerPhone": "",
+      "identityDocument": "",
+      "verificationStatus": "approved",
+      "verificationNotes": "",
+      "criteriaMet": {
+        "communityImpact": true,
+        "budgetClarity": true,
+        "timelineReady": true,
+        "stakeholderSupport": true
+      },
+      "fundUsage": [],
+      "adminReviewer": null,
+      "reviewedAt": null
     },
     {
-      "id": "admin-ashanti",
-      "name": "Ashanti Kweyu",
-      "email": "kashiku789@gmail.com",
-      "password": "ashanti-2026",
-      "role": "Admin"
-    },
-    {
-      "id": "admin-ian",
-      "name": "Ian Kipchirchir",
-      "email": "iankipchirchir51@gmail.com",
-      "password": "ian-2026",
-      "role": "Admin"
-    },
-    {
-      "id": "admin-denis",
-      "name": "Denis Kipruto",
-      "email": "kypvega@gmail.com",
-      "password": "denis-2026",
-      "role": "Admin"
+      "id": "p-1769763268694",
+      "title": "testing",
+      "description": "testing",
+      "category": "health",
+      "imageUrl": "",
+      "galleryUrls": [],
+      "galleryCount": 0,
+      "goal": 12133132,
+      "currentAmount": 0,
+      "donorCount": 0,
+      "status": "review",
+      "createdAt": "2026-01-30T08:54:28.694Z",
+      "createdBy": {
+        "id": "u-1769761817554",
+        "name": "simon waititu maina",
+        "email": "mainawaititu2026@gmail.com"
+      },
+      "ownerId": "u-1769761817554",
+      "ownerName": "simon waititu maina",
+      "ownerEmail": "mainawaititu2026@gmail.com",
+      "ownerPhone": "+254723800951",
+      "identityDocument": "411144",
+      "verificationStatus": "submitted",
+      "verificationNotes": "",
+      "criteriaMet": {
+        "communityImpact": true,
+        "budgetClarity": true,
+        "timelineReady": true,
+        "stakeholderSupport": true
+      },
+      "fundUsage": [],
+      "adminReviewer": null,
+      "reviewedAt": null
     }
   ],
   "donations": [
@@ -186,7 +228,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 500,
       "message": "For the kids!",
       "createdAt": "2024-03-15T09:15:00Z"
@@ -196,7 +238,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 250,
       "message": "Education matters",
       "createdAt": "2024-03-22T11:30:00Z"
@@ -206,7 +248,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-04-08T08:45:00Z"
@@ -216,7 +258,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@moringaschool.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 300,
       "message": "Happy to help",
       "createdAt": "2024-04-19T14:20:00Z"
@@ -226,7 +268,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "John Mutua",
-      "donorEmail": "john.mutua@community.org",
+      "donorEmail": "john.mutua@email.com",
       "amount": 100,
       "message": "",
       "createdAt": "2024-05-03T10:00:00Z"
@@ -236,7 +278,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Sarah Njeri",
-      "donorEmail": "sarah.njeri@neighborhood.or.ke",
+      "donorEmail": "sarah.njeri@email.com",
       "amount": 200,
       "message": "Great initiative!",
       "createdAt": "2024-05-17T16:30:00Z"
@@ -246,7 +288,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 175,
       "message": "Second donation",
       "createdAt": "2024-06-02T09:00:00Z"
@@ -256,7 +298,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Lucy Wambui",
-      "donorEmail": "lucy.wambui@outlook.com",
+      "donorEmail": "lucy.wambui@email.com",
       "amount": 125,
       "message": "For future leaders",
       "createdAt": "2024-06-18T13:15:00Z"
@@ -276,7 +318,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@yahoo.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 180,
       "message": "Keep up the good work",
       "createdAt": "2024-07-21T15:45:00Z"
@@ -286,7 +328,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Faith Muthoni",
-      "donorEmail": "faith.muthoni@moringaschool.com",
+      "donorEmail": "faith.muthoni@email.com",
       "amount": 220,
       "message": "",
       "createdAt": "2024-08-09T10:20:00Z"
@@ -296,7 +338,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@community.org",
+      "donorEmail": "james.kimani@email.com",
       "amount": 300,
       "message": "Third donation!",
       "createdAt": "2024-08-25T14:00:00Z"
@@ -306,7 +348,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@neighborhood.or.ke",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-09-11T09:30:00Z"
@@ -316,7 +358,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 275,
       "message": "Invest in education",
       "createdAt": "2024-09-28T11:45:00Z"
@@ -326,7 +368,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 100,
       "message": "",
       "createdAt": "2024-10-14T08:00:00Z"
@@ -336,7 +378,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Daniel Njoroge",
-      "donorEmail": "daniel.njoroge@yahoo.com",
+      "donorEmail": "daniel.njoroge@email.com",
       "amount": 350,
       "message": "For my neighborhood",
       "createdAt": "2024-10-30T16:20:00Z"
@@ -346,7 +388,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@moringaschool.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 200,
       "message": "Fourth time",
       "createdAt": "2024-11-15T10:10:00Z"
@@ -356,7 +398,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@community.org",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 125,
       "message": "",
       "createdAt": "2024-12-02T14:30:00Z"
@@ -366,7 +408,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@neighborhood.or.ke",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 175,
       "message": "Support local learning",
       "createdAt": "2024-12-19T09:15:00Z"
@@ -376,7 +418,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Joseph Wekesa",
-      "donorEmail": "joseph.wekesa@gmail.com",
+      "donorEmail": "joseph.wekesa@email.com",
       "amount": 250,
       "message": "",
       "createdAt": "2025-01-07T13:40:00Z"
@@ -396,7 +438,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 100,
       "message": "",
       "createdAt": "2025-02-10T15:50:00Z"
@@ -406,7 +448,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 200,
       "message": "Keep going",
       "createdAt": "2025-02-27T10:30:00Z"
@@ -416,7 +458,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@moringaschool.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 180,
       "message": "",
       "createdAt": "2025-03-16T14:15:00Z"
@@ -426,7 +468,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Samuel Karanja",
-      "donorEmail": "samuel.karanja@community.org",
+      "donorEmail": "samuel.karanja@email.com",
       "amount": 150,
       "message": "For the community",
       "createdAt": "2025-04-03T09:00:00Z"
@@ -436,7 +478,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@neighborhood.or.ke",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 250,
       "message": "Fifth donation",
       "createdAt": "2025-04-20T16:45:00Z"
@@ -446,7 +488,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 100,
       "message": "",
       "createdAt": "2025-05-08T08:20:00Z"
@@ -456,7 +498,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Agnes Chebet",
-      "donorEmail": "agnes.chebet@outlook.com",
+      "donorEmail": "agnes.chebet@email.com",
       "amount": 225,
       "message": "Education first",
       "createdAt": "2025-05-25T12:30:00Z"
@@ -466,7 +508,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@yahoo.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2025-06-12T10:45:00Z"
@@ -476,7 +518,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Nancy Wangari",
-      "donorEmail": "nancy.wangari@moringaschool.com",
+      "donorEmail": "nancy.wangari@email.com",
       "amount": 120,
       "message": "Small help",
       "createdAt": "2025-06-29T15:00:00Z"
@@ -486,7 +528,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@community.org",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 200,
       "message": "Fifth time!",
       "createdAt": "2025-07-17T09:30:00Z"
@@ -496,7 +538,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@neighborhood.or.ke",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 100,
       "message": "",
       "createdAt": "2025-08-04T14:20:00Z"
@@ -516,7 +558,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 80,
       "message": "Every bit counts",
       "createdAt": "2025-09-09T11:40:00Z"
@@ -526,7 +568,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@outlook.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 190,
       "message": "",
       "createdAt": "2025-09-26T10:00:00Z"
@@ -536,7 +578,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 145,
       "message": "Proud to support",
       "createdAt": "2025-10-14T15:30:00Z"
@@ -546,7 +588,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@moringaschool.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 110,
       "message": "",
       "createdAt": "2025-11-01T09:45:00Z"
@@ -556,7 +598,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@community.org",
+      "donorEmail": "james.kimani@email.com",
       "amount": 130,
       "message": "",
       "createdAt": "2025-11-19T13:55:00Z"
@@ -566,7 +608,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Victor Simiyu",
-      "donorEmail": "victor.simiyu@neighborhood.or.ke",
+      "donorEmail": "victor.simiyu@email.com",
       "amount": 95,
       "message": "Good cause",
       "createdAt": "2025-12-07T08:30:00Z"
@@ -576,7 +618,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@gmail.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 150,
       "message": "Seventh donation",
       "createdAt": "2025-12-24T16:10:00Z"
@@ -586,7 +628,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 105,
       "message": "",
       "createdAt": "2026-01-10T10:25:00Z"
@@ -596,7 +638,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@yahoo.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 95,
       "message": "Bless the children",
       "createdAt": "2026-01-22T14:40:00Z"
@@ -606,7 +648,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@moringaschool.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 500,
       "message": "Go green!",
       "createdAt": "2024-04-02T08:00:00Z"
@@ -616,7 +658,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@community.org",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 350,
       "message": "",
       "createdAt": "2024-04-18T12:30:00Z"
@@ -626,7 +668,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@neighborhood.or.ke",
+      "donorEmail": "james.kimani@email.com",
       "amount": 200,
       "message": "Clean energy matters",
       "createdAt": "2024-05-05T16:45:00Z"
@@ -636,7 +678,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2024-05-22T09:15:00Z"
@@ -646,7 +688,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@outlook.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 300,
       "message": "For the environment",
       "createdAt": "2024-06-08T14:00:00Z"
@@ -656,7 +698,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@yahoo.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 125,
       "message": "",
       "createdAt": "2024-06-25T08:30:00Z"
@@ -666,7 +708,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@moringaschool.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 450,
       "message": "Solar power!",
       "createdAt": "2024-07-12T13:20:00Z"
@@ -676,7 +718,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@community.org",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 180,
       "message": "",
       "createdAt": "2024-07-29T10:45:00Z"
@@ -686,7 +728,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@neighborhood.or.ke",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 250,
       "message": "Sustainable future",
       "createdAt": "2024-08-15T15:30:00Z"
@@ -696,7 +738,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@gmail.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 400,
       "message": "Third donation",
       "createdAt": "2024-09-01T09:00:00Z"
@@ -706,7 +748,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-09-18T14:15:00Z"
@@ -716,7 +758,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@yahoo.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 275,
       "message": "Green energy",
       "createdAt": "2024-10-05T08:45:00Z"
@@ -736,7 +778,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@moringaschool.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 190,
       "message": "Power to the people",
       "createdAt": "2024-11-08T10:00:00Z"
@@ -746,7 +788,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@community.org",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 225,
       "message": "",
       "createdAt": "2024-11-25T15:45:00Z"
@@ -756,7 +798,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@neighborhood.or.ke",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 100,
       "message": "Every bit helps",
       "createdAt": "2024-12-12T09:20:00Z"
@@ -766,7 +808,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 300,
       "message": "Third donation",
       "createdAt": "2024-12-29T13:40:00Z"
@@ -776,7 +818,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@outlook.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2025-01-15T08:15:00Z"
@@ -786,7 +828,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 320,
       "message": "Solar future",
       "createdAt": "2025-02-01T11:50:00Z"
@@ -796,7 +838,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@moringaschool.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 140,
       "message": "",
       "createdAt": "2025-02-18T09:30:00Z"
@@ -806,7 +848,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@community.org",
+      "donorEmail": "james.kimani@email.com",
       "amount": 260,
       "message": "Clean energy",
       "createdAt": "2025-03-07T14:25:00Z"
@@ -816,7 +858,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@neighborhood.or.ke",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 185,
       "message": "",
       "createdAt": "2025-03-24T10:10:00Z"
@@ -826,7 +868,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 210,
       "message": "Renewable energy!",
       "createdAt": "2025-04-10T15:00:00Z"
@@ -836,7 +878,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@outlook.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 280,
       "message": "Fourth time",
       "createdAt": "2025-04-27T08:40:00Z"
@@ -846,7 +888,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 195,
       "message": "",
       "createdAt": "2025-05-14T12:20:00Z"
@@ -856,7 +898,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@moringaschool.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 155,
       "message": "Go solar",
       "createdAt": "2025-05-31T09:50:00Z"
@@ -866,7 +908,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@community.org",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 230,
       "message": "",
       "createdAt": "2025-06-17T14:35:00Z"
@@ -886,7 +928,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@neighborhood.or.ke",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 165,
       "message": "",
       "createdAt": "2025-07-21T11:55:00Z"
@@ -896,7 +938,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 240,
       "message": "For our children",
       "createdAt": "2025-08-07T10:15:00Z"
@@ -906,7 +948,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@outlook.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 130,
       "message": "",
       "createdAt": "2025-08-24T15:40:00Z"
@@ -916,7 +958,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@yahoo.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 350,
       "message": "Seventh donation!",
       "createdAt": "2025-09-10T09:05:00Z"
@@ -926,7 +968,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@moringaschool.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2025-09-27T13:30:00Z"
@@ -936,7 +978,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@community.org",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 290,
       "message": "Solar power",
       "createdAt": "2025-10-14T08:50:00Z"
@@ -946,7 +988,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@neighborhood.or.ke",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 145,
       "message": "",
       "createdAt": "2025-10-31T12:15:00Z"
@@ -956,7 +998,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 200,
       "message": "Green future",
       "createdAt": "2025-11-17T09:35:00Z"
@@ -966,7 +1008,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@outlook.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 170,
       "message": "",
       "createdAt": "2025-12-04T14:00:00Z"
@@ -976,7 +1018,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@yahoo.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 250,
       "message": "Sixth donation",
       "createdAt": "2025-12-21T08:20:00Z"
@@ -986,7 +1028,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@moringaschool.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 135,
       "message": "",
       "createdAt": "2026-01-07T11:45:00Z"
@@ -996,7 +1038,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@community.org",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 215,
       "message": "Clean energy",
       "createdAt": "2026-01-18T10:05:00Z"
@@ -1006,7 +1048,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Dr. Sarah Okonkwo",
-      "donorEmail": "sarah.okonkwo@neighborhood.or.ke",
+      "donorEmail": "sarah.okonkwo@email.com",
       "amount": 1000,
       "message": "Healthcare for all",
       "createdAt": "2024-02-15T09:00:00Z"
@@ -1016,7 +1058,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 350,
       "message": "",
       "createdAt": "2024-03-03T14:30:00Z"
@@ -1026,7 +1068,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 200,
       "message": "Health is wealth",
       "createdAt": "2024-03-20T08:45:00Z"
@@ -1036,7 +1078,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 450,
       "message": "",
       "createdAt": "2024-04-06T12:20:00Z"
@@ -1046,7 +1088,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Dr. Sarah Okonkwo",
-      "donorEmail": "sarah.okonkwo@moringaschool.com",
+      "donorEmail": "sarah.okonkwo@email.com",
       "amount": 800,
       "message": "Second donation",
       "createdAt": "2024-04-23T10:15:00Z"
@@ -1066,7 +1108,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@community.org",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 275,
       "message": "",
       "createdAt": "2024-05-27T09:30:00Z"
@@ -1076,7 +1118,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@neighborhood.or.ke",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 180,
       "message": "For community health",
       "createdAt": "2024-06-13T13:55:00Z"
@@ -1086,7 +1128,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@gmail.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 320,
       "message": "",
       "createdAt": "2024-06-30T08:20:00Z"
@@ -1096,7 +1138,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@outlook.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 250,
       "message": "Health matters",
       "createdAt": "2024-07-17T12:45:00Z"
@@ -1106,7 +1148,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Dr. Sarah Okonkwo",
-      "donorEmail": "sarah.okonkwo@yahoo.com",
+      "donorEmail": "sarah.okonkwo@email.com",
       "amount": 700,
       "message": "Third donation!",
       "createdAt": "2024-08-03T10:10:00Z"
@@ -1116,7 +1158,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@moringaschool.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 400,
       "message": "",
       "createdAt": "2024-08-20T15:25:00Z"
@@ -1126,7 +1168,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@community.org",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-09-06T08:50:00Z"
@@ -1136,7 +1178,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@neighborhood.or.ke",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 380,
       "message": "Medical care",
       "createdAt": "2024-09-23T13:15:00Z"
@@ -1156,7 +1198,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 220,
       "message": "Support healthcare",
       "createdAt": "2024-10-27T14:05:00Z"
@@ -1166,7 +1208,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@outlook.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2024-11-13T08:30:00Z"
@@ -1176,7 +1218,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Dr. Sarah Okonkwo",
-      "donorEmail": "sarah.okonkwo@yahoo.com",
+      "donorEmail": "sarah.okonkwo@email.com",
       "amount": 500,
       "message": "Fourth donation!",
       "createdAt": "2024-11-30T12:55:00Z"
@@ -1186,7 +1228,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@moringaschool.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 280,
       "message": "",
       "createdAt": "2024-12-17T10:20:00Z"
@@ -1196,7 +1238,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@community.org",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 195,
       "message": "For the clinic",
       "createdAt": "2025-01-03T15:45:00Z"
@@ -1206,7 +1248,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@neighborhood.or.ke",
+      "donorEmail": "james.kimani@email.com",
       "amount": 240,
       "message": "",
       "createdAt": "2025-01-20T09:10:00Z"
@@ -1216,7 +1258,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 160,
       "message": "Health first",
       "createdAt": "2025-02-06T13:35:00Z"
@@ -1226,7 +1268,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@outlook.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 300,
       "message": "",
       "createdAt": "2025-02-23T08:00:00Z"
@@ -1236,7 +1278,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Dr. Sarah Okonkwo",
-      "donorEmail": "sarah.okonkwo@yahoo.com",
+      "donorEmail": "sarah.okonkwo@email.com",
       "amount": 600,
       "message": "Fifth donation",
       "createdAt": "2025-03-12T12:25:00Z"
@@ -1256,7 +1298,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@moringaschool.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 185,
       "message": "Wellness for all",
       "createdAt": "2025-04-15T15:15:00Z"
@@ -1266,7 +1308,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@community.org",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 290,
       "message": "",
       "createdAt": "2025-05-02T09:40:00Z"
@@ -1276,7 +1318,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@neighborhood.or.ke",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 170,
       "message": "Medical support",
       "createdAt": "2025-05-19T14:05:00Z"
@@ -1286,7 +1328,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 320,
       "message": "Third time!",
       "createdAt": "2025-06-05T08:30:00Z"
@@ -1296,7 +1338,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@outlook.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 200,
       "message": "",
       "createdAt": "2025-06-22T12:55:00Z"
@@ -1306,7 +1348,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@yahoo.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 260,
       "message": "Healthcare access",
       "createdAt": "2025-07-09T10:20:00Z"
@@ -1316,7 +1358,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@moringaschool.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 145,
       "message": "",
       "createdAt": "2025-07-26T15:45:00Z"
@@ -1326,7 +1368,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Dr. Sarah Okonkwo",
-      "donorEmail": "sarah.okonkwo@community.org",
+      "donorEmail": "sarah.okonkwo@email.com",
       "amount": 400,
       "message": "Sixth donation",
       "createdAt": "2025-08-12T09:10:00Z"
@@ -1336,7 +1378,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@neighborhood.or.ke",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 180,
       "message": "",
       "createdAt": "2025-08-29T13:35:00Z"
@@ -1356,7 +1398,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@gmail.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 155,
       "message": "",
       "createdAt": "2025-10-02T12:25:00Z"
@@ -1366,7 +1408,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@outlook.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 270,
       "message": "Health services",
       "createdAt": "2025-10-19T10:50:00Z"
@@ -1376,7 +1418,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@yahoo.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 135,
       "message": "",
       "createdAt": "2025-11-05T15:15:00Z"
@@ -1386,7 +1428,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Dr. Sarah Okonkwo",
-      "donorEmail": "sarah.okonkwo@moringaschool.com",
+      "donorEmail": "sarah.okonkwo@email.com",
       "amount": 550,
       "message": "Seventh donation",
       "createdAt": "2025-11-22T09:40:00Z"
@@ -1396,7 +1438,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@community.org",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 210,
       "message": "",
       "createdAt": "2025-12-09T14:05:00Z"
@@ -1406,7 +1448,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@neighborhood.or.ke",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 165,
       "message": "Clinic support",
       "createdAt": "2025-12-26T08:30:00Z"
@@ -1416,7 +1458,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@gmail.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 245,
       "message": "",
       "createdAt": "2026-01-12T12:55:00Z"
@@ -1426,7 +1468,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Alice Mwikali",
-      "donorEmail": "alice.mwikali@outlook.com",
+      "donorEmail": "alice.mwikali@email.com",
       "amount": 250,
       "message": "Support the arts!",
       "createdAt": "2024-05-10T09:30:00Z"
@@ -1436,7 +1478,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@yahoo.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-05-28T11:15:00Z"
@@ -1446,7 +1488,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@moringaschool.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 180,
       "message": "Art matters",
       "createdAt": "2024-06-15T14:45:00Z"
@@ -1456,7 +1498,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@community.org",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 120,
       "message": "",
       "createdAt": "2024-07-03T08:20:00Z"
@@ -1466,7 +1508,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Alice Mwikali",
-      "donorEmail": "alice.mwikali@neighborhood.or.ke",
+      "donorEmail": "alice.mwikali@email.com",
       "amount": 200,
       "message": "Second donation",
       "createdAt": "2024-07-21T13:00:00Z"
@@ -1486,7 +1528,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 100,
       "message": "",
       "createdAt": "2024-08-26T15:50:00Z"
@@ -1496,7 +1538,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@outlook.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 175,
       "message": "Creative youth",
       "createdAt": "2024-09-13T09:25:00Z"
@@ -1506,7 +1548,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@yahoo.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 140,
       "message": "",
       "createdAt": "2024-10-01T12:10:00Z"
@@ -1516,7 +1558,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@moringaschool.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 180,
       "message": "Again!",
       "createdAt": "2024-10-19T16:40:00Z"
@@ -1526,7 +1568,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@community.org",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 130,
       "message": "",
       "createdAt": "2024-11-06T08:55:00Z"
@@ -1536,7 +1578,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Alice Mwikali",
-      "donorEmail": "alice.mwikali@neighborhood.or.ke",
+      "donorEmail": "alice.mwikali@email.com",
       "amount": 200,
       "message": "Art education",
       "createdAt": "2024-11-24T13:20:00Z"
@@ -1546,7 +1588,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 90,
       "message": "",
       "createdAt": "2024-12-12T10:05:00Z"
@@ -1566,7 +1608,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@outlook.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 160,
       "message": "Mentorship",
       "createdAt": "2025-01-17T09:15:00Z"
@@ -1576,7 +1618,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Alice Mwikali",
-      "donorEmail": "alice.mwikali@yahoo.com",
+      "donorEmail": "alice.mwikali@email.com",
       "amount": 145,
       "message": "Fourth time",
       "createdAt": "2025-02-04T12:45:00Z"
@@ -1586,7 +1628,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@moringaschool.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 115,
       "message": "",
       "createdAt": "2025-02-22T16:00:00Z"
@@ -1596,7 +1638,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@community.org",
+      "donorEmail": "james.kimani@email.com",
       "amount": 170,
       "message": "Studio space",
       "createdAt": "2025-03-12T08:35:00Z"
@@ -1606,7 +1648,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@neighborhood.or.ke",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 125,
       "message": "",
       "createdAt": "2025-03-30T13:10:00Z"
@@ -1616,7 +1658,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Alice Mwikali",
-      "donorEmail": "alice.mwikali@gmail.com",
+      "donorEmail": "alice.mwikali@email.com",
       "amount": 180,
       "message": "Fifth donation!",
       "createdAt": "2025-04-17T10:40:00Z"
@@ -1626,7 +1668,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@outlook.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 95,
       "message": "",
       "createdAt": "2025-05-05T15:25:00Z"
@@ -1636,7 +1678,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@yahoo.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 150,
       "message": "Art supplies",
       "createdAt": "2025-05-23T09:50:00Z"
@@ -1646,7 +1688,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@moringaschool.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 110,
       "message": "",
       "createdAt": "2025-06-10T14:15:00Z"
@@ -1666,7 +1708,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@community.org",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 135,
       "message": "",
       "createdAt": "2025-07-16T13:05:00Z"
@@ -1676,7 +1718,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "Alice Mwikali",
-      "donorEmail": "alice.mwikali@neighborhood.or.ke",
+      "donorEmail": "alice.mwikali@email.com",
       "amount": 160,
       "message": "Sixth time",
       "createdAt": "2025-08-03T10:30:00Z"
@@ -1686,7 +1728,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Yusuf Mwangi",
-      "donorEmail": "yusuf.mwangi@gmail.com",
+      "donorEmail": "yusuf.mwangi@email.com",
       "amount": 300,
       "message": "Clean water!",
       "createdAt": "2024-06-05T10:00:00Z"
@@ -1696,7 +1738,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@outlook.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2024-06-23T14:30:00Z"
@@ -1706,7 +1748,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@yahoo.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 200,
       "message": "Water access",
       "createdAt": "2024-07-11T08:45:00Z"
@@ -1716,7 +1758,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@moringaschool.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-07-29T12:20:00Z"
@@ -1726,7 +1768,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Yusuf Mwangi",
-      "donorEmail": "yusuf.mwangi@community.org",
+      "donorEmail": "yusuf.mwangi@email.com",
       "amount": 250,
       "message": "Second donation",
       "createdAt": "2024-08-16T16:50:00Z"
@@ -1736,7 +1778,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@neighborhood.or.ke",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 180,
       "message": "",
       "createdAt": "2024-09-03T09:15:00Z"
@@ -1756,7 +1798,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@gmail.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 125,
       "message": "",
       "createdAt": "2024-10-09T10:05:00Z"
@@ -1766,7 +1808,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@outlook.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 220,
       "message": "Reduce plastic",
       "createdAt": "2024-10-27T15:30:00Z"
@@ -1776,7 +1818,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Yusuf Mwangi",
-      "donorEmail": "yusuf.mwangi@yahoo.com",
+      "donorEmail": "yusuf.mwangi@email.com",
       "amount": 145,
       "message": "",
       "createdAt": "2024-11-14T08:55:00Z"
@@ -1786,7 +1828,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@moringaschool.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 200,
       "message": "Third donation!",
       "createdAt": "2024-12-02T12:20:00Z"
@@ -1796,7 +1838,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@community.org",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 160,
       "message": "",
       "createdAt": "2024-12-20T16:45:00Z"
@@ -1806,7 +1848,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@neighborhood.or.ke",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 190,
       "message": "Water kiosk",
       "createdAt": "2025-01-07T09:10:00Z"
@@ -1826,7 +1868,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@gmail.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 130,
       "message": "Clean water access",
       "createdAt": "2025-02-12T10:00:00Z"
@@ -1836,7 +1878,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Yusuf Mwangi",
-      "donorEmail": "yusuf.mwangi@outlook.com",
+      "donorEmail": "yusuf.mwangi@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2025-03-02T14:25:00Z"
@@ -1846,7 +1888,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@yahoo.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 200,
       "message": "Fourth donation!",
       "createdAt": "2025-03-20T08:50:00Z"
@@ -1856,7 +1898,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@moringaschool.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 115,
       "message": "",
       "createdAt": "2025-04-07T12:15:00Z"
@@ -1866,7 +1908,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@community.org",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 185,
       "message": "Hydration",
       "createdAt": "2025-04-25T16:40:00Z"
@@ -1876,7 +1918,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Yusuf Mwangi",
-      "donorEmail": "yusuf.mwangi@neighborhood.or.ke",
+      "donorEmail": "yusuf.mwangi@email.com",
       "amount": 140,
       "message": "",
       "createdAt": "2025-05-13T09:05:00Z"
@@ -1886,7 +1928,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 210,
       "message": "Public water",
       "createdAt": "2025-05-31T13:30:00Z"
@@ -1906,7 +1948,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 165,
       "message": "Fifth donation",
       "createdAt": "2025-07-06T15:20:00Z"
@@ -1916,7 +1958,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 120,
       "message": "",
       "createdAt": "2025-07-24T08:45:00Z"
@@ -1926,7 +1968,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "Yusuf Mwangi",
-      "donorEmail": "yusuf.mwangi@moringaschool.com",
+      "donorEmail": "yusuf.mwangi@email.com",
       "amount": 195,
       "message": "Sixth time",
       "createdAt": "2025-08-11T12:10:00Z"
@@ -1936,7 +1978,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@community.org",
+      "donorEmail": "quincy.mwangi@email.com",
       "amount": 250,
       "message": "Feed the community!",
       "createdAt": "2024-07-08T08:30:00Z"
@@ -1946,7 +1988,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@neighborhood.or.ke",
+      "donorEmail": "james.kimani@email.com",
       "amount": 175,
       "message": "",
       "createdAt": "2024-07-26T13:00:00Z"
@@ -1956,7 +1998,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 120,
       "message": "Food security",
       "createdAt": "2024-08-13T10:25:00Z"
@@ -1966,7 +2008,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@outlook.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 200,
       "message": "",
       "createdAt": "2024-08-31T15:50:00Z"
@@ -1976,7 +2018,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@yahoo.com",
+      "donorEmail": "quincy.mwangi@email.com",
       "amount": 180,
       "message": "Second donation",
       "createdAt": "2024-09-18T09:15:00Z"
@@ -1986,7 +2028,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@moringaschool.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-10-06T14:40:00Z"
@@ -2006,7 +2048,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@community.org",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 130,
       "message": "",
       "createdAt": "2024-11-11T12:30:00Z"
@@ -2016,7 +2058,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@neighborhood.or.ke",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 190,
       "message": "Community fridge",
       "createdAt": "2024-11-29T16:55:00Z"
@@ -2026,7 +2068,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 110,
       "message": "",
       "createdAt": "2024-12-17T09:20:00Z"
@@ -2036,7 +2078,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@outlook.com",
+      "donorEmail": "quincy.mwangi@email.com",
       "amount": 165,
       "message": "Third time",
       "createdAt": "2025-01-04T13:45:00Z"
@@ -2046,7 +2088,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@yahoo.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 145,
       "message": "",
       "createdAt": "2025-01-22T10:10:00Z"
@@ -2056,7 +2098,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@moringaschool.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 220,
       "message": "Fresh food",
       "createdAt": "2025-02-09T15:35:00Z"
@@ -2076,7 +2118,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@community.org",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 100,
       "message": "Pantry support",
       "createdAt": "2025-03-17T12:25:00Z"
@@ -2086,7 +2128,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@neighborhood.or.ke",
+      "donorEmail": "quincy.mwangi@email.com",
       "amount": 200,
       "message": "Fourth donation!",
       "createdAt": "2025-04-04T16:50:00Z"
@@ -2096,7 +2138,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 155,
       "message": "",
       "createdAt": "2025-04-22T09:15:00Z"
@@ -2106,7 +2148,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@outlook.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 175,
       "message": "Food pantry",
       "createdAt": "2025-05-10T13:40:00Z"
@@ -2116,7 +2158,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@yahoo.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 135,
       "message": "",
       "createdAt": "2025-05-28T10:05:00Z"
@@ -2126,7 +2168,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@moringaschool.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 190,
       "message": "Solar fridge",
       "createdAt": "2025-06-15T15:30:00Z"
@@ -2146,7 +2188,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@community.org",
+      "donorEmail": "quincy.mwangi@email.com",
       "amount": 145,
       "message": "Fifth donation",
       "createdAt": "2025-07-21T12:20:00Z"
@@ -2156,7 +2198,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@neighborhood.or.ke",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 165,
       "message": "",
       "createdAt": "2025-08-08T16:45:00Z"
@@ -2166,7 +2208,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 125,
       "message": "Fresh groceries",
       "createdAt": "2025-08-26T09:10:00Z"
@@ -2176,7 +2218,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@outlook.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 200,
       "message": "",
       "createdAt": "2025-09-13T13:35:00Z"
@@ -2186,7 +2228,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@yahoo.com",
+      "donorEmail": "quincy.mwangi@email.com",
       "amount": 110,
       "message": "Community food",
       "createdAt": "2025-10-01T10:00:00Z"
@@ -2196,7 +2238,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@moringaschool.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 180,
       "message": "",
       "createdAt": "2025-10-19T14:25:00Z"
@@ -2206,7 +2248,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@community.org",
+      "donorEmail": "james.kimani@email.com",
       "amount": 175,
       "message": "Seventh time!",
       "createdAt": "2025-11-06T08:50:00Z"
@@ -2216,7 +2258,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@neighborhood.or.ke",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 140,
       "message": "",
       "createdAt": "2025-11-24T12:15:00Z"
@@ -2226,7 +2268,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "quincy.mwangi@email.com",
       "amount": 130,
       "message": "Eighth donation",
       "createdAt": "2025-12-12T08:45:00Z"
@@ -2236,7 +2278,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Richard Ouma",
-      "donorEmail": "richard.ouma@outlook.com",
+      "donorEmail": "richard.ouma@email.com",
       "amount": 200,
       "message": "Go team!",
       "createdAt": "2024-08-20T09:45:00Z"
@@ -2246,7 +2288,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@yahoo.com",
+      "donorEmail": "james.kimani@email.com",
       "amount": 150,
       "message": "",
       "createdAt": "2024-09-07T14:10:00Z"
@@ -2256,7 +2298,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@moringaschool.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 125,
       "message": "Youth sports",
       "createdAt": "2024-09-25T08:35:00Z"
@@ -2276,7 +2318,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Richard Ouma",
-      "donorEmail": "richard.ouma@community.org",
+      "donorEmail": "richard.ouma@email.com",
       "amount": 175,
       "message": "Second time",
       "createdAt": "2024-10-31T10:25:00Z"
@@ -2286,7 +2328,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@neighborhood.or.ke",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 100,
       "message": "",
       "createdAt": "2024-11-18T15:50:00Z"
@@ -2296,7 +2338,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 180,
       "message": "Soccer gear",
       "createdAt": "2024-12-06T09:15:00Z"
@@ -2306,7 +2348,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@outlook.com",
+      "donorEmail": "andrew.kiptoo@email.com",
       "amount": 130,
       "message": "",
       "createdAt": "2024-12-24T13:40:00Z"
@@ -2316,7 +2358,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Richard Ouma",
-      "donorEmail": "richard.ouma@yahoo.com",
+      "donorEmail": "richard.ouma@email.com",
       "amount": 140,
       "message": "Third donation!",
       "createdAt": "2025-01-11T10:05:00Z"
@@ -2326,7 +2368,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@moringaschool.com",
+      "donorEmail": "margaret.kemunto@email.com",
       "amount": 115,
       "message": "",
       "createdAt": "2025-01-29T15:30:00Z"
@@ -2346,7 +2388,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@community.org",
+      "donorEmail": "james.kimani@email.com",
       "amount": 160,
       "message": "",
       "createdAt": "2025-03-06T12:20:00Z"
@@ -2356,7 +2398,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Richard Ouma",
-      "donorEmail": "richard.ouma@neighborhood.or.ke",
+      "donorEmail": "richard.ouma@email.com",
       "amount": 150,
       "message": "Fourth time",
       "createdAt": "2025-03-24T16:45:00Z"
@@ -2366,7 +2408,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "george.odhiambo@email.com",
       "amount": 95,
       "message": "",
       "createdAt": "2025-04-11T09:10:00Z"
@@ -2376,7 +2418,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@outlook.com",
+      "donorEmail": "mary.wanjiku@email.com",
       "amount": 170,
       "message": "Uniforms",
       "createdAt": "2025-04-29T13:35:00Z"
@@ -2386,7 +2428,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@yahoo.com",
+      "donorEmail": "peter.ochieng@email.com",
       "amount": 110,
       "message": "",
       "createdAt": "2025-05-17T10:00:00Z"
@@ -2396,7 +2438,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Richard Ouma",
-      "donorEmail": "richard.ouma@moringaschool.com",
+      "donorEmail": "richard.ouma@email.com",
       "amount": 125,
       "message": "Fifth donation!",
       "createdAt": "2025-06-04T14:25:00Z"
@@ -2406,7 +2448,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@community.org",
+      "donorEmail": "grace.achieng@email.com",
       "amount": 135,
       "message": "",
       "createdAt": "2025-06-22T08:50:00Z"
@@ -2600,13 +2642,50 @@
       "status": "new"
     }
   ],
+  "admins": [
+    {
+      "id": "owner-simon",
+      "name": "Simon Maina",
+      "email": "mainawaititu2021@gmail.com",
+      "password": "simon-2026",
+      "role": "CEO"
+    },
+    {
+      "id": "auditor-george",
+      "name": "George Okumu",
+      "email": "george.okumu@moringaschool.com",
+      "password": "george-2026",
+      "role": "Auditor"
+    },
+    {
+      "id": "admin-ashanti",
+      "name": "Ashanti Kweyu",
+      "email": "kashiku789@gmail.com",
+      "password": "ashanti-2026",
+      "role": "Admin"
+    },
+    {
+      "id": "admin-ian",
+      "name": "Ian Kipchirchir",
+      "email": "iankipchirchir51@gmail.com",
+      "password": "ian-2026",
+      "role": "Admin"
+    },
+    {
+      "id": "admin-denis",
+      "name": "Denis Kipruto",
+      "email": "kypvega@gmail.com",
+      "password": "denis-2026",
+      "role": "Admin"
+    }
+  ],
   "users": [
     {
-      "id": "u-1769700901859",
-      "name": "Ashanti Kweyu",
-      "email": "kashik789@gmail.com",
-      "password": "ashanti-2026",
-      "role": "donor"
+      "id": "u-1769761817554",
+      "name": "simon waititu maina",
+      "email": "mainawaititu2026@gmail.com",
+      "password": "simon-2026",
+      "role": "user"
     }
   ]
 }

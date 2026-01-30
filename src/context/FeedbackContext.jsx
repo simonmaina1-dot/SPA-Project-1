@@ -11,7 +11,11 @@ export function FeedbackProvider({ children }) {
     let isActive = true;
     const loadFeedback = async () => {
       try {
+<<<<<<< HEAD
         const res = await fetch('/data/collections/feedback.json');
+=======
+        const res = await fetch("/feedback");
+>>>>>>> main
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
@@ -46,7 +50,7 @@ export function FeedbackProvider({ children }) {
 
     if (apiAvailable) {
       try {
-        const res = await fetch("http://localhost:3002/feedback", {
+        const res = await fetch("/feedback", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newFeedback),
@@ -71,7 +75,7 @@ export function FeedbackProvider({ children }) {
     if (!apiAvailable) return;
 
     try {
-      const res = await fetch(`http://localhost:3002/feedback/${id}`, {
+      const res = await fetch(`/feedback/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
@@ -91,7 +95,7 @@ export function FeedbackProvider({ children }) {
     if (!apiAvailable) return;
 
     try {
-      const res = await fetch(`http://localhost:3002/feedback/${id}`, {
+      const res = await fetch(`/feedback/${id}`, {
         method: "DELETE",
       });
 

@@ -106,11 +106,16 @@ export default function Home() {
   };
 
   // Show welcome toast on first mount
+  const visibleProjects = useMemo(
+    () => projects.filter((project) => project.verificationStatus === "approved"),
+    [projects]
+  );
+
   useEffect(() => {
-    if (projects.length > 0) {
-      showToast(`Welcome! ${projects.length} projects available`, "info");
+    if (visibleProjects.length > 0) {
+      showToast(`Welcome! ${visibleProjects.length} projects available`, "info");
     }
-  }, [projects.length, showToast]);
+  }, [visibleProjects.length, showToast]);
 
   // Smooth scroll to about section
   useEffect(() => {
@@ -149,7 +154,7 @@ export default function Home() {
 
   // Filter projects based on search and category
   const filteredProjects = useMemo(() => {
-    let result = projects;
+    let result = visibleProjects;
 
     if (selectedCategory !== "all") {
       result = result.filter((p) => p.category === selectedCategory);
@@ -165,7 +170,7 @@ export default function Home() {
     }
 
     return result;
-  }, [projects, searchQuery, selectedCategory]);
+  }, [visibleProjects, searchQuery, selectedCategory]);
 
   // Get featured projects
   const featuredProjects = useMemo(() => {
@@ -174,13 +179,13 @@ export default function Home() {
 
   // Calculate total funding stats (from all projects)
   const totalStats = useMemo(() => {
-    const totalRaised = projects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
-    const totalGoal = projects.reduce((sum, p) => sum + (p.goal || 0), 0);
-    const totalDonors = projects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
-    const fundedCount = projects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
+    const totalRaised = visibleProjects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
+    const totalGoal = visibleProjects.reduce((sum, p) => sum + (p.goal || 0), 0);
+    const totalDonors = visibleProjects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
+    const fundedCount = visibleProjects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
 
     return { totalRaised, totalGoal, totalDonors, fundedCount };
-  }, [projects]);
+  }, [visibleProjects]);
 
   // ✅ Animated counters - only animate once per session
   const animatedProjects = useCountUp(projects.length, 2500, shouldAnimateStats);
@@ -229,7 +234,11 @@ export default function Home() {
             className={`stats-dashboard${statsVisible ? " visible" : ""}`}
           >
             <div className="stat-card">
+<<<<<<< HEAD
               <span className="stat-value">{animatedProjects}</span>
+=======
+              <span className="stat-value">{visibleProjects.length}</span>
+>>>>>>> main
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-card">
@@ -249,7 +258,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      {featuredProjects.length > 0 && projects.length >= 3 && (
+      {featuredProjects.length > 0 && visibleProjects.length >= 3 && (
         <section className="featured-section" id="featured">
           <h2>Featured Projects</h2>
           <div className="featured-grid">
@@ -485,7 +494,7 @@ export default function Home() {
                     className="read-more-link"
                     onClick={() => toggleCard("responsibility")}
                   >
-                    Show less
+                    how less
                   </button>
                 </p>
               </div>

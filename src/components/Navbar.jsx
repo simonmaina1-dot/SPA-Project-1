@@ -120,8 +120,12 @@ export default function Navbar() {
           ))}
         </nav>
         <div className="nav-actions">
-          <Link to="/add" className="btn btn-primary nav-cta" onClick={() => setMenuOpen(false)}>
-            Start a Project
+          <Link
+            to="/submit-project"
+            className="btn btn-primary nav-cta"
+            onClick={() => setMenuOpen(false)}
+          >
+            Submit a Project
           </Link>
           {currentUser ? (
             <Link
