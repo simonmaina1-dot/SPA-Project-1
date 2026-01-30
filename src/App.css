@@ -593,6 +593,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 1rem;
 }
 
 /* Funding info grid */
@@ -650,6 +651,7 @@ body {
   padding: 36px 32px 28px;
   z-index: 3;
   color: #ffffff;
+  border: none;
 }
 
 /* Toast container - stacks toasts in bottom-right corner */
@@ -2221,6 +2223,20 @@ body {
 .nav-link.active::after {
   left: 16px;
   width: calc(100% - 32px);
+  animation: navActiveUnderline 0.35s ease-out;
+}
+
+@keyframes navActiveUnderline {
+  from {
+    width: 0;
+    left: 50%;
+    opacity: 0.3;
+  }
+  to {
+    width: calc(100% - 32px);
+    left: 16px;
+    opacity: 1;
+  }
 }
 
 /* CTA Button in Navbar */
