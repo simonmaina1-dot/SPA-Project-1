@@ -163,9 +163,9 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
               )}
             </div>
           </div>
-        </div>
 
-        <div className="admin-fund-panel">
+          <div className="admin-divider" />
+
           <h4>Recent usage reports</h4>
           <div className="admin-source-list">
             {recentUsage.length ? (
