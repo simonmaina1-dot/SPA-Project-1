@@ -129,7 +129,7 @@ export default function Navbar() {
           </Link>
           {currentUser ? (
             <Link
-              to={currentUser.isAdmin ? "/dashboard" : "/user-dashboard"}
+              to={currentUser.isAdmin ? "/admin" : "/user-dashboard"}
               className="btn btn-secondary nav-cta"
               onClick={() => setMenuOpen(false)}
             >

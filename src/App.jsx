@@ -28,7 +28,7 @@ function NotFound() {
 
 export default function App() {
   const location = useLocation();
-  const hideMainNav = location.pathname.startsWith("/dashboard");
+  const hideMainNav = location.pathname.startsWith("/admin");
 
   return (
     <div className="app-shell">
@@ -45,8 +45,8 @@ export default function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
-          <Route path="/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
