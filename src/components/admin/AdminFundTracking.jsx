@@ -142,26 +142,24 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
 
         <div className="admin-fund-panel">
           <h4>Donation sources</h4>
-          <div className="admin-source-list">
-            <div className="admin-source-grid">
-              {sourceSummary.length ? (
-                sourceSummary.map((source) => (
-                  <div key={source.source} className="admin-source-row">
-                    <div>
-                      <p className="admin-row-title">
-                        {sourceLabels[source.source] || "Other"}
-                      </p>
-                      <p className="admin-row-meta">{source.count} donations</p>
-                    </div>
-                    <span className="admin-row-amount">
-                      {formatCurrency(source.total)}
-                    </span>
+          <div className="admin-source-grid">
+            {sourceSummary.length ? (
+              sourceSummary.map((source) => (
+                <div key={source.source} className="admin-source-row">
+                  <div>
+                    <p className="admin-row-title">
+                      {sourceLabels[source.source] || "Other"}
+                    </p>
+                    <p className="admin-row-meta">{source.count} donations</p>
                   </div>
-                ))
-              ) : (
-                <p className="admin-empty">No donation sources recorded yet.</p>
-              )}
-            </div>
+                  <span className="admin-row-amount">
+                    {formatCurrency(source.total)}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="admin-empty">No donation sources recorded yet.</p>
+            )}
           </div>
 
           <div className="admin-divider" />
