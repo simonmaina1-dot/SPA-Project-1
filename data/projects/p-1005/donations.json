@@ -10,36 +10,6 @@
     "createdAt": "2026-03-21T07:05:34.879Z"
   },
   {
-    "id": "d-1152",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 175,
-    "message": "",
-    "createdAt": "2023-03-14T12:17:42.575Z"
-  },
-  {
-    "id": "d-1153",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Mary Wanjiku",
-    "donorEmail": "mary.wanjiku@proton.me",
-    "amount": 200,
-    "message": "Water access",
-    "createdAt": "2024-09-30T04:46:36.478Z"
-  },
-  {
-    "id": "d-1154",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Peter Ochieng",
-    "donorEmail": "peter.ochieng@hotmail.com",
-    "amount": 150,
-    "message": "",
-    "createdAt": "2023-03-02T01:29:21.560Z"
-  },
-  {
     "id": "d-1155",
     "projectId": "p-1005",
     "projectTitle": "Clean Water Refill Station",
@@ -50,16 +20,6 @@
     "createdAt": "2023-05-14T22:32:27.158Z"
   },
   {
-    "id": "d-1156",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Grace Achieng",
-    "donorEmail": "grace.achieng@icloud.com",
-    "amount": 180,
-    "message": "",
-    "createdAt": "2024-02-09T23:10:11.986Z"
-  },
-  {
     "id": "d-1157",
     "projectId": "p-1005",
     "projectTitle": "Clean Water Refill Station",
@@ -68,16 +28,6 @@
     "amount": 400,
     "message": "Essential!",
     "createdAt": "2024-01-14T09:37:44.407Z"
-  },
-  {
-    "id": "d-1158",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Andrew Kiptoo",
-    "donorEmail": "andrew.kiptoo@aol.com",
-    "amount": 125,
-    "message": "",
-    "createdAt": "2025-10-14T09:42:27.296Z"
   },
   {
     "id": "d-1159",
@@ -100,16 +50,6 @@
     "createdAt": "2023-12-15T11:27:54.708Z"
   },
   {
-    "id": "d-1161",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 200,
-    "message": "Third donation!",
-    "createdAt": "2023-09-17T06:40:57.144Z"
-  },
-  {
     "id": "d-1162",
     "projectId": "p-1005",
     "projectTitle": "Clean Water Refill Station",
@@ -120,16 +60,6 @@
     "createdAt": "2026-12-04T21:16:17.177Z"
   },
   {
-    "id": "d-1163",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Mary Wanjiku",
-    "donorEmail": "mary.wanjiku@proton.me",
-    "amount": 190,
-    "message": "Water kiosk",
-    "createdAt": "2024-10-08T20:48:55.819Z"
-  },
-  {
     "id": "d-1164",
     "projectId": "p-1005",
     "projectTitle": "Clean Water Refill Station",
@@ -138,16 +68,6 @@
     "amount": 350,
     "message": "",
     "createdAt": "2025-01-20T20:09:31.920Z"
-  },
-  {
-    "id": "d-1165",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Peter Ochieng",
-    "donorEmail": "peter.ochieng@hotmail.com",
-    "amount": 130,
-    "message": "Clean water access",
-    "createdAt": "2023-10-14T19:32:23.317Z"
   },
   {
     "id": "d-1166",
@@ -170,26 +90,6 @@
     "createdAt": "2026-12-22T06:11:45.899Z"
   },
   {
-    "id": "d-1168",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Andrew Kiptoo",
-    "donorEmail": "andrew.kiptoo@aol.com",
-    "amount": 115,
-    "message": "",
-    "createdAt": "2024-07-15T09:11:01.185Z"
-  },
-  {
-    "id": "d-1169",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Margaret Kemunto",
-    "donorEmail": "margaret.kemunto@aol.com",
-    "amount": 185,
-    "message": "Hydration",
-    "createdAt": "2025-05-03T10:28:14.532Z"
-  },
-  {
     "id": "d-1170",
     "projectId": "p-1005",
     "projectTitle": "Clean Water Refill Station",
@@ -200,16 +100,6 @@
     "createdAt": "2026-09-19T02:51:42.689Z"
   },
   {
-    "id": "d-1171",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 210,
-    "message": "Public water",
-    "createdAt": "2025-08-25T13:58:40.185Z"
-  },
-  {
     "id": "d-1172",
     "projectId": "p-1005",
     "projectTitle": "Clean Water Refill Station",
@@ -218,16 +108,6 @@
     "amount": 280,
     "message": "",
     "createdAt": "2025-08-04T16:26:27.806Z"
-  },
-  {
-    "id": "d-1173",
-    "projectId": "p-1005",
-    "projectTitle": "Clean Water Refill Station",
-    "donorName": "Mary Wanjiku",
-    "donorEmail": "mary.wanjiku@proton.me",
-    "amount": 165,
-    "message": "Fifth donation",
-    "createdAt": "2024-05-20T06:21:42.879Z"
   },
   {
     "id": "d-1174",

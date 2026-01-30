@@ -10,36 +10,6 @@
     "createdAt": "2025-11-01T04:44:48.543Z"
   },
   {
-    "id": "d-1177",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 175,
-    "message": "",
-    "createdAt": "2025-07-30T00:18:01.448Z"
-  },
-  {
-    "id": "d-1178",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Mary Wanjiku",
-    "donorEmail": "mary.wanjiku@proton.me",
-    "amount": 120,
-    "message": "Food security",
-    "createdAt": "2024-10-19T23:39:34.138Z"
-  },
-  {
-    "id": "d-1179",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Peter Ochieng",
-    "donorEmail": "peter.ochieng@hotmail.com",
-    "amount": 200,
-    "message": "",
-    "createdAt": "2023-07-05T21:52:55.638Z"
-  },
-  {
     "id": "d-1180",
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
@@ -50,16 +20,6 @@
     "createdAt": "2024-07-04T12:15:15.142Z"
   },
   {
-    "id": "d-1181",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Grace Achieng",
-    "donorEmail": "grace.achieng@icloud.com",
-    "amount": 150,
-    "message": "",
-    "createdAt": "2024-02-03T10:28:52.945Z"
-  },
-  {
     "id": "d-1182",
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
@@ -68,26 +28,6 @@
     "amount": 350,
     "message": "Great cause",
     "createdAt": "2023-11-18T18:48:05.200Z"
-  },
-  {
-    "id": "d-1183",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Andrew Kiptoo",
-    "donorEmail": "andrew.kiptoo@aol.com",
-    "amount": 130,
-    "message": "",
-    "createdAt": "2023-02-23T22:31:53.351Z"
-  },
-  {
-    "id": "d-1184",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Margaret Kemunto",
-    "donorEmail": "margaret.kemunto@aol.com",
-    "amount": 190,
-    "message": "Community fridge",
-    "createdAt": "2024-06-03T06:32:53.621Z"
   },
   {
     "id": "d-1185",
@@ -120,16 +60,6 @@
     "createdAt": "2026-06-30T22:42:36.460Z"
   },
   {
-    "id": "d-1188",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Mary Wanjiku",
-    "donorEmail": "mary.wanjiku@proton.me",
-    "amount": 220,
-    "message": "Fresh food",
-    "createdAt": "2025-05-23T09:50:20.736Z"
-  },
-  {
     "id": "d-1189",
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
@@ -140,16 +70,6 @@
     "createdAt": "2023-08-20T13:11:18.681Z"
   },
   {
-    "id": "d-1190",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Peter Ochieng",
-    "donorEmail": "peter.ochieng@hotmail.com",
-    "amount": 100,
-    "message": "Pantry support",
-    "createdAt": "2023-10-27T01:30:33.196Z"
-  },
-  {
     "id": "d-1191",
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
@@ -158,16 +78,6 @@
     "amount": 200,
     "message": "Fourth donation!",
     "createdAt": "2024-01-25T05:06:02.099Z"
-  },
-  {
-    "id": "d-1192",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Grace Achieng",
-    "donorEmail": "grace.achieng@icloud.com",
-    "amount": 155,
-    "message": "",
-    "createdAt": "2024-08-29T18:33:46.179Z"
   },
   {
     "id": "d-1193",
@@ -188,16 +98,6 @@
     "amount": 135,
     "message": "",
     "createdAt": "2026-04-20T08:13:10.238Z"
-  },
-  {
-    "id": "d-1195",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 190,
-    "message": "Solar fridge",
-    "createdAt": "2024-07-25T20:08:44.141Z"
   },
   {
     "id": "d-1196",
@@ -228,16 +128,6 @@
     "amount": 165,
     "message": "",
     "createdAt": "2024-03-25T11:58:20.649Z"
-  },
-  {
-    "id": "d-1199",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Mary Wanjiku",
-    "donorEmail": "mary.wanjiku@proton.me",
-    "amount": 125,
-    "message": "Fresh groceries",
-    "createdAt": "2024-05-17T15:28:58.556Z"
   },
   {
     "id": "d-1200",
@@ -278,16 +168,6 @@
     "amount": 175,
     "message": "Seventh time!",
     "createdAt": "2026-03-28T19:50:53.236Z"
-  },
-  {
-    "id": "d-1204",
-    "projectId": "p-1006",
-    "projectTitle": "Neighborhood Food Pantry Fridge",
-    "donorName": "Andrew Kiptoo",
-    "donorEmail": "andrew.kiptoo@aol.com",
-    "amount": 140,
-    "message": "",
-    "createdAt": "2024-06-08T01:52:01.485Z"
   },
   {
     "id": "d-1205",

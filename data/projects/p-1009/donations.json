@@ -22,39 +22,6 @@
     "source": "card"
   },
   {
-    "id": "d-1249",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "Mary Wanjiku",
-    "donorEmail": "mary.wanjiku@proton.me",
-    "amount": 264,
-    "message": "",
-    "createdAt": "2023-09-18T01:56:44.516Z",
-    "source": "card"
-  },
-  {
-    "id": "d-1243",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "Grace Achieng",
-    "donorEmail": "grace.achieng@icloud.com",
-    "amount": 405,
-    "message": "",
-    "createdAt": "2023-09-19T18:42:10.301Z",
-    "source": "bank"
-  },
-  {
-    "id": "d-1253",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "Grace Achieng",
-    "donorEmail": "grace.achieng@icloud.com",
-    "amount": 225,
-    "message": "",
-    "createdAt": "2023-12-12T03:41:07.791Z",
-    "source": "card"
-  },
-  {
     "id": "d-1252",
     "projectId": "p-1009",
     "projectTitle": "Neighborhood Tech Makerspace",
@@ -64,72 +31,6 @@
     "message": "",
     "createdAt": "2023-12-17T09:08:04.705Z",
     "source": "bank"
-  },
-  {
-    "id": "d-1240",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 103,
-    "message": "",
-    "createdAt": "2024-06-16T01:19:10.674Z",
-    "source": "cash"
-  },
-  {
-    "id": "d-1251",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "Margaret Kemunto",
-    "donorEmail": "margaret.kemunto@aol.com",
-    "amount": 83,
-    "message": "",
-    "createdAt": "2024-10-05T20:41:46.372Z",
-    "source": "bank"
-  },
-  {
-    "id": "d-1239",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 462,
-    "message": "",
-    "createdAt": "2025-02-19T02:45:20.784Z",
-    "source": "bank"
-  },
-  {
-    "id": "d-1244",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "Grace Achieng",
-    "donorEmail": "grace.achieng@icloud.com",
-    "amount": 72,
-    "message": "",
-    "createdAt": "2025-04-12T17:43:27.797Z",
-    "source": "card"
-  },
-  {
-    "id": "d-1248",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 136,
-    "message": "Happy to support",
-    "createdAt": "2025-04-16T08:55:57.439Z",
-    "source": "bank"
-  },
-  {
-    "id": "d-1241",
-    "projectId": "p-1009",
-    "projectTitle": "Neighborhood Tech Makerspace",
-    "donorName": "Peter Ochieng",
-    "donorEmail": "peter.ochieng@hotmail.com",
-    "amount": 160,
-    "message": "Happy to support",
-    "createdAt": "2025-10-16T20:50:44.819Z",
-    "source": "mpesa"
   },
   {
     "id": "d-1247",

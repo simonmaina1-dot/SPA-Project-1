@@ -1,16 +1,5 @@
 [
   {
-    "id": "d-1230",
-    "projectId": "p-1007",
-    "projectTitle": "Community Tree Canopy Initiative",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 177,
-    "message": "Happy to support",
-    "createdAt": "2023-05-16T00:08:13.801Z",
-    "source": "mpesa"
-  },
-  {
     "id": "d-1229",
     "projectId": "p-1007",
     "projectTitle": "Community Tree Canopy Initiative",
@@ -75,17 +64,6 @@
     "message": "",
     "createdAt": "2025-07-28T22:38:38.193Z",
     "source": "mpesa"
-  },
-  {
-    "id": "d-1236",
-    "projectId": "p-1007",
-    "projectTitle": "Community Tree Canopy Initiative",
-    "donorName": "James Kimani",
-    "donorEmail": "james.kimani@outlook.com",
-    "amount": 341,
-    "message": "",
-    "createdAt": "2025-07-30T21:23:53.422Z",
-    "source": "bank"
   },
   {
     "id": "d-1228",
