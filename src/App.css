@@ -2630,6 +2630,16 @@ body {
   margin: 16px 0 0;
 }
 
+.account-note a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.account-note a:hover {
+  color: var(--color-primary-dark);
+}
+
 .account-switch {
   display: flex;
   gap: 12px;
