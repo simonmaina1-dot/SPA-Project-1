@@ -6,14 +6,12 @@
     "category": "education",
     "imageUrl": "https://images.pexels.com/photos/6936008/pexels-photo-6936008.jpeg?cs=srgb&dl=pexels-rdne-6936008.jpg&fm=jpg",
     "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
+    "galleryFiles": ["1.jpg", "2.jpg"],
     "goal": 12000,
     "currentAmount": 6800,
     "donorCount": 42,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1002",
@@ -22,15 +20,12 @@
     "category": "environment",
     "imageUrl": "https://images.pexels.com/photos/9799994/pexels-photo-9799994.jpeg?cs=srgb&dl=pexels-kindelmedia-9799994.jpg&fm=jpg",
     "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg",
-      "3.jpg"
-    ],
+    "galleryFiles": ["1.jpg", "2.jpg", "3.jpg"],
     "goal": 30000,
     "currentAmount": 18500,
     "donorCount": 96,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1003",
@@ -39,14 +34,12 @@
     "category": "health",
     "imageUrl": "https://images.pexels.com/photos/7108317/pexels-photo-7108317.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-7108317.jpg&fm=jpg",
     "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
+    "galleryFiles": ["1.jpg", "2.jpg"],
     "goal": 18000,
     "currentAmount": 17560,
     "donorCount": 74,
-    "status": "funded"
+    "status": "funded",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1004",
@@ -55,14 +48,12 @@
     "category": "arts",
     "imageUrl": "https://images.pexels.com/photos/8382386/pexels-photo-8382386.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-8382386.jpg&fm=jpg",
     "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
+    "galleryFiles": ["1.jpg", "2.jpg"],
     "goal": 9500,
     "currentAmount": 4100,
     "donorCount": 28,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1005",
@@ -71,14 +62,12 @@
     "category": "community",
     "imageUrl": "https://images.pexels.com/photos/1362909/pexels-photo-1362909.jpeg?cs=srgb&dl=pexels-abhishek-goel-153437-1362909.jpg&fm=jpg",
     "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
+    "galleryFiles": ["1.jpg", "2.jpg"],
     "goal": 15000,
     "currentAmount": 5200,
     "donorCount": 31,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1006",
@@ -87,14 +76,12 @@
     "category": "community",
     "imageUrl": "https://images.pexels.com/photos/6647115/pexels-photo-6647115.jpeg?cs=srgb&dl=pexels-rdne-6647115.jpg&fm=jpg",
     "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
+    "galleryFiles": ["1.jpg", "2.jpg"],
     "goal": 8000,
     "currentAmount": 7600,
     "donorCount": 54,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1007",
@@ -102,13 +89,12 @@
     "description": "Plant 500 shade trees and fund a year of community-led care and watering.",
     "category": "environment",
     "imageUrl": "https://images.pexels.com/photos/7656721/pexels-photo-7656721.jpeg?cs=srgb&dl=pexels-thirdman-7656721.jpg&fm=jpg",
-    "galleryUrls": [
-      "https://images.pexels.com/photos/7656721/pexels-photo-7656721.jpeg?cs=srgb&dl=pexels-thirdman-7656721.jpg&fm=jpg"
-    ],
+    "galleryUrls": ["https://images.pexels.com/photos/7656721/pexels-photo-7656721.jpeg?cs=srgb&dl=pexels-thirdman-7656721.jpg&fm=jpg"],
     "goal": 22000,
     "currentAmount": 6400,
     "donorCount": 36,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1008",
@@ -117,15 +103,12 @@
     "category": "sports",
     "imageUrl": "https://images.pexels.com/photos/35571154/pexels-photo-35571154.jpeg?cs=srgb&dl=pexels-dacostashotit-35571154.jpg&fm=jpg",
     "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg",
-      "3.jpg"
-    ],
+    "galleryFiles": ["1.jpg", "2.jpg", "3.jpg"],
     "goal": 6000,
     "currentAmount": 2500,
     "donorCount": 19,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   },
   {
     "id": "p-1009",
@@ -133,12 +116,12 @@
     "description": "After-school robotics, design, and coding studio with shared tools and mentors.",
     "category": "education",
     "imageUrl": "https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg",
-    "galleryUrls": [
-      "https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg"
-    ],
+    "galleryUrls": ["https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg"],
     "goal": 25000,
     "currentAmount": 8200,
     "donorCount": 45,
-    "status": "active"
+    "status": "active",
+    "verificationStatus": "approved"
   }
 ]
+

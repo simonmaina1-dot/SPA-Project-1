@@ -517,6 +517,82 @@ body {
   transform: scale(1.05);
 }
 
+/* Status badge on project card */
+.project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  width: fit-content;
+}
+
+.status-badge-funded {
+  background: rgba(22, 163, 74, 0.9);
+  color: white;
+}
+
+.status-badge-active {
+  background: rgba(29, 185, 84, 0.9);
+  color: white;
+}
+
+.status-badge-completed {
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
+}
+
+.status-badge-default {
+  background: rgba(100, 116, 139, 0.9);
+  color: white;
+}
+
+/* Enhanced project card details section */
+.project-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Funding info grid */
+.project-funding-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.funding-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.funding-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.funding-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  font-family: 'Google Sans', sans-serif;
+}
+
 /* Dark gradient overlay for text readability */
 .project-card-overlay {
   position: absolute;

@@ -10,6 +10,7 @@ export default function ProjectCard({ project, onClick, featured = false }) {
     ? Math.min(100, Math.round((project.currentAmount / project.goal) * 100))
     : 0;
 
+  // Get gallery images from database fields
   const galleryImages = [];
   const galleryUrls = Array.isArray(project.galleryUrls)
     ? project.galleryUrls.filter(Boolean)
@@ -24,12 +25,16 @@ export default function ProjectCard({ project, onClick, featured = false }) {
     }
   };
 
+  // Add main image URL from database
   addImage(project.imageUrl);
+  // Add gallery URLs from database
   galleryUrls.forEach(addImage);
+  // Add gallery files from database (construct path from project id)
   galleryFiles.forEach((file) =>
     addImage(`/project-images/${project.id}/${file}`)
   );
 
+  // Fallback to numbered images if no gallery provided
   if (galleryImages.length === 0) {
     const galleryCount = Number(project.galleryCount) || 0;
     for (let i = 1; i <= galleryCount; i++) {
@@ -67,6 +72,20 @@ export default function ProjectCard({ project, onClick, featured = false }) {
 
   const handleImageError = (index, src) => {
     console.error(`Failed to load image ${index} for ${project.id}:`, src);
+  };
+
+  // Status badge class based on project status
+  const getStatusBadgeClass = (status) => {
+    switch (status) {
+      case "funded":
+        return "status-badge-funded";
+      case "active":
+        return "status-badge-active";
+      case "completed":
+        return "status-badge-completed";
+      default:
+        return "status-badge-default";
+    }
   };
 
   // Action button/link
@@ -108,19 +127,9 @@ export default function ProjectCard({ project, onClick, featured = false }) {
             return (
               <div
                 key={index}
+                className="project-card-slide"
                 style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
                   backgroundImage: `url(${src})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                  opacity: shouldShow ? 1 : 0,
-                  transition: "opacity 1s ease-in-out",
-                  zIndex: isActive ? 2 : 1,
                 }}
               >
                 <img
@@ -135,12 +144,8 @@ export default function ProjectCard({ project, onClick, featured = false }) {
           })
         ) : (
           <div
+            className="project-card-slide"
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
               background: "linear-gradient(135deg, #1db954 0%, #1ed760 100%)",
             }}
           />
@@ -153,12 +158,33 @@ export default function ProjectCard({ project, onClick, featured = false }) {
       {/* Content overlay */}
       <div className="project-card-content">
         <div className="project-card-header">
+          {/* Status badge */}
+          <span className={`project-status-badge ${getStatusBadgeClass(project.status)}`}>
+            {project.status}
+          </span>
+          
           <span className="project-category">{project.category}</span>
           <h3 className="project-title">{project.title}</h3>
           <p className="project-description">{project.description}</p>
         </div>
 
-        <div className="project-card-footer">
+        {/* Enhanced funding info */}
+        <div className="project-card-details">
+          <div className="project-funding-info">
+            <div className="funding-row">
+              <span className="funding-label">Raised</span>
+              <span className="funding-value">{formatCurrency(project.currentAmount)}</span>
+            </div>
+            <div className="funding-row">
+              <span className="funding-label">Goal</span>
+              <span className="funding-value">{formatCurrency(project.goal)}</span>
+            </div>
+            <div className="funding-row">
+              <span className="funding-label">Donors</span>
+              <span className="funding-value">{project.donorCount || 0}</span>
+            </div>
+          </div>
+          
           <div className="project-funding">
             <span className="funding-percentage">{progress}% funded</span>
             <div className="funding-bar">
@@ -168,7 +194,9 @@ export default function ProjectCard({ project, onClick, featured = false }) {
               />
             </div>
           </div>
+        </div>
 
+        <div className="project-card-footer">
           {actionNode}
         </div>
       </div>

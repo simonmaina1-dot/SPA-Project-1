@@ -22,7 +22,7 @@ import useForm from "../hooks/useForm";
  * - Scroll-triggered stats animation
  */
 export default function Home() {
-  const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
+  const { projects, isLoading, getAllFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
   const { feedbackList, addFeedback } = useFeedback();
   const {
@@ -121,10 +121,10 @@ export default function Home() {
     return result;
   }, [projects, searchQuery, selectedCategory]);
 
-  // Get featured projects
+  // Get featured projects (all approved projects)
   const featuredProjects = useMemo(() => {
-    return getFeaturedProjects();
-  }, [getFeaturedProjects]);
+    return getAllFeaturedProjects();
+  }, [getAllFeaturedProjects]);
 
   // Calculate total funding stats (from all projects)
   const totalStats = useMemo(() => {
@@ -197,7 +197,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      {featuredProjects.length > 0 && projects.length >= 3 && (
+      {featuredProjects.length > 0 && (
         <section className="featured-section" id="featured">
           <h2>Featured Projects</h2>
           <div className="featured-grid">
