@@ -54,12 +54,12 @@ export default function ProjectCard({ project, onClick, featured = false }) {
   useEffect(() => {
     if (galleryImages.length <= 1) return;
 
-    const randomDelay = Math.random() * 4000;
+    const randomDelay = Math.random() * 5000;
 
     delayRef.current = window.setTimeout(() => {
       intervalRef.current = window.setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
-      }, 4000);
+      }, 5500);
     }, randomDelay);
 
     return () => {
