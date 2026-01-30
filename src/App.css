@@ -568,12 +568,22 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 18px;
+  padding: 0;
+}
+
+.project-funding-card,
+.project-progress-card {
+  padding: 16px 18px;
   background: rgba(9, 13, 20, 0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.project-progress-card {
+  padding-top: 12px;
+  padding-bottom: 14px;
 }
 
 /* Funding info grid */

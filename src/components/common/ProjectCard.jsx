@@ -217,28 +217,34 @@ export default function ProjectCard({ project, onClick, featured = false }) {
 
         {/* Enhanced funding info */}
         <div className="project-card-details">
-          <div className="project-funding-info">
-            <div className="funding-row">
-              <span className="funding-label">Raised</span>
-              <span className="funding-value">{formatCurrency(project.currentAmount)}</span>
-            </div>
-            <div className="funding-row">
-              <span className="funding-label">Goal</span>
-              <span className="funding-value">{formatCurrency(project.goal)}</span>
-            </div>
-            <div className="funding-row">
-              <span className="funding-label">Donors</span>
-              <span className="funding-value">{project.donorCount || 0}</span>
+          <div className="project-funding-card">
+            <div className="project-funding-info">
+              <div className="funding-row">
+                <span className="funding-label">Raised</span>
+                <span className="funding-value">
+                  {formatCurrency(project.currentAmount)}
+                </span>
+              </div>
+              <div className="funding-row">
+                <span className="funding-label">Goal</span>
+                <span className="funding-value">{formatCurrency(project.goal)}</span>
+              </div>
+              <div className="funding-row">
+                <span className="funding-label">Donors</span>
+                <span className="funding-value">{project.donorCount || 0}</span>
+              </div>
             </div>
           </div>
-          
-          <div className="project-funding">
-            <span className="funding-percentage">{progress}% funded</span>
-            <div className="funding-bar">
-              <div
-                className="funding-progress"
-                style={{ width: `${progress}%` }}
-              />
+
+          <div className="project-progress-card">
+            <div className="project-funding">
+              <span className="funding-percentage">{progress}% funded</span>
+              <div className="funding-bar">
+                <div
+                  className="funding-progress"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
           </div>
         </div>
