@@ -585,6 +585,8 @@ body {
   padding: 0;
   background: transparent;
   border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
