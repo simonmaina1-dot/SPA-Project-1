@@ -168,6 +168,36 @@ export default function ProjectDetails() {
     if (!b?.createdAt) return -1;
     return b.createdAt.localeCompare(a.createdAt);
   });
+  const groupedDonations = Object.values(
+    sortedDonations.reduce((acc, donation) => {
+      const name = donation?.donorName?.trim() || "Anonymous";
+      const email = donation?.donorEmail?.trim().toLowerCase() || "";
+      const key = `${name.toLowerCase()}|${email}`;
+
+      if (!acc[key]) {
+        acc[key] = {
+          key,
+          name,
+          count: 0,
+          totalAmount: 0,
+          lastDonation: donation?.createdAt || "",
+        };
+      }
+
+      acc[key].count += 1;
+      acc[key].totalAmount += donation?.amount || 0;
+      if (donation?.createdAt && donation.createdAt > acc[key].lastDonation) {
+        acc[key].lastDonation = donation.createdAt;
+      }
+
+      return acc;
+    }, {})
+  ).sort((a, b) => {
+    if (!a.lastDonation && !b.lastDonation) return 0;
+    if (!a.lastDonation) return 1;
+    if (!b.lastDonation) return -1;
+    return b.lastDonation.localeCompare(a.lastDonation);
+  });
 
   return (
     <div className="page project-details-page">
@@ -502,20 +532,19 @@ export default function ProjectDetails() {
             <p className="donor-empty">No donations yet.</p>
           ) : (
             <ul className="donor-rows">
-              {sortedDonations.map((donation) => (
-                <li key={donation.id} className="donor-row">
+              {groupedDonations.map((donor) => (
+                <li key={donor.key} className="donor-row">
                   <div>
-                    <p className="donor-name">
-                      {donation.donorName?.trim() || "Anonymous"}
-                    </p>
+                    <p className="donor-name">{donor.name}</p>
                     <p className="donor-meta">
-                      {donation.createdAt
-                        ? new Date(donation.createdAt).toLocaleDateString()
+                      {donor.count} donation{donor.count === 1 ? "" : "s"} •{" "}
+                      {donor.lastDonation
+                        ? `Last on ${new Date(donor.lastDonation).toLocaleDateString()}`
                         : "Date unavailable"}
                     </p>
                   </div>
                   <div className="donor-amount">
-                    {formatCurrency(donation.amount || 0)}
+                    {formatCurrency(donor.totalAmount)}
                   </div>
                 </li>
               ))}
