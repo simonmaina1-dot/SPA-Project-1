@@ -1,24 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-import { projectCriteria } from "../../data/projectCriteria";
-
-const statusLabels = {
-  pending: "Pending",
-  submitted: "Submitted",
-  under_review: "Under review",
-  approved: "Reviewed",
-  rejected: "Rejected",
-};
-
-const formatDate = (value) => {
-  if (!value) return "Unknown";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Unknown";
-  return date.toLocaleDateString("en-KE", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
+import {
+  useVettingQueue,
+  useVettingActions,
+  useVettingFormatters,
+} from "../../hooks/useVettingQueue";
 
 export default function AdminVettingQueue({
   projects,
@@ -26,96 +10,13 @@ export default function AdminVettingQueue({
   formatCurrency,
   showToast,
 }) {
-  const queue = useMemo(
-    () =>
-      projects.filter(
-        (project) => project.verificationStatus !== "approved"
-      ),
-    [projects]
+  const { queue, getProjectDraft, toggleCriteria, updateDraft } =
+    useVettingQueue(projects);
+  const { handleAction, handleSaveNotes } = useVettingActions(
+    updateProject,
+    showToast
   );
-
-  const [drafts, setDrafts] = useState({});
-
-  useEffect(() => {
-    const nextDrafts = {};
-    queue.forEach((project) => {
-      nextDrafts[project.id] = {
-        criteriaMet: { ...project.criteriaMet },
-        verificationNotes: project.verificationNotes || "",
-      };
-    });
-    setDrafts(nextDrafts);
-  }, [queue]);
-
-  const updateDraft = (projectId, updates) => {
-    setDrafts((prev) => ({
-      ...prev,
-      [projectId]: {
-        ...prev[projectId],
-        ...updates,
-      },
-    }));
-  };
-
-  const handleCriteriaToggle = (projectId, key) => {
-    const current = drafts[projectId]?.criteriaMet || {};
-    updateDraft(projectId, {
-      criteriaMet: {
-        ...current,
-        [key]: !current[key],
-      },
-    });
-  };
-
-  const handleAction = (project, nextStatus) => {
-    const draft = drafts[project.id] || {
-      criteriaMet: project.criteriaMet,
-      verificationNotes: project.verificationNotes || "",
-    };
-    const criteriaMet = draft.criteriaMet || project.criteriaMet;
-
-    if (nextStatus === "approved") {
-      const allCriteriaMet = Object.values(criteriaMet || {}).every(Boolean);
-      if (!allCriteriaMet) {
-        showToast("Confirm each criteria item before approving.", "warning");
-        return;
-      }
-    }
-
-    if (nextStatus === "rejected" && !draft.verificationNotes.trim()) {
-      showToast("Add a rejection note for the applicant.", "warning");
-      return;
-    }
-
-    const status = nextStatus === "approved" ? "active" : "review";
-
-    updateProject(project.id, {
-      verificationStatus: nextStatus,
-      verificationNotes: draft.verificationNotes.trim(),
-      criteriaMet,
-      status,
-    });
-
-    const message =
-      nextStatus === "approved"
-        ? "Project reviewed and published."
-        : nextStatus === "rejected"
-          ? "Submission rejected with notes sent."
-          : "Vetting status updated.";
-
-    showToast(message, "success");
-  };
-
-  const handleSaveNotes = (project) => {
-    const draft = drafts[project.id];
-    if (!draft) return;
-
-    updateProject(project.id, {
-      verificationNotes: draft.verificationNotes.trim(),
-      criteriaMet: draft.criteriaMet,
-    });
-    showToast("Vetting notes updated.", "success");
-  };
+  const { formatDate, statusLabels, projectCriteria } = useVettingFormatters();
 
   return (
     <article className="admin-card admin-card-wide admin-vetting">
@@ -133,11 +34,8 @@ export default function AdminVettingQueue({
       ) : (
         <div className="vetting-grid">
           {queue.map((project) => {
-            const draft = drafts[project.id] || {
-              criteriaMet: project.criteriaMet,
-              verificationNotes: project.verificationNotes || "",
-            };
-            const criteriaMet = draft.criteriaMet || project.criteriaMet || {};
+            const draft = getProjectDraft(project);
+            const criteriaMet = draft.criteriaMet || {};
 
             return (
               <div key={project.id} className="vetting-card">
@@ -189,7 +87,7 @@ export default function AdminVettingQueue({
                           type="checkbox"
                           checked={Boolean(criteriaMet[criteria.key])}
                           onChange={() =>
-                            handleCriteriaToggle(project.id, criteria.key)
+                            toggleCriteria(project.id, criteria.key)
                           }
                         />
                         <span>{criteria.label}</span>
@@ -216,28 +114,28 @@ export default function AdminVettingQueue({
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={() => handleSaveNotes(project)}
+                    onClick={() => handleSaveNotes(project, draft)}
                   >
                     Save notes
                   </button>
                   <button
                     type="button"
                     className="btn btn-danger"
-                    onClick={() => handleAction(project, "rejected")}
+                    onClick={() => handleAction(project, "rejected", draft)}
                   >
                     Reject
                   </button>
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={() => handleAction(project, "under_review")}
+                    onClick={() => handleAction(project, "under_review", draft)}
                   >
                     Mark under review
                   </button>
                   <button
                     type="button"
                     className="btn btn-success"
-                    onClick={() => handleAction(project, "approved")}
+                    onClick={() => handleAction(project, "approved", draft)}
                   >
                     Approve
                   </button>
