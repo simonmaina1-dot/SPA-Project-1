@@ -4,6 +4,14 @@ import useAuth from "../hooks/useAuth";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import { defaultCriteriaMet, projectCriteria } from "../data/projectCriteria";
+import {
+  identitySchema,
+  personalInfoSchema,
+  projectDetailsSchema,
+  criteriaSchema,
+  projectSchema,
+} from "../validations/projectSchemas";
+import { validateForm } from "../utils/validationHelper";
 
 const buildInitialState = (currentUser) => ({
   identityDocument: "",
@@ -18,14 +26,12 @@ const buildInitialState = (currentUser) => ({
   galleryUrls: "",
   criteriaMet: { ...defaultCriteriaMet },
 });
-
 const stepLabels = [
   "Identity verification",
   "Personal information",
   "Project details",
   "Review and submit",
 ];
-
 export default function SubmitProject() {
   const { currentUser } = useAuth();
   const { addProject } = useProjects();
@@ -33,121 +39,71 @@ export default function SubmitProject() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState(() =>
-    buildInitialState(currentUser)
+    buildInitialState(currentUser),
   );
-
   const steps = useMemo(
     () => stepLabels.map((label, index) => ({ label, index: index + 1 })),
-    []
+    [],
   );
-
   if (!currentUser) {
     return <Navigate to="/signup" replace />;
   }
-
   if (currentUser.isAdmin) {
     return <Navigate to="/add" replace />;
   }
-
   const updateValue = (field, value) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
-
   const toggleCriteria = (key) => {
     setFormValues((prev) => ({
       ...prev,
-      criteriaMet: {
-        ...prev.criteriaMet,
-        [key]: !prev.criteriaMet[key],
-      },
+      criteriaMet: { ...prev.criteriaMet, [key]: !prev.criteriaMet[key] },
     }));
   };
-
-  const validateStep = (currentStep) => {
-    if (currentStep === 1) {
-      if (!formValues.identityDocument.trim()) {
-        showToast("Please add a government ID or passport URL.", "warning");
+  const validateStep = async (currentStep) => {
+    let schema;
+    if (currentStep === 1) schema = identitySchema;
+    if (currentStep === 2) schema = personalInfoSchema;
+    if (currentStep === 3) schema = projectDetailsSchema;
+    if (currentStep === 4) schema = criteriaSchema;
+    if (schema) {
+      const { isValid, errors } = await validateForm(schema, formValues);
+      if (!isValid) {
+        showToast(Object.values(errors).join(", "), "warning");
         return false;
       }
     }
-
-    if (currentStep === 2) {
-      if (!formValues.ownerName.trim()) {
-        showToast("Please enter your full name.", "warning");
-        return false;
-      }
-      if (!formValues.ownerEmail.trim()) {
-        showToast("Please enter a valid email address.", "warning");
-        return false;
-      }
-      if (!formValues.ownerPhone.trim()) {
-        showToast("Please enter a phone number.", "warning");
-        return false;
-      }
-    }
-
-    if (currentStep === 3) {
-      if (!formValues.title.trim() || !formValues.description.trim()) {
-        showToast("Please enter a project title and description.", "warning");
-        return false;
-      }
-      if (!formValues.goal || Number(formValues.goal) <= 0) {
-        showToast("Please enter a valid funding goal.", "warning");
-        return false;
-      }
-      const allCriteriaMet = Object.values(formValues.criteriaMet).every(Boolean);
-      if (!allCriteriaMet) {
-        showToast("Please confirm each project criteria item.", "warning");
-        return false;
-      }
-    }
-
     return true;
   };
-
-  const validateAll = () => {
-    if (!validateStep(1)) {
-      setStep(1);
-      return false;
-    }
-    if (!validateStep(2)) {
-      setStep(2);
-      return false;
-    }
-    if (!validateStep(3)) {
-      setStep(3);
+  const validateAll = async () => {
+    const { isValid, errors } = await validateForm(projectSchema, formValues);
+    if (!isValid) {
+      showToast(Object.values(errors).join(", "), "warning");
       return false;
     }
     return true;
   };
-
-  const handleNext = () => {
-    if (!validateStep(step)) return;
+  const handleNext = async () => {
+    if (!(await validateStep(step))) return;
     setStep((prev) => Math.min(prev + 1, steps.length));
   };
-
   const handleBack = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (step < steps.length) {
-      handleNext();
+      await handleNext();
       return;
     }
-
-    if (!validateAll()) {
+    if (!(await validateAll())) {
       return;
     }
-
     const createdBy = {
       id: currentUser.id,
       name: currentUser.name,
       email: currentUser.email,
     };
-
     addProject({
       title: formValues.title,
       description: formValues.description,
@@ -168,13 +124,11 @@ export default function SubmitProject() {
       fundUsage: [],
       status: "review",
     });
-
     showToast("Project submitted for verification.", "success");
     setFormValues(buildInitialState(currentUser));
     setStep(1);
     navigate("/user-dashboard");
   };
-
   return (
     <div className="page submit-project-page">
       <section className="page-header">
@@ -207,7 +161,9 @@ export default function SubmitProject() {
                 government ID or passport scan.
               </p>
               <label className="form-field">
-                <span className="form-label">Government ID / Passport URL *</span>
+                <span className="form-label">
+                  Government ID / Passport URL *
+                </span>
                 <input
                   type="url"
                   name="identityDocument"
@@ -232,7 +188,9 @@ export default function SubmitProject() {
                     type="text"
                     name="ownerName"
                     value={formValues.ownerName}
-                    onChange={(event) => updateValue("ownerName", event.target.value)}
+                    onChange={(event) =>
+                      updateValue("ownerName", event.target.value)
+                    }
                     placeholder="Jane Doe"
                     required
                   />
@@ -279,7 +237,9 @@ export default function SubmitProject() {
                     type="text"
                     name="title"
                     value={formValues.title}
-                    onChange={(event) => updateValue("title", event.target.value)}
+                    onChange={(event) =>
+                      updateValue("title", event.target.value)
+                    }
                     placeholder="Neighborhood Learning Lab"
                     required
                   />
@@ -325,7 +285,9 @@ export default function SubmitProject() {
                     type="number"
                     name="goal"
                     value={formValues.goal}
-                    onChange={(event) => updateValue("goal", event.target.value)}
+                    onChange={(event) =>
+                      updateValue("goal", event.target.value)
+                    }
                     placeholder="12000"
                     min="0"
                     required
@@ -338,13 +300,17 @@ export default function SubmitProject() {
                     type="url"
                     name="imageUrl"
                     value={formValues.imageUrl}
-                    onChange={(event) => updateValue("imageUrl", event.target.value)}
+                    onChange={(event) =>
+                      updateValue("imageUrl", event.target.value)
+                    }
                     placeholder="https://images.example.com/cover.jpg"
                   />
                 </label>
 
                 <label className="form-field">
-                  <span className="form-label">Gallery URLs (comma-separated)</span>
+                  <span className="form-label">
+                    Gallery URLs (comma-separated)
+                  </span>
                   <input
                     type="text"
                     name="galleryUrls"
@@ -416,7 +382,8 @@ export default function SubmitProject() {
                   <ul>
                     {projectCriteria.map((criteria) => (
                       <li key={criteria.key}>
-                        {formValues.criteriaMet[criteria.key] ? "✓" : "•"} {criteria.label}
+                        {formValues.criteriaMet[criteria.key] ? "✓" : "•"}{" "}
+                        {criteria.label}
                       </li>
                     ))}
                   </ul>
@@ -443,7 +410,11 @@ export default function SubmitProject() {
               </button>
             )}
             {step < steps.length ? (
-              <button type="button" className="btn btn-primary" onClick={handleNext}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleNext}
+              >
                 Continue
               </button>
             ) : (
