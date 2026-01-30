@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import useProjects from "../hooks/useProjects";
+import { useEffect, useRef, useState } from "react";
+import useProjects from "../../hooks/useProjects";
 
 export default function ProjectCard({ project, onClick, featured = false }) {
   const { formatCurrency } = useProjects();
@@ -47,21 +47,29 @@ export default function ProjectCard({ project, onClick, featured = false }) {
   const [imageErrors, setImageErrors] = useState(new Set());
   const [hasAnyImageLoaded, setHasAnyImageLoaded] = useState(false);
 
+  const intervalRef = useRef(null);
+  const delayRef = useRef(null);
+
   // Auto-slide with staggered timing for each card
   useEffect(() => {
     if (galleryImages.length <= 1) return;
 
     const randomDelay = Math.random() * 4000;
 
-    const delayTimer = setTimeout(() => {
-      const interval = setInterval(() => {
+    delayRef.current = window.setTimeout(() => {
+      intervalRef.current = window.setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
       }, 4000);
-
-      return () => clearInterval(interval);
     }, randomDelay);
 
-    return () => clearTimeout(delayTimer);
+    return () => {
+      if (delayRef.current) {
+        clearTimeout(delayRef.current);
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [galleryImages.length]);
 
   const handleImageLoad = (index) => {

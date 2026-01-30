@@ -456,6 +456,8 @@ body {
   font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  will-change: transform;
   
   /* Swing-in animation on load */
   animation: swingIn 0.8s var(--transition) forwards;
@@ -464,7 +466,8 @@ body {
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 55px rgba(15, 23, 42, 0.4);
 }
 
 /* Stagger animation for multiple cards */
@@ -508,20 +511,22 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0;
-  transition: opacity 0.8s ease-in-out;
+  transition: opacity 0.8s ease-in-out, transform 0.6s ease;
+  transform: translateZ(0);
+  will-change: transform, opacity;
   z-index: 1;
 }
 
 /* Show active slide immediately - no transition delay */
 .project-card-slide.active {
-  opacity: 1 !important;
-  transition: none !important;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out, transform 0.6s ease;
   z-index: 2;
 }
 
 /* Zoom on hover - only for loaded active slide */
 .project-card:hover .project-card-slide.active.loaded {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 /* Status badge on project card */
