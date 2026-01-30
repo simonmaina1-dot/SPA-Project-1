@@ -108,8 +108,6 @@ export default function SignUp() {
 
           </div>
 
-          {signupError && <p className="form-error">{signupError}</p>}
-
           <div className="form-actions">
             <button type="submit" className="btn btn-primary">
               Create account
