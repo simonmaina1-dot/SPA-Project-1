@@ -487,7 +487,7 @@ export default function Home() {
                     className="read-more-link"
                     onClick={() => toggleCard("responsibility")}
                   >
-                    how less
+                    Show less
                   </button>
                 </p>
               </div>

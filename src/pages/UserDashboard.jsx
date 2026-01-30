@@ -35,7 +35,7 @@ export default function UserDashboard() {
   );
 
   if (!currentUser) {
-    return <Navigate to="/signin" replace />;
+    return <Navigate to="/" replace />;
   }
 
   if (currentUser.isAdmin) {
@@ -206,7 +206,7 @@ export default function UserDashboard() {
         </div>
       ) : (
       <div className="user-dashboard-grid">
-        <section className="user-card">
+        <section className="user-card user-card-wide">
           <div className="user-card-header">
             <div>
               <h2>My donations</h2>
@@ -272,6 +272,40 @@ export default function UserDashboard() {
           ) : (
             <p className="user-empty">No projects created yet.</p>
           )}
+        </section>
+
+        <section className="user-card">
+          <div className="user-card-header">
+            <div>
+              <h2>Recent activity</h2>
+              <p className="user-card-subtitle">Your latest updates</p>
+            </div>
+          </div>
+
+          {recentActivity.length ? (
+            <div className="user-list">
+              {recentActivity.map((item) => (
+                <div className="user-list-row" key={item.id}>
+                  <div>
+                    <p className="user-row-title">
+                      {item.type === "donation"
+                        ? `Donated to ${item.title}`
+                        : `Created ${item.title}`}
+                    </p>
+                    <p className="user-row-meta">{formatDate(item.createdAt)}</p>
+                  </div>
+                  {item.type === "donation" ? (
+                    <span className="user-row-amount">
+                      {formatCurrency(item.amount)}
+                    </span>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="user-empty">No recent activity yet.</p>
+          )}
+
         </section>
 
         <section className="user-card user-card-wide">
@@ -426,40 +460,6 @@ export default function UserDashboard() {
           ) : (
             <p className="user-empty">No projects to report yet.</p>
           )}
-        </section>
-
-        <section className="user-card">
-          <div className="user-card-header">
-            <div>
-              <h2>Recent activity</h2>
-              <p className="user-card-subtitle">Your latest updates</p>
-            </div>
-          </div>
-
-          {recentActivity.length ? (
-            <div className="user-list">
-              {recentActivity.map((item) => (
-                <div className="user-list-row" key={item.id}>
-                  <div>
-                    <p className="user-row-title">
-                      {item.type === "donation"
-                        ? `Donated to ${item.title}`
-                        : `Created ${item.title}`}
-                    </p>
-                    <p className="user-row-meta">{formatDate(item.createdAt)}</p>
-                  </div>
-                  {item.type === "donation" ? (
-                    <span className="user-row-amount">
-                      {formatCurrency(item.amount)}
-                    </span>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="user-empty">No recent activity yet.</p>
-          )}
-
         </section>
       </div>
       )}

@@ -2711,6 +2711,16 @@ body {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
+.submit-step.dormant {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.submit-step.dormant .submit-step-index {
+  background: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
 .submit-step-index {
   width: 28px;
   height: 28px;
@@ -2782,20 +2792,27 @@ body {
 
 .criteria-grid {
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .criteria-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--color-text);
-  padding: 8px 10px;
-  border-radius: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
   border: 1px solid var(--color-border);
   background: #ffffff;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .criteria-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .submit-review .review-grid {

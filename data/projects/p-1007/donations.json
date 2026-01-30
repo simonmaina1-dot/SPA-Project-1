@@ -30,7 +30,7 @@
     "amount": 358,
     "message": "Happy to support",
     "createdAt": "2024-08-27T18:07:57.681Z",
-    "source": "mpesa"
+    "source": "cash"
   },
   {
     "id": "d-1231",
@@ -41,7 +41,7 @@
     "amount": 385,
     "message": "Happy to support",
     "createdAt": "2024-10-21T01:21:15.621Z",
-    "source": "mpesa"
+    "source": "cash"
   },
   {
     "id": "d-1235",
@@ -74,7 +74,7 @@
     "amount": 443,
     "message": "",
     "createdAt": "2025-08-31T23:09:12.569Z",
-    "source": "mpesa"
+    "source": "cash"
   },
   {
     "id": "d-1237",

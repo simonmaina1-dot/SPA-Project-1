@@ -147,12 +147,16 @@ export default function SubmitProject() {
 
       <div className="submit-project-wrapper">
         <div className="submit-steps">
+          <div className="submit-step dormant">
+            <span className="submit-step-index">1</span>
+            <span className="submit-step-label">Identity verification</span>
+          </div>
           {steps.map((stepItem) => (
             <div
               key={stepItem.index}
               className={`submit-step${step >= stepItem.index ? " active" : ""}`}
             >
-              <span className="submit-step-index">{stepItem.index}</span>
+              <span className="submit-step-index">{stepItem.index + 1}</span>
               <span className="submit-step-label">{stepItem.label}</span>
             </div>
           ))}
