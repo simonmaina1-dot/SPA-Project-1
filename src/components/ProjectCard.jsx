@@ -1,149 +1,163 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo, useRef, useCallback } from "react";
 import useProjects from "../hooks/useProjects";
 
-export default function ProjectCard({ project, onClick, featured = false }) {
+function ProjectCard({ project, onClick, featured = false }) {
   const { formatCurrency } = useProjects();
+  const cardRef = useRef(null);
+  const intervalRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedIndexes, setLoadedIndexes] = useState(new Set());
 
-  // Calculate funding progress
   const progress = project.goal
     ? Math.min(100, Math.round((project.currentAmount / project.goal) * 100))
     : 0;
 
-  const galleryImages = [];
-  const galleryUrls = Array.isArray(project.galleryUrls)
-    ? project.galleryUrls.filter(Boolean)
-    : [];
-  const galleryFiles = Array.isArray(project.galleryFiles)
-    ? project.galleryFiles.filter(Boolean)
-    : [];
-
-  const addImage = (url) => {
-    if (url && !galleryImages.includes(url)) {
-      galleryImages.push(url);
+  // ✅ Handle BOTH galleryUrls (external) AND galleryFiles (local)
+  const galleryImages = (() => {
+    // Priority 1: Use galleryUrls if available (like p-1009 has)
+    if (project.galleryUrls && project.galleryUrls.length > 0) {
+      return project.galleryUrls;
     }
-  };
-
-  addImage(project.imageUrl);
-  galleryUrls.forEach(addImage);
-  galleryFiles.forEach((file) =>
-    addImage(`/project-images/${project.id}/${file}`)
-  );
-
-  if (galleryImages.length === 0) {
-    const galleryCount = Number(project.galleryCount) || 0;
-    for (let i = 1; i <= galleryCount; i++) {
-      addImage(`/project-images/${project.id}/${i}.jpg`);
+    // Priority 2: Use galleryFiles with local images
+    if (project.galleryFiles && project.galleryFiles.length > 0) {
+      return project.galleryFiles.map(file => `/project-images/${project.id}/${file}`);
     }
-  }
+    // Priority 3: Fallback to main imageUrl
+    if (project.imageUrl) {
+      return [project.imageUrl];
+    }
+    // No images available
+    return [];
+  })();
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loadedIndexes, setLoadedIndexes] = useState(new Set());
-
-  // Auto-slide with staggered timing for each card
+  // ✅ Intersection Observer - Load when card enters viewport
   useEffect(() => {
-    if (galleryImages.length <= 1) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { 
+        rootMargin: '150px',
+        threshold: 0.01
+      }
+    );
 
-    const randomDelay = Math.random() * 4000;
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
 
-    const delayTimer = setTimeout(() => {
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
-      }, 4000);
+    return () => observer.disconnect();
+  }, []);
 
-      return () => clearInterval(interval);
-    }, randomDelay);
+  // ✅ Optimized image load handler
+  const handleImageLoad = useCallback((index) => {
+    setLoadedIndexes((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  }, []);
 
-    return () => clearTimeout(delayTimer);
-  }, [galleryImages.length]);
-
-  const handleImageLoad = (index) => {
+  const handleImageError = useCallback((index, src) => {
+    console.error(`Failed to load: ${src}`);
+    // Mark as "loaded" to show gradient instead of trying forever
     setLoadedIndexes((prev) => {
       const next = new Set(prev);
       next.add(index);
       return next;
     });
-  };
+  }, []);
 
-  const handleImageError = (index, src) => {
-    console.error(`Failed to load image ${index} for ${project.id}:`, src);
-  };
+  // ✅ Auto-slide with independent random timing per card
+  useEffect(() => {
+    if (!isVisible || galleryImages.length <= 1) return;
 
-  // Action button/link
-  const actionLabel = "Donate Page";
-  const actionContent = (
-    <>
-      {actionLabel}
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <path
-          d="M7.5 15L12.5 10L7.5 5"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </>
-  );
+    // Each card gets random start delay (0-4 seconds)
+    const randomStartDelay = Math.random() * 4000;
+    
+    const startTimer = setTimeout(() => {
+      // Slide interval (4 seconds between transitions)
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
+      }, 4000);
+    }, randomStartDelay);
 
-  const actionNode = onClick ? (
-    <span className="learn-more-btn">{actionContent}</span>
-  ) : (
-    <Link to={`/projects/${project.id}`} className="learn-more-btn">
-      {actionContent}
-    </Link>
-  );
+    return () => {
+      clearTimeout(startTimer);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isVisible, galleryImages.length]);
 
-  // Card body
   const cardBody = (
-    <article className={`project-card${featured ? " featured" : ""}`}>
-      {/* Background image slideshow */}
+    <article ref={cardRef} className={`project-card${featured ? " featured" : ""}`}>
+      {/* Image slideshow container */}
       <div className="project-card-slides">
         {galleryImages.length > 0 ? (
           galleryImages.map((src, index) => {
             const isActive = index === currentIndex;
             const isLoaded = loadedIndexes.has(index);
             const shouldShow = isActive && isLoaded;
-
+            
             return (
               <div
-                key={index}
+                key={`${project.id}-${index}`}
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   top: 0,
                   left: 0,
-                  width: "100%",
-                  height: "100%",
-                  backgroundImage: `url(${src})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: isLoaded ? `url(${src})` : 'none',
+                  backgroundColor: !isLoaded ? '#1db954' : 'transparent',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
                   opacity: shouldShow ? 1 : 0,
-                  transition: "opacity 1s ease-in-out",
-                  zIndex: isActive ? 2 : 1,
+                  transition: 'opacity 1s ease-in-out',
+                  willChange: 'opacity',
+                  transform: 'translateZ(0)',
+                  zIndex: isActive ? 2 : 1
                 }}
               >
-                <img
-                  src={src}
-                  alt={`${project.title} image ${index + 1}`}
-                  onLoad={() => handleImageLoad(index)}
-                  onError={() => handleImageError(index, src)}
-                  style={{ display: "none" }}
-                />
+                {/* Preload image when card is visible */}
+                {isVisible && (
+                  <img
+                    src={src}
+                    alt=""
+                    onLoad={() => handleImageLoad(index)}
+                    onError={() => handleImageError(index, src)}
+                    crossOrigin="anonymous"
+                    style={{ 
+                      position: 'absolute',
+                      width: '1px',
+                      height: '1px',
+                      opacity: 0,
+                      pointerEvents: 'none'
+                    }}
+                  />
+                )}
               </div>
             );
           })
         ) : (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              background: "linear-gradient(135deg, #1db954 0%, #1ed760 100%)",
-            }}
-          />
+          // Fallback gradient when no images
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(135deg, #1db954 0%, #1ed760 100%)'
+          }} />
         )}
       </div>
 
@@ -169,7 +183,18 @@ export default function ProjectCard({ project, onClick, featured = false }) {
             </div>
           </div>
 
-          {actionNode}
+          <span className="learn-more-btn">
+            Learn more
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M7.5 15L12.5 10L7.5 5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
         </div>
       </div>
     </article>
@@ -183,5 +208,11 @@ export default function ProjectCard({ project, onClick, featured = false }) {
     );
   }
 
-  return <div className="project-card-shell">{cardBody}</div>;
+  return (
+    <Link to={`/projects/${project.id}`} className="project-card-wrapper">
+      {cardBody}
+    </Link>
+  );
 }
+
+export default memo(ProjectCard);

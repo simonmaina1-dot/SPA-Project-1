@@ -52,7 +52,7 @@ export function ProjectsProvider({ children }) {
 
   // Fetch projects from JSON Server when component mounts
   useEffect(() => {
-    fetch("http://localhost:3002/projects")
+    fetch('/data/collections/projects.json')
       .then((res) => res.json())
       .then((data) => {
         setProjects(data.map(normalizeProject));
