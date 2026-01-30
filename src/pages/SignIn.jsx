@@ -35,11 +35,11 @@ export default function SignIn() {
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
     setLoginValues({ email: "", password: "", role: "user" });
-    navigate(isAdminLogin ? "/dashboard" : "/user-dashboard");
+    navigate(isAdminLogin ? "/admin" : "/user-dashboard");
   };
 
   if (currentUser) {
-    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/user-dashboard";
+    const accountDestination = currentUser.isAdmin ? "/admin" : "/user-dashboard";
     return (
       <div className="page account-page">
         <section className="page-header">

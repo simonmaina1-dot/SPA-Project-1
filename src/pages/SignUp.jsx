@@ -36,7 +36,7 @@ export default function SignUp() {
   };
 
   if (currentUser) {
-    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/user-dashboard";
+    const accountDestination = currentUser.isAdmin ? "/admin" : "/user-dashboard";
     return (
       <div className="page account-page">
         <section className="page-header">

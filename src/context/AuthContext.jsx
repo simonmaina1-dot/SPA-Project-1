@@ -38,7 +38,15 @@ function useAuthValue({
 }
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem("cdh_currentUser");
+      return stored ? JSON.parse(stored) : null;
+    } catch (err) {
+      console.warn("Failed to read stored user session.", err);
+      return null;
+    }
+  });
   const [adminUsers, setAdminUsers] = useState(seedAdmins);
   const [users, setUsers] = useState(() => normalizeUsers(seedUsers));
   const [adminsApiAvailable, setAdminsApiAvailable] = useState(false);
@@ -107,6 +115,11 @@ export function AuthProvider({ children }) {
 
       const safeUser = toSafeUser(user, { isAdmin: true });
       setCurrentUser(safeUser);
+      try {
+        localStorage.setItem("cdh_currentUser", JSON.stringify(safeUser));
+      } catch (err) {
+        console.warn("Failed to persist admin session.", err);
+      }
       return { ok: true, user: safeUser };
     },
     [adminUsers]
@@ -127,6 +140,11 @@ export function AuthProvider({ children }) {
 
       const safeUser = toSafeUser(user, { isAdmin: false });
       setCurrentUser(safeUser);
+      try {
+        localStorage.setItem("cdh_currentUser", JSON.stringify(safeUser));
+      } catch (err) {
+        console.warn("Failed to persist user session.", err);
+      }
       return { ok: true, user: safeUser };
     },
     [users]
@@ -178,6 +196,11 @@ export function AuthProvider({ children }) {
 
       const safeUser = toSafeUser(newUser, { isAdmin: false });
       setCurrentUser(safeUser);
+      try {
+        localStorage.setItem("cdh_currentUser", JSON.stringify(safeUser));
+      } catch (err) {
+        console.warn("Failed to persist new user session.", err);
+      }
       return { ok: true, user: safeUser };
     },
     [adminUsers, users, usersApiAvailable]
@@ -185,6 +208,11 @@ export function AuthProvider({ children }) {
 
   const signOut = useCallback(() => {
     setCurrentUser(null);
+    try {
+      localStorage.removeItem("cdh_currentUser");
+    } catch (err) {
+      console.warn("Failed to clear stored session.", err);
+    }
   }, []);
 
   const value = useAuthValue({

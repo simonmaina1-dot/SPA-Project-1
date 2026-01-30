@@ -40,7 +40,7 @@ describe("Routing", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders dashboard at /dashboard", () => {
+  it("redirects /dashboard to /admin", () => {
     renderApp("/dashboard");
 
     expect(
@@ -48,7 +48,7 @@ describe("Routing", () => {
     ).toBeInTheDocument();
   });
 
-  it("redirects /admin to /dashboard", () => {
+  it("renders admin access at /admin", () => {
     renderApp("/admin");
 
     expect(

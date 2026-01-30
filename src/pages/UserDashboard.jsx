@@ -39,7 +39,7 @@ export default function UserDashboard() {
   }
 
   if (currentUser.isAdmin) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/admin" replace />;
   }
 
   const normalizedEmail = currentUser.email.toLowerCase();
@@ -339,8 +339,10 @@ export default function UserDashboard() {
                       className="user-usage-form"
                       onSubmit={(event) => {
                         event.preventDefault();
+                        event.stopPropagation();
                         handleUsageSubmit(project);
                       }}
+                      noValidate
                     >
                       <label className="form-field">
                         <span className="form-label">Amount spent (KSh)</span>
@@ -408,7 +410,11 @@ export default function UserDashboard() {
                         />
                       </label>
                       <div className="form-actions">
-                        <button type="submit" className="btn btn-primary btn-small">
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-small"
+                          onClick={() => handleUsageSubmit(project)}
+                        >
                           Add usage update
                         </button>
                       </div>
