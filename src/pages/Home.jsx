@@ -6,42 +6,6 @@ import { ToastContext } from "../context/ToastContext";
 import useFeedback from "../hooks/useFeedback";
 import useForm from "../hooks/useForm";
 
-// ✅ Custom counter animation hook - animates only once per session
-function useCountUp(end, duration = 2500, shouldAnimate = false) {
-  const [count, setCount] = useState(0);
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    // Don't animate if already done or shouldn't animate
-    if (hasAnimated.current || !shouldAnimate) {
-      setCount(end);
-      return;
-    }
-
-    hasAnimated.current = true;
-    const startTime = Date.now();
-    const easeOutQuad = (t) => t * (2 - t);
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOutQuad(progress);
-      const currentCount = Math.floor(easedProgress * end);
-      
-      setCount(currentCount);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        setCount(end);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }, [end, duration, shouldAnimate]);
-
-  return count;
-}
 
 /**
  * Home Page - Main landing page displaying community projects
@@ -55,7 +19,7 @@ function useCountUp(end, duration = 2500, shouldAnimate = false) {
  * - Loading state handling
  * - Empty state when no projects exist
  * - Toast notifications for user feedback
- * - Animated stats counter (once per session)
+ * - Scroll-triggered stats animation
  */
 export default function Home() {
   const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
@@ -74,16 +38,6 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [statsVisible, setStatsVisible] = useState(false);
   const [expandedCards, setExpandedCards] = useState({});
-  const [shouldAnimateStats, setShouldAnimateStats] = useState(false);
-
-  // ✅ Check if stats have already animated this session
-  useEffect(() => {
-    const hasAnimated = sessionStorage.getItem('statsAnimated');
-    if (!hasAnimated) {
-      setShouldAnimateStats(true);
-      sessionStorage.setItem('statsAnimated', 'true');
-    }
-  }, []);
 
   // Toggle expanded state for about cards
   const toggleCard = (cardId) => {
@@ -125,7 +79,7 @@ export default function Home() {
     aboutRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [location.hash]);
 
-  // Intersection Observer for stats fade-in animation
+  // Intersection Observer for stats animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -187,12 +141,6 @@ export default function Home() {
     return { totalRaised, totalGoal, totalDonors, fundedCount };
   }, [visibleProjects]);
 
-  // ✅ Animated counters - only animate once per session
-  const animatedProjects = useCountUp(projects.length, 2500, shouldAnimateStats);
-  const animatedRaised = useCountUp(totalStats.totalRaised, 2500, shouldAnimateStats);
-  const animatedDonors = useCountUp(totalStats.totalDonors, 2500, shouldAnimateStats);
-  const animatedFunded = useCountUp(totalStats.fundedCount, 2500, shouldAnimateStats);
-
   // Categories for filter dropdown
   const categories = [
     { value: "all", label: "All Categories" },
@@ -228,29 +176,25 @@ export default function Home() {
             Support meaningful projects making a difference in our community
           </p>
           
-          {/* Stats Dashboard with Animation */}
+          {/* Stats Dashboard with Scroll Animation */}
           <div 
             ref={statsRef} 
             className={`stats-dashboard${statsVisible ? " visible" : ""}`}
           >
             <div className="stat-card">
-<<<<<<< HEAD
-              <span className="stat-value">{animatedProjects}</span>
-=======
               <span className="stat-value">{visibleProjects.length}</span>
->>>>>>> main
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-card">
-              <span className="stat-value">{formatCurrency(animatedRaised)}</span>
+              <span className="stat-value">{formatCurrency(totalStats.totalRaised)}</span>
               <span className="stat-label">Total Raised</span>
             </div>
             <div className="stat-card">
-              <span className="stat-value">{animatedDonors}</span>
+              <span className="stat-value">{totalStats.totalDonors}</span>
               <span className="stat-label">Donors</span>
             </div>
             <div className="stat-card">
-              <span className="stat-value">{animatedFunded}</span>
+              <span className="stat-value">{totalStats.fundedCount}</span>
               <span className="stat-label">Funded</span>
             </div>
           </div>

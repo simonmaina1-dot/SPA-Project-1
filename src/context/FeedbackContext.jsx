@@ -11,11 +11,7 @@ export function FeedbackProvider({ children }) {
     let isActive = true;
     const loadFeedback = async () => {
       try {
-<<<<<<< HEAD
-        const res = await fetch('/data/collections/feedback.json');
-=======
         const res = await fetch("/feedback");
->>>>>>> main
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;

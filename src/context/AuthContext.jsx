@@ -48,11 +48,7 @@ export function AuthProvider({ children }) {
     let isActive = true;
     const loadAdmins = async () => {
       try {
-<<<<<<< HEAD
-        const res = await fetch('/data/collections/admins.json');
-=======
         const res = await fetch("/admins");
->>>>>>> main
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
@@ -76,11 +72,7 @@ export function AuthProvider({ children }) {
     let isActive = true;
     const loadUsers = async () => {
       try {
-<<<<<<< HEAD
-        const res = await fetch('/data/collections/users.json');
-=======
         const res = await fetch("/users");
->>>>>>> main
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
