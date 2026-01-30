@@ -64,7 +64,7 @@
     "projectId": "p-1002",
     "projectTitle": "Community Solar Garden",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 450,
     "message": "Solar power!",
     "createdAt": "2023-04-24T03:44:09.808Z"
@@ -134,7 +134,7 @@
     "projectId": "p-1002",
     "projectTitle": "Community Solar Garden",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 190,
     "message": "Power to the people",
     "createdAt": "2024-01-22T00:40:15.668Z"
@@ -164,7 +164,7 @@
     "projectId": "p-1002",
     "projectTitle": "Community Solar Garden",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 300,
     "message": "Third donation",
     "createdAt": "2024-01-08T11:49:23.301Z"
@@ -224,7 +224,7 @@
     "projectId": "p-1002",
     "projectTitle": "Community Solar Garden",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 210,
     "message": "Renewable energy!",
     "createdAt": "2025-04-14T18:23:01.932Z"
@@ -304,7 +304,7 @@
     "projectId": "p-1002",
     "projectTitle": "Community Solar Garden",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 130,
     "message": "",
     "createdAt": "2024-11-02T10:04:08.004Z"
@@ -374,7 +374,7 @@
     "projectId": "p-1002",
     "projectTitle": "Community Solar Garden",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 250,
     "message": "Sixth donation",
     "createdAt": "2025-12-04T12:49:18.687Z"

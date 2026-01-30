@@ -94,7 +94,7 @@
     "projectId": "p-1003",
     "projectTitle": "Mobile Health Clinic",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 250,
     "message": "Health matters",
     "createdAt": "2023-07-25T13:30:10.869Z"
@@ -194,7 +194,7 @@
     "projectId": "p-1003",
     "projectTitle": "Mobile Health Clinic",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 195,
     "message": "For the clinic",
     "createdAt": "2023-08-04T05:44:50.174Z"
@@ -294,7 +294,7 @@
     "projectId": "p-1003",
     "projectTitle": "Mobile Health Clinic",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 200,
     "message": "",
     "createdAt": "2026-03-08T00:36:33.423Z"
@@ -404,7 +404,7 @@
     "projectId": "p-1003",
     "projectTitle": "Mobile Health Clinic",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 165,
     "message": "Clinic support",
     "createdAt": "2026-04-07T16:50:22.358Z"

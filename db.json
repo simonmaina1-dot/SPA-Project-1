@@ -455,7 +455,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Daniel Njoroge",
-      "donorEmail": "daniel.njoroge@gmail.com",
+      "donorEmail": "",
       "amount": 350,
       "message": "For my neighborhood",
       "createdAt": "2023-02-03T03:04:02.061Z"
@@ -595,7 +595,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 450,
       "message": "Solar power!",
       "createdAt": "2023-04-24T03:44:09.808Z"
@@ -655,7 +655,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@outlook.com",
       "amount": 177,
       "message": "Happy to support",
       "createdAt": "2023-05-16T00:08:13.801Z",
@@ -828,7 +828,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 250,
       "message": "Health matters",
       "createdAt": "2023-07-25T13:30:10.869Z"
@@ -848,7 +848,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 195,
       "message": "For the clinic",
       "createdAt": "2023-08-04T05:44:50.174Z"
@@ -878,7 +878,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 130,
       "message": "",
       "createdAt": "2023-08-16T19:45:21.296Z"
@@ -939,7 +939,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@proton.me",
       "amount": 264,
       "message": "",
       "createdAt": "2023-09-18T01:56:44.516Z",
@@ -950,7 +950,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@icloud.com",
       "amount": 405,
       "message": "",
       "createdAt": "2023-09-19T18:42:10.301Z",
@@ -961,7 +961,7 @@
       "projectId": "p-1004",
       "projectTitle": "After-School Arts Collective",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 135,
       "message": "",
       "createdAt": "2023-09-26T20:52:47.553Z"
@@ -1051,7 +1051,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "",
       "amount": 145,
       "message": "Fifth donation",
       "createdAt": "2023-11-25T13:56:36.470Z"
@@ -1091,7 +1091,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@icloud.com",
       "amount": 225,
       "message": "",
       "createdAt": "2023-12-12T03:41:07.791Z",
@@ -1133,7 +1133,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 300,
       "message": "Third donation",
       "createdAt": "2024-01-08T11:49:23.301Z"
@@ -1173,7 +1173,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 190,
       "message": "Power to the people",
       "createdAt": "2024-01-22T00:40:15.668Z"
@@ -1183,7 +1183,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "",
       "amount": 200,
       "message": "Fourth donation!",
       "createdAt": "2024-01-25T05:06:02.099Z"
@@ -1223,7 +1223,7 @@
       "projectId": "p-1001",
       "projectTitle": "Neighborhood Learning Lab",
       "donorName": "Agnes Chebet",
-      "donorEmail": "agnes.chebet@gmail.com",
+      "donorEmail": "",
       "amount": 225,
       "message": "Education first",
       "createdAt": "2024-02-11T07:03:08.706Z"
@@ -1294,7 +1294,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 165,
       "message": "",
       "createdAt": "2024-03-25T11:58:20.649Z"
@@ -1324,7 +1324,7 @@
       "projectId": "p-1008",
       "projectTitle": "Youth Soccer Equipment Drive",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 95,
       "message": "",
       "createdAt": "2024-04-10T08:45:33.005Z"
@@ -1404,7 +1404,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@outlook.com",
       "amount": 103,
       "message": "",
       "createdAt": "2024-06-16T01:19:10.674Z",
@@ -1435,7 +1435,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "",
       "amount": 180,
       "message": "Second donation",
       "createdAt": "2024-07-04T12:15:15.142Z"
@@ -1505,7 +1505,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "",
       "amount": 165,
       "message": "Third time",
       "createdAt": "2024-07-27T08:50:28.325Z"
@@ -1586,7 +1586,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@gmail.com",
+      "donorEmail": "margaret.kemunto@aol.com",
       "amount": 83,
       "message": "",
       "createdAt": "2024-10-05T20:41:46.372Z",
@@ -1607,7 +1607,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 110,
       "message": "",
       "createdAt": "2024-10-08T16:12:38.166Z"
@@ -1678,7 +1678,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 130,
       "message": "",
       "createdAt": "2024-11-02T10:04:08.004Z"
@@ -1768,7 +1768,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@outlook.com",
       "amount": 462,
       "message": "",
       "createdAt": "2025-02-19T02:45:20.784Z",
@@ -1839,7 +1839,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@icloud.com",
       "amount": 72,
       "message": "",
       "createdAt": "2025-04-12T17:43:27.797Z",
@@ -1850,7 +1850,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 210,
       "message": "Renewable energy!",
       "createdAt": "2025-04-14T18:23:01.932Z"
@@ -1870,7 +1870,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@outlook.com",
       "amount": 136,
       "message": "Happy to support",
       "createdAt": "2025-04-16T08:55:57.439Z",
@@ -2072,7 +2072,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@proton.me",
       "amount": 448,
       "message": "",
       "createdAt": "2025-07-28T22:38:38.193Z",
@@ -2103,7 +2103,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "James Kimani",
-      "donorEmail": "james.kimani@gmail.com",
+      "donorEmail": "james.kimani@outlook.com",
       "amount": 341,
       "message": "",
       "createdAt": "2025-07-30T21:23:53.422Z",
@@ -2184,7 +2184,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "Grace Achieng",
-      "donorEmail": "grace.achieng@gmail.com",
+      "donorEmail": "grace.achieng@icloud.com",
       "amount": 443,
       "message": "",
       "createdAt": "2025-08-31T23:09:12.569Z",
@@ -2275,7 +2275,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@gmail.com",
+      "donorEmail": "peter.ochieng@hotmail.com",
       "amount": 160,
       "message": "Happy to support",
       "createdAt": "2025-10-16T20:50:44.819Z",
@@ -2296,7 +2296,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "Mary Wanjiku",
-      "donorEmail": "mary.wanjiku@gmail.com",
+      "donorEmail": "mary.wanjiku@proton.me",
       "amount": 252,
       "message": "Happy to support",
       "createdAt": "2025-10-25T20:11:50.644Z",
@@ -2327,7 +2327,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "",
       "amount": 250,
       "message": "Feed the community!",
       "createdAt": "2025-11-01T04:44:48.543Z"
@@ -2387,7 +2387,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@gmail.com",
+      "donorEmail": "peter.ochieng@hotmail.com",
       "amount": 174,
       "message": "",
       "createdAt": "2025-11-26T15:04:39.872Z",
@@ -2398,7 +2398,7 @@
       "projectId": "p-1002",
       "projectTitle": "Community Solar Garden",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 250,
       "message": "Sixth donation",
       "createdAt": "2025-12-04T12:49:18.687Z"
@@ -2408,7 +2408,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@gmail.com",
+      "donorEmail": "margaret.kemunto@aol.com",
       "amount": 362,
       "message": "Happy to support",
       "createdAt": "2025-12-09T02:33:38.520Z",
@@ -2499,7 +2499,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 240,
       "message": "Happy to support",
       "createdAt": "2026-03-03T03:59:23.018Z",
@@ -2510,7 +2510,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@gmail.com",
+      "donorEmail": "andrew.kiptoo@aol.com",
       "amount": 157,
       "message": "",
       "createdAt": "2026-03-05T16:36:04.917Z",
@@ -2521,7 +2521,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 200,
       "message": "",
       "createdAt": "2026-03-08T00:36:33.423Z"
@@ -2591,7 +2591,7 @@
       "projectId": "p-1003",
       "projectTitle": "Mobile Health Clinic",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 165,
       "message": "Clinic support",
       "createdAt": "2026-04-07T16:50:22.358Z"
@@ -2651,7 +2651,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "Peter Ochieng",
-      "donorEmail": "peter.ochieng@gmail.com",
+      "donorEmail": "peter.ochieng@hotmail.com",
       "amount": 291,
       "message": "",
       "createdAt": "2026-05-20T04:26:19.099Z",
@@ -2662,7 +2662,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "",
       "amount": 130,
       "message": "Eighth donation",
       "createdAt": "2026-05-25T07:11:42.886Z"
@@ -2822,7 +2822,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "Margaret Kemunto",
-      "donorEmail": "margaret.kemunto@gmail.com",
+      "donorEmail": "margaret.kemunto@aol.com",
       "amount": 105,
       "message": "Happy to support",
       "createdAt": "2026-09-23T06:25:11.469Z",
@@ -2853,7 +2853,7 @@
       "projectId": "p-1007",
       "projectTitle": "Community Tree Canopy Initiative",
       "donorName": "Andrew Kiptoo",
-      "donorEmail": "andrew.kiptoo@gmail.com",
+      "donorEmail": "andrew.kiptoo@aol.com",
       "amount": 460,
       "message": "Happy to support",
       "createdAt": "2026-10-06T17:10:48.044Z",
@@ -2864,7 +2864,7 @@
       "projectId": "p-1009",
       "projectTitle": "Neighborhood Tech Makerspace",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 469,
       "message": "Happy to support",
       "createdAt": "2026-10-09T03:40:03.150Z",
@@ -2935,7 +2935,7 @@
       "projectId": "p-1005",
       "projectTitle": "Clean Water Refill Station",
       "donorName": "George Odhiambo",
-      "donorEmail": "george.odhiambo@gmail.com",
+      "donorEmail": "",
       "amount": 160,
       "message": "",
       "createdAt": "2026-12-04T21:16:17.177Z"
@@ -2945,7 +2945,7 @@
       "projectId": "p-1006",
       "projectTitle": "Neighborhood Food Pantry Fridge",
       "donorName": "Quincy Mwangi",
-      "donorEmail": "quincy.mwangi@gmail.com",
+      "donorEmail": "",
       "amount": 110,
       "message": "Community food",
       "createdAt": "2026-12-17T04:01:41.013Z"
@@ -3412,13 +3412,6 @@
   ],
   "users": [
     {
-      "id": "u-1769794093622-9222",
-      "name": "Agnes Chebet",
-      "email": "agnes.chebet@gmail.com",
-      "password": "HJsyj!&o4kjT",
-      "role": "user"
-    },
-    {
       "id": "u-1769794093622-1790",
       "name": "Alice Mwikali",
       "email": "alice.mwikali@yahoo.com",
@@ -3430,27 +3423,6 @@
       "name": "Andrew Kiptoo",
       "email": "andrew.kiptoo@aol.com",
       "password": "7as!#4pF!#7$",
-      "role": "user"
-    },
-    {
-      "id": "u-1769794093622-6667",
-      "name": "Andrew Kiptoo",
-      "email": "andrew.kiptoo@gmail.com",
-      "password": "SDh@pCw^txZR",
-      "role": "user"
-    },
-    {
-      "id": "u-1769768767552",
-      "name": "Ashanti Kweyu",
-      "email": "kashiku79@gmail.com",
-      "password": "H@md^kxkTw7Z",
-      "role": "user"
-    },
-    {
-      "id": "u-1769794093621-8264",
-      "name": "Daniel Njoroge",
-      "email": "daniel.njoroge@gmail.com",
-      "password": "c7tQrSp5$sCL",
       "role": "user"
     },
     {
@@ -3468,13 +3440,6 @@
       "role": "user"
     },
     {
-      "id": "u-1769794093621-8334",
-      "name": "George Odhiambo",
-      "email": "george.odhiambo@gmail.com",
-      "password": "h4vcbL$wxdMd",
-      "role": "user"
-    },
-    {
       "id": "u-1769794093621-3563",
       "name": "Grace Achieng",
       "email": "grace.achieng@icloud.com",
@@ -3482,24 +3447,10 @@
       "role": "user"
     },
     {
-      "id": "u-1769794093622-7738",
-      "name": "Grace Achieng",
-      "email": "grace.achieng@gmail.com",
-      "password": "2rH93JyK!oEV",
-      "role": "user"
-    },
-    {
       "id": "u-1769794093621-9754",
       "name": "James Kimani",
       "email": "james.kimani@outlook.com",
       "password": "RNq4#Kk&@6yq",
-      "role": "user"
-    },
-    {
-      "id": "u-1769794093622-8220",
-      "name": "James Kimani",
-      "email": "james.kimani@gmail.com",
-      "password": "eXPRHo#jsUtt",
       "role": "user"
     },
     {
@@ -3531,24 +3482,10 @@
       "role": "user"
     },
     {
-      "id": "u-1769794093622-2742",
-      "name": "Margaret Kemunto",
-      "email": "margaret.kemunto@gmail.com",
-      "password": "mKuH3QKVT8E!",
-      "role": "user"
-    },
-    {
       "id": "u-1769794093621-2048",
       "name": "Mary Wanjiku",
       "email": "mary.wanjiku@proton.me",
       "password": "rD@uuKmFqbM*",
-      "role": "user"
-    },
-    {
-      "id": "u-1769794093622-8969",
-      "name": "Mary Wanjiku",
-      "email": "mary.wanjiku@gmail.com",
-      "password": "vvXFtY7*DzAA",
       "role": "user"
     },
     {
@@ -3563,20 +3500,6 @@
       "name": "Peter Ochieng",
       "email": "peter.ochieng@hotmail.com",
       "password": "Kw$M*h&XBjRw",
-      "role": "user"
-    },
-    {
-      "id": "u-1769794093622-564",
-      "name": "Peter Ochieng",
-      "email": "peter.ochieng@gmail.com",
-      "password": "q6XLjUuVwr$j",
-      "role": "user"
-    },
-    {
-      "id": "u-1769794093622-1570",
-      "name": "Quincy Mwangi",
-      "email": "quincy.mwangi@gmail.com",
-      "password": "pHDWXtizm*X$",
       "role": "user"
     },
     {

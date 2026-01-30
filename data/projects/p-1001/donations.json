@@ -154,7 +154,7 @@
     "projectId": "p-1001",
     "projectTitle": "Neighborhood Learning Lab",
     "donorName": "Daniel Njoroge",
-    "donorEmail": "daniel.njoroge@gmail.com",
+    "donorEmail": "",
     "amount": 350,
     "message": "For my neighborhood",
     "createdAt": "2023-02-03T03:04:02.061Z"
@@ -274,7 +274,7 @@
     "projectId": "p-1001",
     "projectTitle": "Neighborhood Learning Lab",
     "donorName": "Agnes Chebet",
-    "donorEmail": "agnes.chebet@gmail.com",
+    "donorEmail": "",
     "amount": 225,
     "message": "Education first",
     "createdAt": "2024-02-11T07:03:08.706Z"

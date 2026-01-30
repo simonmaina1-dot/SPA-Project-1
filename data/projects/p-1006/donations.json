@@ -4,7 +4,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "Quincy Mwangi",
-    "donorEmail": "quincy.mwangi@gmail.com",
+    "donorEmail": "",
     "amount": 250,
     "message": "Feed the community!",
     "createdAt": "2025-11-01T04:44:48.543Z"
@@ -44,7 +44,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "Quincy Mwangi",
-    "donorEmail": "quincy.mwangi@gmail.com",
+    "donorEmail": "",
     "amount": 180,
     "message": "Second donation",
     "createdAt": "2024-07-04T12:15:15.142Z"
@@ -94,7 +94,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 110,
     "message": "",
     "createdAt": "2024-10-08T16:12:38.166Z"
@@ -104,7 +104,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "Quincy Mwangi",
-    "donorEmail": "quincy.mwangi@gmail.com",
+    "donorEmail": "",
     "amount": 165,
     "message": "Third time",
     "createdAt": "2024-07-27T08:50:28.325Z"
@@ -154,7 +154,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "Quincy Mwangi",
-    "donorEmail": "quincy.mwangi@gmail.com",
+    "donorEmail": "",
     "amount": 200,
     "message": "Fourth donation!",
     "createdAt": "2024-01-25T05:06:02.099Z"
@@ -214,7 +214,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "Quincy Mwangi",
-    "donorEmail": "quincy.mwangi@gmail.com",
+    "donorEmail": "",
     "amount": 145,
     "message": "Fifth donation",
     "createdAt": "2023-11-25T13:56:36.470Z"
@@ -224,7 +224,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "George Odhiambo",
-    "donorEmail": "george.odhiambo@gmail.com",
+    "donorEmail": "",
     "amount": 165,
     "message": "",
     "createdAt": "2024-03-25T11:58:20.649Z"
@@ -254,7 +254,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "Quincy Mwangi",
-    "donorEmail": "quincy.mwangi@gmail.com",
+    "donorEmail": "",
     "amount": 110,
     "message": "Community food",
     "createdAt": "2026-12-17T04:01:41.013Z"
@@ -294,7 +294,7 @@
     "projectId": "p-1006",
     "projectTitle": "Neighborhood Food Pantry Fridge",
     "donorName": "Quincy Mwangi",
-    "donorEmail": "quincy.mwangi@gmail.com",
+    "donorEmail": "",
     "amount": 130,
     "message": "Eighth donation",
     "createdAt": "2026-05-25T07:11:42.886Z"
