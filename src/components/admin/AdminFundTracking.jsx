@@ -18,6 +18,16 @@ const formatDate = (value) => {
   });
 };
 
+const toTitleCase = (value) => {
+  if (!value) return "General";
+  return value
+    .toString()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
 export default function AdminFundTracking({ projects, donations, formatCurrency }) {
   const usageEntries = useMemo(
     () =>
@@ -172,7 +182,7 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
                   <div>
                     <p className="admin-row-title">{entry.projectTitle}</p>
                     <p className="admin-row-meta">
-                      {formatDate(entry.date)} · {entry.category || "General"}
+                      {formatDate(entry.date)} · {toTitleCase(entry.category)}
                     </p>
                   </div>
                   <span className="admin-row-amount">
