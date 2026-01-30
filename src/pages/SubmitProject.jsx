@@ -2,11 +2,16 @@ import { useContext, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProjects from "../hooks/useProjects";
+import useVerification from "../hooks/useVerification";
 import { ToastContext } from "../context/ToastContext";
 import { defaultCriteriaMet, projectCriteria } from "../data/projectCriteria";
 
 const buildInitialState = (currentUser) => ({
-  identityDocument: "",
+  identityDocumentUrl: "",
+  identityDocumentUpload: "",
+  identityDocumentFileName: "",
+  identityDocumentType: "national_id",
+  documentNumber: "",
   ownerName: currentUser?.name || "",
   ownerEmail: currentUser?.email || "",
   ownerPhone: "",
@@ -29,6 +34,7 @@ const stepLabels = [
 export default function SubmitProject() {
   const { currentUser } = useAuth();
   const { addProject } = useProjects();
+  const { createSubmission } = useVerification();
   const { showToast } = useContext(ToastContext);
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -63,10 +69,29 @@ export default function SubmitProject() {
     }));
   };
 
+  const handleDocumentUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      updateValue("identityDocumentUpload", "");
+      updateValue("identityDocumentFileName", "");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      updateValue("identityDocumentUpload", reader.result);
+      updateValue("identityDocumentFileName", file.name);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const validateStep = (currentStep) => {
     if (currentStep === 1) {
-      if (!formValues.identityDocument.trim()) {
-        showToast("Please add a government ID or passport URL.", "warning");
+      const hasDocument =
+        Boolean(formValues.identityDocumentUpload) ||
+        Boolean(formValues.identityDocumentUrl.trim());
+      if (!formValues.identityDocumentType.trim() || !hasDocument) {
+        showToast("Upload or link your identity document.", "warning");
         return false;
       }
     }
@@ -130,7 +155,7 @@ export default function SubmitProject() {
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (step < steps.length) {
@@ -148,7 +173,10 @@ export default function SubmitProject() {
       email: currentUser.email,
     };
 
-    addProject({
+    const identityDocument =
+      formValues.identityDocumentUpload || formValues.identityDocumentUrl;
+
+    const projectId = addProject({
       title: formValues.title,
       description: formValues.description,
       category: formValues.category,
@@ -161,12 +189,23 @@ export default function SubmitProject() {
       ownerName: formValues.ownerName,
       ownerEmail: formValues.ownerEmail,
       ownerPhone: formValues.ownerPhone,
-      identityDocument: formValues.identityDocument,
+      identityDocument,
       verificationStatus: "submitted",
       verificationNotes: "",
       criteriaMet: formValues.criteriaMet,
       fundUsage: [],
       status: "review",
+    });
+
+    await createSubmission({
+      projectId,
+      ownerId: currentUser.id,
+      ownerName: formValues.ownerName,
+      ownerEmail: formValues.ownerEmail,
+      ownerPhone: formValues.ownerPhone,
+      identityDocumentType: formValues.identityDocumentType,
+      identityDocumentUrl: identityDocument,
+      documentNumber: formValues.documentNumber,
     });
 
     showToast("Project submitted for verification.", "success");
@@ -203,20 +242,57 @@ export default function SubmitProject() {
             <div className="submit-section">
               <h2>Identity verification</h2>
               <p className="submit-hint">
-                Uploads are coming soon. For now, paste a secure link to your
-                government ID or passport scan.
+                Upload a scan/photo or provide a secure link to your document.
               </p>
               <label className="form-field">
-                <span className="form-label">Government ID / Passport URL *</span>
+                <span className="form-label">Document type *</span>
+                <select
+                  name="identityDocumentType"
+                  value={formValues.identityDocumentType}
+                  onChange={(event) =>
+                    updateValue("identityDocumentType", event.target.value)
+                  }
+                >
+                  <option value="national_id">National ID</option>
+                  <option value="passport">Passport</option>
+                  <option value="drivers_license">Driver's license</option>
+                </select>
+              </label>
+              <label className="form-field">
+                <span className="form-label">Document number</span>
+                <input
+                  type="text"
+                  name="documentNumber"
+                  value={formValues.documentNumber}
+                  onChange={(event) =>
+                    updateValue("documentNumber", event.target.value)
+                  }
+                  placeholder="ID/Passport number"
+                />
+              </label>
+              <label className="form-field">
+                <span className="form-label">Upload document *</span>
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleDocumentUpload}
+                />
+                {formValues.identityDocumentFileName && (
+                  <span className="submit-form-hint">
+                    Selected: {formValues.identityDocumentFileName}
+                  </span>
+                )}
+              </label>
+              <label className="form-field">
+                <span className="form-label">Or paste a secure URL *</span>
                 <input
                   type="url"
-                  name="identityDocument"
-                  value={formValues.identityDocument}
+                  name="identityDocumentUrl"
+                  value={formValues.identityDocumentUrl}
                   onChange={(event) =>
-                    updateValue("identityDocument", event.target.value)
+                    updateValue("identityDocumentUrl", event.target.value)
                   }
                   placeholder="https://secure-file-link.com/document"
-                  required
                 />
               </label>
             </div>
@@ -385,7 +461,17 @@ export default function SubmitProject() {
               <div className="review-grid">
                 <div>
                   <p className="review-label">Identity document</p>
-                  <p className="review-value">{formValues.identityDocument}</p>
+                  <p className="review-value">
+                    {formValues.identityDocumentFileName ||
+                      formValues.identityDocumentUrl ||
+                      "Not provided"}
+                  </p>
+                  <p className="review-value">
+                    {formValues.identityDocumentType}
+                    {formValues.documentNumber
+                      ? ` · ${formValues.documentNumber}`
+                      : ""}
+                  </p>
                 </div>
                 <div>
                   <p className="review-label">Owner name</p>
