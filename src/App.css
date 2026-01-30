@@ -1500,8 +1500,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   padding: 0;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
@@ -1525,7 +1524,7 @@ body {
 }
 
 .about-emphasis {
-  font-style: italic;
+  font-style: normal;
   color: var(--color-text-primary);
   font-weight: 500;
 }
