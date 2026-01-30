@@ -141,7 +141,7 @@ export default function ProjectDetails() {
   );
 
   if (
-    project.verificationStatus !== "verified" &&
+    project.verificationStatus !== "approved" &&
     !currentUser?.isAdmin &&
     !isOwner
   ) {

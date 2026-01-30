@@ -14,11 +14,18 @@ export function DonationsProvider({ children }) {
   );
   const [apiAvailable, setApiAvailable] = useState(false);
 
+  // API URL from environment or default to local development
+  const apiUrl = import.meta.env.VITE_API_URL || "";
+
   useEffect(() => {
     let isActive = true;
     const loadDonations = async () => {
       try {
-        const res = await fetch("/donations");
+        // Only try to fetch from API if URL is configured
+        if (!apiUrl) {
+          throw new Error("API URL not configured");
+        }
+        const res = await fetch(`${apiUrl}/donations`);
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
@@ -36,7 +43,7 @@ export function DonationsProvider({ children }) {
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [apiUrl]);
 
   // Add a new donation (POST to JSON Server)
   const addDonation = useCallback(async (donation) => {
@@ -54,9 +61,9 @@ export function DonationsProvider({ children }) {
 
     setDonations((prev) => [newDonation, ...prev]);
 
-    if (apiAvailable) {
+    if (apiAvailable && apiUrl) {
       try {
-        const res = await fetch("/donations", {
+        const res = await fetch(`${apiUrl}/donations`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newDonation),
@@ -70,7 +77,7 @@ export function DonationsProvider({ children }) {
     }
 
     return newDonation.id;
-  }, [apiAvailable]);
+  }, [apiAvailable, apiUrl]);
 
   const getDonationsByProject = useCallback(
     (projectId) => donations.filter((d) => d.projectId === projectId),

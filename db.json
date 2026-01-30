@@ -6,8 +6,10 @@
       "description": "A pop-up classroom with devices, tutors, and weekend workshops for local youth.",
       "category": "education",
       "imageUrl": "https://images.pexels.com/photos/6936008/pexels-photo-6936008.jpeg?cs=srgb&dl=pexels-rdne-6936008.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/6936008/pexels-photo-6936008.jpeg?cs=srgb&dl=pexels-rdne-6936008.jpg&fm=jpg",
+        "https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?cs=srgb&dl=pexels-julia-kameralis-4050315.jpg&fm=jpg"
+      ],
       "goal": 12000,
       "currentAmount": 6800,
       "donorCount": 42,
@@ -20,8 +22,11 @@
       "description": "Shared solar panels for residents who cannot install their own rooftop systems.",
       "category": "environment",
       "imageUrl": "https://images.pexels.com/photos/9799994/pexels-photo-9799994.jpeg?cs=srgb&dl=pexels-kindelmedia-9799994.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg", "3.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/9799994/pexels-photo-9799994.jpeg?cs=srgb&dl=pexels-kindelmedia-9799994.jpg&fm=jpg",
+        "https://images.pexels.com/photos/991877/pexels-photo-991877.jpeg?cs=srgb&dl=pexels-simon-kuznetsov-991877.jpg&fm=jpg",
+        "https://images.pexels.com/photos/433300/pexels-photo-433300.jpeg?cs=srgb&dl=pexels-dennis-klibio-433300.jpg&fm=jpg"
+      ],
       "goal": 30000,
       "currentAmount": 18500,
       "donorCount": 96,
@@ -34,8 +39,10 @@
       "description": "Monthly wellness visits and screenings for underserved blocks.",
       "category": "health",
       "imageUrl": "https://images.pexels.com/photos/7108317/pexels-photo-7108317.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-7108317.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/7108317/pexels-photo-7108317.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-7108317.jpg&fm=jpg",
+        "https://images.pexels.com/photos/3845711/pexels-photo-3845711.jpeg?cs=srgb&dl=pexels-artem-podrez-3845711.jpg&fm=jpg"
+      ],
       "goal": 18000,
       "currentAmount": 17560,
       "donorCount": 74,
@@ -48,8 +55,10 @@
       "description": "Studio space, supplies, and mentorship for emerging community artists.",
       "category": "arts",
       "imageUrl": "https://images.pexels.com/photos/8382386/pexels-photo-8382386.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-8382386.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/8382386/pexels-photo-8382386.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-8382386.jpg&fm=jpg",
+        "https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?cs=srgb&dl=pexels-dominika-roseclay-1169754.jpg&fm=jpg"
+      ],
       "goal": 9500,
       "currentAmount": 4100,
       "donorCount": 28,
@@ -62,8 +71,10 @@
       "description": "Install a public water refill kiosk to cut plastic waste and improve access.",
       "category": "community",
       "imageUrl": "https://images.pexels.com/photos/1362909/pexels-photo-1362909.jpeg?cs=srgb&dl=pexels-abhishek-goel-153437-1362909.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/1362909/pexels-photo-1362909.jpeg?cs=srgb&dl=pexels-abhishek-goel-153437-1362909.jpg&fm=jpg",
+        "https://images.pexels.com/photos/2984352/pexels-photo-2984352.jpeg?cs=srgb&dl=pexels-donald-tong-2984352.jpg&fm=jpg"
+      ],
       "goal": 15000,
       "currentAmount": 5200,
       "donorCount": 31,
@@ -76,8 +87,10 @@
       "description": "A solar-powered community fridge stocked weekly with fresh groceries.",
       "category": "community",
       "imageUrl": "https://images.pexels.com/photos/6647115/pexels-photo-6647115.jpeg?cs=srgb&dl=pexels-rdne-6647115.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/6647115/pexels-photo-6647115.jpeg?cs=srgb&dl=pexels-rdne-6647115.jpg&fm=jpg",
+        "https://images.pexels.com/photos/6994986/pexels-photo-6994986.jpeg?cs=srgb&dl=pexels-arthur-brognoli-6994986.jpg&fm=jpg"
+      ],
       "goal": 8000,
       "currentAmount": 7600,
       "donorCount": 54,
@@ -90,8 +103,10 @@
       "description": "Plant 500 shade trees and fund a year of community-led care and watering.",
       "category": "environment",
       "imageUrl": "https://images.pexels.com/photos/7656721/pexels-photo-7656721.jpeg?cs=srgb&dl=pexels-thirdman-7656721.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/7656721/pexels-photo-7656721.jpeg?cs=srgb&dl=pexels-thirdman-7656721.jpg&fm=jpg",
+        "https://images.pexels.com/photos/1134166/pexels-photo-1134166.jpeg?cs=srgb&dl=pexels-eberhard-grossgasteiger-1134166.jpg&fm=jpg"
+      ],
       "goal": 22000,
       "currentAmount": 6400,
       "donorCount": 36,
@@ -104,8 +119,11 @@
       "description": "Uniforms, cones, and balls for weekly practice in neighborhood parks.",
       "category": "sports",
       "imageUrl": "https://images.pexels.com/photos/35571154/pexels-photo-35571154.jpeg?cs=srgb&dl=pexels-dacostashotit-35571154.jpg&fm=jpg",
-      "imageFile": "1.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg", "3.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/35571154/pexels-photo-35571154.jpeg?cs=srgb&dl=pexels-dacostashotit-35571154.jpg&fm=jpg",
+        "https://images.pexels.com/photos/4676355/pexels-photo-4676355.jpeg?cs=srgb&dl=pexels-cottonbro-4676355.jpg&fm=jpg",
+        "https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?cs=srgb&dl=pexels-john-mann-1103970.jpg&fm=jpg"
+      ],
       "goal": 6000,
       "currentAmount": 2500,
       "donorCount": 19,
@@ -118,8 +136,10 @@
       "description": "After-school robotics, design, and coding studio with shared tools and mentors.",
       "category": "education",
       "imageUrl": "https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg",
-      "imageFile": "cover.jpg",
-      "galleryFiles": ["1.jpg", "2.jpg"],
+      "galleryUrls": [
+        "https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg",
+        "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?cs=srgb&dl=pexels-fauxels-3184418.jpg&fm=jpg"
+      ],
       "goal": 25000,
       "currentAmount": 8200,
       "donorCount": 45,

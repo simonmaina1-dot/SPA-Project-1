@@ -100,23 +100,23 @@ export default function UserDashboard() {
       .slice(0, 6);
   }, [myDonations, myProjects]);
 
-  const verifiedProjects = useMemo(
-    () => projects.filter((project) => project.verificationStatus === "verified"),
+  const approvedProjects = useMemo(
+    () => projects.filter((project) => project.verificationStatus === "approved"),
     [projects]
   );
 
-  const verifiedStats = useMemo(() => {
-    const totalRaised = verifiedProjects.reduce(
+  const approvedStats = useMemo(() => {
+    const totalRaised = approvedProjects.reduce(
       (sum, project) => sum + (project.currentAmount || 0),
       0
     );
-    const donorCount = verifiedProjects.reduce(
+    const donorCount = approvedProjects.reduce(
       (sum, project) => sum + (project.donorCount || 0),
       0
     );
 
     return { totalRaised, donorCount };
-  }, [verifiedProjects]);
+  }, [approvedProjects]);
 
   const updateUsageDraft = (projectId, field, value) => {
     setUsageDrafts((prev) => ({
@@ -183,17 +183,17 @@ export default function UserDashboard() {
       <section className="user-card user-card-wide">
         <div className="user-card-header">
           <div>
-            <h2>Verified projects</h2>
+            <h2>Approved projects</h2>
             <p className="user-card-subtitle">
-              {verifiedProjects.length} reviewed projects ·{" "}
-              {formatCurrency(verifiedStats.totalRaised)} raised
+              {approvedProjects.length} reviewed projects ·{" "}
+              {formatCurrency(approvedStats.totalRaised)} raised
             </p>
           </div>
         </div>
 
-        {verifiedProjects.length ? (
+        {approvedProjects.length ? (
           <div className="donor-projects-grid">
-            {verifiedProjects.map((project) => (
+            {approvedProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
           </div>

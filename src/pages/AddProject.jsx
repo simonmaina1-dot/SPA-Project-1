@@ -56,7 +56,7 @@ export default function AddProject() {
       ownerName: currentUser?.name || "",
       ownerEmail: currentUser?.email || "",
       ownerPhone: currentUser?.phone || "",
-      verificationStatus: isAdmin ? "verified" : "submitted",
+      verificationStatus: isAdmin ? "approved" : "submitted",
       status: "active",
       verificationNotes: "",
       criteriaMet,

@@ -5,7 +5,7 @@ const statusLabels = {
   pending: "Pending",
   submitted: "Submitted",
   under_review: "Under review",
-  verified: "Reviewed",
+  approved: "Reviewed",
   rejected: "Rejected",
 };
 
@@ -29,7 +29,7 @@ export default function AdminVettingQueue({
   const queue = useMemo(
     () =>
       projects.filter(
-        (project) => project.verificationStatus !== "verified"
+        (project) => project.verificationStatus !== "approved"
       ),
     [projects]
   );
@@ -74,10 +74,10 @@ export default function AdminVettingQueue({
     };
     const criteriaMet = draft.criteriaMet || project.criteriaMet;
 
-    if (nextStatus === "verified") {
+    if (nextStatus === "approved") {
       const allCriteriaMet = Object.values(criteriaMet || {}).every(Boolean);
       if (!allCriteriaMet) {
-        showToast("Confirm each criteria item before verifying.", "warning");
+        showToast("Confirm each criteria item before approving.", "warning");
         return;
       }
     }
@@ -87,7 +87,7 @@ export default function AdminVettingQueue({
       return;
     }
 
-    const status = nextStatus === "verified" ? "active" : "review";
+    const status = nextStatus === "approved" ? "active" : "review";
 
     updateProject(project.id, {
       verificationStatus: nextStatus,
@@ -97,7 +97,7 @@ export default function AdminVettingQueue({
     });
 
     const message =
-      nextStatus === "verified"
+      nextStatus === "approved"
         ? "Project reviewed and published."
         : nextStatus === "rejected"
           ? "Submission rejected with notes sent."
@@ -230,9 +230,9 @@ export default function AdminVettingQueue({
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={() => handleAction(project, "verified")}
+                    onClick={() => handleAction(project, "approved")}
                   >
-                    Mark reviewed
+                    Approve
                   </button>
                   <button
                     type="button"

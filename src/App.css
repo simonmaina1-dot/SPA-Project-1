@@ -506,9 +506,10 @@ body {
   z-index: 1;
 }
 
-/* Show active slide immediately */
+/* Show active slide immediately - no transition delay */
 .project-card-slide.active {
   opacity: 1 !important;
+  transition: none !important;
   z-index: 2;
 }
 

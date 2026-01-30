@@ -44,6 +44,8 @@ export default function ProjectCard({ project, onClick, featured = false }) {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedIndexes, setLoadedIndexes] = useState(new Set());
+  const [imageErrors, setImageErrors] = useState(new Set());
+  const [hasAnyImageLoaded, setHasAnyImageLoaded] = useState(false);
 
   // Auto-slide with staggered timing for each card
   useEffect(() => {
@@ -68,11 +70,37 @@ export default function ProjectCard({ project, onClick, featured = false }) {
       next.add(index);
       return next;
     });
+    setHasAnyImageLoaded(true);
   };
 
   const handleImageError = (index, src) => {
-    console.error(`Failed to load image ${index} for ${project.id}:`, src);
+    console.warn(`Image failed to load ${index} for ${project.id}:`, src);
+    setImageErrors((prev) => {
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
   };
+
+  // Check if current image has error - auto-switch to next working image
+  useEffect(() => {
+    if (galleryImages.length <= 1 || !hasAnyImageLoaded) return;
+
+    const checkAndSwitch = () => {
+      if (imageErrors.has(currentIndex)) {
+        // Find next working image
+        for (let i = 1; i < galleryImages.length; i++) {
+          const nextIndex = (currentIndex + i) % galleryImages.length;
+          if (!imageErrors.has(nextIndex) && loadedIndexes.has(nextIndex)) {
+            setCurrentIndex(nextIndex);
+            return;
+          }
+        }
+      }
+    };
+
+    checkAndSwitch();
+  }, [currentIndex, galleryImages.length, imageErrors, loadedIndexes, hasAnyImageLoaded]);
 
   // Status badge class based on project status
   const getStatusBadgeClass = (status) => {
@@ -122,14 +150,15 @@ export default function ProjectCard({ project, onClick, featured = false }) {
           galleryImages.map((src, index) => {
             const isActive = index === currentIndex;
             const isLoaded = loadedIndexes.has(index);
-            const shouldShow = isActive && isLoaded;
+            const hasError = imageErrors.has(index);
+            const shouldShow = isActive && isLoaded && !hasError;
 
             return (
               <div
                 key={index}
-                className="project-card-slide"
+                className={`project-card-slide${shouldShow ? " active loaded" : ""}`}
                 style={{
-                  backgroundImage: `url(${src})`,
+                  backgroundImage: shouldShow ? `url(${src})` : "none",
                 }}
               >
                 <img
@@ -144,7 +173,17 @@ export default function ProjectCard({ project, onClick, featured = false }) {
           })
         ) : (
           <div
-            className="project-card-slide"
+            className="project-card-slide active loaded"
+            style={{
+              background: "linear-gradient(135deg, #1db954 0%, #1ed760 100%)",
+            }}
+          />
+        )}
+
+        {/* Fallback gradient when no images loaded */}
+        {!hasAnyImageLoaded && galleryImages.length === 0 && (
+          <div
+            className="project-card-slide active loaded"
             style={{
               background: "linear-gradient(135deg, #1db954 0%, #1ed760 100%)",
             }}
