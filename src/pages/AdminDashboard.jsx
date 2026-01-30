@@ -377,7 +377,7 @@ export default function AdminDashboard() {
         <AdminNavbar currentUser={currentUser} onSignOut={handleSignOut} />
 
         <div className="admin-content">
-          <AdminDashboardHeader role={currentUser.role} />
+          <AdminDashboardHeader />
           <AdminDashboardGrid
             projects={projects}
             formatCurrency={formatCurrency}
