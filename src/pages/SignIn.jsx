@@ -10,7 +10,6 @@ export default function SignIn() {
   const [loginValues, setLoginValues] = useState({
     email: "",
     password: "",
-    role: "user",
   });
   const [loginError, setLoginError] = useState("");
 
@@ -23,19 +22,23 @@ export default function SignIn() {
     event.preventDefault();
     setLoginError("");
 
-    const isAdminLogin = loginValues.role === "admin";
-    const loginFn = isAdminLogin ? signInAdmin : signInUser;
-    const result = loginFn(loginValues.email, loginValues.password);
-
+    const result = signInAdmin(loginValues.email, loginValues.password);
     if (!result.ok) {
-      setLoginError(result.message);
-      showToast(result.message, "warning");
+      const userResult = signInUser(loginValues.email, loginValues.password);
+      if (!userResult.ok) {
+        setLoginError(userResult.message);
+        showToast(userResult.message, "warning");
+        return;
+      }
+      showToast(`Welcome back, ${userResult.user.name}.`, "success");
+      setLoginValues({ email: "", password: "" });
+      navigate("/user-dashboard");
       return;
     }
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
-    setLoginValues({ email: "", password: "", role: "user" });
-    navigate(isAdminLogin ? "/admin" : "/user-dashboard");
+    setLoginValues({ email: "", password: "" });
+    navigate("/admin");
   };
 
   if (currentUser) {
@@ -66,7 +69,7 @@ export default function SignIn() {
     <div className="page account-page">
       <section className="page-header">
         <h1>Sign in</h1>
-        <p>Access your user or admin account.</p>
+        <p>Access your account.</p>
       </section>
 
       <div className="account-grid account-grid-single">
@@ -95,18 +98,6 @@ export default function SignIn() {
                 placeholder="Enter your password"
                 required
               />
-            </label>
-
-            <label className="form-field">
-              <span className="form-label">Account type</span>
-              <select
-                name="role"
-                value={loginValues.role}
-                onChange={handleLoginChange}
-              >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
             </label>
           </div>
 
