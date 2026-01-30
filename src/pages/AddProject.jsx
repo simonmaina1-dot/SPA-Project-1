@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import Modal from "../components/Modal";
 import useAuth from "../hooks/useAuth";
+import { defaultCriteriaMet } from "../data/projectCriteria";
 
 const initialValues = {
   title: "",
@@ -37,6 +38,10 @@ export default function AddProject() {
     }
 
     const isAdmin = Boolean(currentUser?.isAdmin);
+    const criteriaMet = Object.keys(defaultCriteriaMet).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {});
     const newId = addProject({
       ...values,
       createdAt: new Date().toISOString(),
@@ -51,14 +56,10 @@ export default function AddProject() {
       ownerName: currentUser?.name || "",
       ownerEmail: currentUser?.email || "",
       ownerPhone: currentUser?.phone || "",
-      verificationStatus: isAdmin ? "verified" : "submitted",
+      verificationStatus: isAdmin ? "approved" : "submitted",
+      status: "active",
       verificationNotes: "",
-      criteriaMet: {
-        communityImpact: true,
-        budgetClarity: true,
-        timelineReady: true,
-        stakeholderSupport: true,
-      },
+      criteriaMet,
       fundUsage: [],
     });
     showToast("Project created and ready for donors.", "success");
@@ -86,13 +87,11 @@ export default function AddProject() {
   };
 
   if (!currentUser) {
-    navigate("/signin");
-    return null;
+    return <Navigate to="/signin" replace />;
   }
 
   if (!currentUser.isAdmin) {
-    navigate("/submit-project");
-    return null;
+    return <Navigate to="/submit-project" replace />;
   }
 
   return (

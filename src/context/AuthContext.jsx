@@ -48,7 +48,7 @@ export function AuthProvider({ children }) {
     let isActive = true;
     const loadAdmins = async () => {
       try {
-        const res = await fetch('/data/collections/admins.json');
+        const res = await fetch("/admins");
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
@@ -72,7 +72,7 @@ export function AuthProvider({ children }) {
     let isActive = true;
     const loadUsers = async () => {
       try {
-        const res = await fetch('/data/collections/users.json');
+        const res = await fetch("/users");
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
@@ -164,7 +164,7 @@ export function AuthProvider({ children }) {
 
       if (usersApiAvailable) {
         try {
-          const res = await fetch("http://localhost:3002/users", {
+          const res = await fetch("/users", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser),

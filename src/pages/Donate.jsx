@@ -10,7 +10,7 @@ const initialValues = {
   name: "",
   email: "",
   amount: "",
-  method: "card",
+  source: "card",
   note: "",
 };
 
@@ -68,14 +68,15 @@ export default function Donate() {
 
     if (isTestEnv) {
       addDonation(project.id, amount);
-      saveDonationRecord({
-        projectId: project.id,
-        projectTitle: project.title,
-        donorName: formData?.get("name") || values.name || "Anonymous",
-        donorEmail: formData?.get("email") || values.email,
-        amount,
-        message: formData?.get("note") || values.note,
-      });
+        saveDonationRecord({
+          projectId: project.id,
+          projectTitle: project.title,
+          donorName: formData?.get("name") || values.name || "Anonymous",
+          donorEmail: formData?.get("email") || values.email,
+          amount,
+          source: formData?.get("source") || values.source,
+          message: formData?.get("note") || values.note,
+        });
       showToast("Payment simulated successfully.", "success");
       setIsComplete(true);
       reset();
@@ -92,6 +93,7 @@ export default function Donate() {
         donorName: formData?.get("name") || values.name || "Anonymous",
         donorEmail: formData?.get("email") || values.email,
         amount,
+        source: formData?.get("source") || values.source,
         message: formData?.get("note") || values.note,
       });
       showToast("Payment simulated successfully.", "success");
@@ -208,10 +210,12 @@ export default function Donate() {
                 </label>
                 <label className="form-field">
                   <span className="form-label">Payment method</span>
-                  <select name="method" value={values.method} onChange={handleChange}>
+                  <select name="source" value={values.source} onChange={handleChange}>
                     <option value="card">Card</option>
                     <option value="mpesa">M-Pesa (demo)</option>
                     <option value="bank">Bank transfer (demo)</option>
+                    <option value="cash">Cash</option>
+                    <option value="other">Other</option>
                   </select>
                 </label>
                 <label className="form-field form-field-wide">
