@@ -159,7 +159,7 @@ export default function SubmitProject() {
         </div>
 
         <form className="submit-card" onSubmit={handleSubmit}>
-          {step === 1 && (
+          {IDENTITY_VERIFICATION_ENABLED && step === 1 && (
             <div className="submit-section">
               <h2>Identity verification</h2>
               <p className="submit-hint">
@@ -182,7 +182,7 @@ export default function SubmitProject() {
             </div>
           )}
 
-          {step === 2 && (
+          {step === (IDENTITY_VERIFICATION_ENABLED ? 2 : 1) && (
             <div className="submit-section">
               <h2>Personal information</h2>
               <div className="form-grid">
@@ -231,7 +231,7 @@ export default function SubmitProject() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === (IDENTITY_VERIFICATION_ENABLED ? 3 : 2) && (
             <div className="submit-section">
               <h2>Project details</h2>
               <div className="form-grid">
@@ -345,7 +345,7 @@ export default function SubmitProject() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === (IDENTITY_VERIFICATION_ENABLED ? 4 : 3) && (
             <div className="submit-section submit-review">
               <h2>Review your submission</h2>
               <p className="submit-hint">
@@ -353,20 +353,22 @@ export default function SubmitProject() {
               </p>
 
               <div className="review-grid">
-                <div>
-                  <p className="review-label">Identity document</p>
-                  <p className="review-value">
-                    {formValues.identityDocumentFileName ||
-                      formValues.identityDocumentUrl ||
-                      "Not provided"}
-                  </p>
-                  <p className="review-value">
-                    {formValues.identityDocumentType}
-                    {formValues.documentNumber
-                      ? ` · ${formValues.documentNumber}`
-                      : ""}
-                  </p>
-                </div>
+                {IDENTITY_VERIFICATION_ENABLED && (
+                  <div>
+                    <p className="review-label">Identity document</p>
+                    <p className="review-value">
+                      {formValues.identityDocumentFileName ||
+                        formValues.identityDocumentUrl ||
+                        "Not provided"}
+                    </p>
+                    <p className="review-value">
+                      {formValues.identityDocumentType}
+                      {formValues.documentNumber
+                        ? ` · ${formValues.documentNumber}`
+                        : ""}
+                    </p>
+                  </div>
+                )}
                 <div>
                   <p className="review-label">Owner name</p>
                   <p className="review-value">{formValues.ownerName}</p>
