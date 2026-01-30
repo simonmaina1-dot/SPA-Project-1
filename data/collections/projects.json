@@ -14,7 +14,33 @@
     "currentAmount": 6800,
     "donorCount": 42,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-153",
+        "amount": 885,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-02-21",
+        "createdAt": "2025-02-21T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-837",
+        "amount": 851,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-02-01",
+        "createdAt": "2025-02-01T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-842",
+        "amount": 951,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-06-07",
+        "createdAt": "2025-06-07T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1002",
@@ -32,7 +58,41 @@
     "currentAmount": 18500,
     "donorCount": 96,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-836",
+        "amount": 2450,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-04-24",
+        "createdAt": "2025-04-24T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-954",
+        "amount": 650,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-03-31",
+        "createdAt": "2025-03-31T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-2",
+        "amount": 3083,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-06-02",
+        "createdAt": "2025-06-02T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-562",
+        "amount": 3631,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-11-24",
+        "createdAt": "2025-11-24T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1003",
@@ -49,7 +109,25 @@
     "currentAmount": 17560,
     "donorCount": 74,
     "status": "funded",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-391",
+        "amount": 665,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-02-15",
+        "createdAt": "2025-02-15T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-29",
+        "amount": 5966,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2026-01-09",
+        "createdAt": "2026-01-09T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1004",
@@ -66,7 +144,25 @@
     "currentAmount": 4100,
     "donorCount": 28,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-229",
+        "amount": 194,
+        "category": "labor",
+        "note": "Reported usage",
+        "date": "2024-11-22",
+        "createdAt": "2024-11-22T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-1",
+        "amount": 543,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-02-14",
+        "createdAt": "2025-02-14T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1005",
@@ -83,7 +179,41 @@
     "currentAmount": 5200,
     "donorCount": 31,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-201",
+        "amount": 624,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2024-09-30",
+        "createdAt": "2024-09-30T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-817",
+        "amount": 448,
+        "category": "labor",
+        "note": "Reported usage",
+        "date": "2025-09-21",
+        "createdAt": "2025-09-21T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-410",
+        "amount": 320,
+        "category": "labor",
+        "note": "Reported usage",
+        "date": "2025-09-30",
+        "createdAt": "2025-09-30T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-960",
+        "amount": 1418,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-06-20",
+        "createdAt": "2025-06-20T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1006",
@@ -100,7 +230,33 @@
     "currentAmount": 7600,
     "donorCount": 54,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-994",
+        "amount": 623,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-11-27",
+        "createdAt": "2025-11-27T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-377",
+        "amount": 993,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-11-05",
+        "createdAt": "2025-11-05T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-426",
+        "amount": 1249,
+        "category": "other",
+        "note": "Reported usage",
+        "date": "2025-06-16",
+        "createdAt": "2025-06-16T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1007",
@@ -115,7 +271,25 @@
     "currentAmount": 6400,
     "donorCount": 36,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-738",
+        "amount": 1516,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2024-11-20",
+        "createdAt": "2024-11-20T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-333",
+        "amount": 1841,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-05-24",
+        "createdAt": "2025-05-24T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1008",
@@ -133,7 +307,33 @@
     "currentAmount": 2500,
     "donorCount": 19,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-879",
+        "amount": 319,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-12-09",
+        "createdAt": "2025-12-09T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-615",
+        "amount": 333,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2026-01-20",
+        "createdAt": "2026-01-20T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-260",
+        "amount": 762,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-02-21",
+        "createdAt": "2025-02-21T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1009",
@@ -148,6 +348,24 @@
     "currentAmount": 8200,
     "donorCount": 45,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-894",
+        "amount": 447,
+        "category": "labor",
+        "note": "Reported usage",
+        "date": "2025-05-25",
+        "createdAt": "2025-05-25T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-645",
+        "amount": 3028,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-03-18",
+        "createdAt": "2025-03-18T15:07:28.483Z"
+      }
+    ]
   }
 ]
