@@ -61,7 +61,7 @@ export default function Home() {
 
   // Show welcome toast on first mount
   const visibleProjects = useMemo(
-    () => projects.filter((project) => project.verificationStatus === "verified"),
+    () => projects.filter((project) => project.verificationStatus === "approved"),
     [projects]
   );
 
@@ -438,7 +438,7 @@ export default function Home() {
                     className="read-more-link"
                     onClick={() => toggleCard("responsibility")}
                   >
-                    Show less
+                    how less
                   </button>
                 </p>
               </div>
