@@ -214,7 +214,7 @@ export default function SubmitProject() {
                   />
                 </label>
 
-                <label className="form-field">
+                <label className="form-field form-field-wide">
                   <span className="form-label">Phone number *</span>
                   <input
                     type="tel"

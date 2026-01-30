@@ -2725,6 +2725,8 @@ body {
   border: 1px solid var(--color-border);
   padding: 28px;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .submit-card .form-grid {
@@ -2797,6 +2799,10 @@ body {
 }
 
 .submit-actions {
+  justify-content: flex-end;
+}
+
+.submit-section .form-actions {
   justify-content: flex-end;
 }
 
