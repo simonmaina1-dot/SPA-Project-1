@@ -49,11 +49,11 @@ export function ProjectsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   // API URL from environment or default to local development
-  const apiUrl = "";
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3002";
 
   // Fetch projects from JSON Server when component mounts
   useEffect(() => {
-    fetch(`${apiUrl}/projects`)
+    fetch('/data/collections/projects.json')
       .then((res) => res.json())
       .then((data) => {
         setProjects(data.map(normalizeProject));

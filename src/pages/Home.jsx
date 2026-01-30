@@ -1,45 +1,11 @@
 import { useState, useMemo, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
-import ProjectCard from "../components/common/ProjectCard";
+import ProjectCard from "../components/ProjectCard";
 import { ToastContext } from "../context/ToastContext";
 import useFeedback from "../hooks/useFeedback";
 import useForm from "../hooks/useForm";
 
-const useCountUp = (end, duration = 2500, shouldAnimate = false) => {
-  const [count, setCount] = useState(0);
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    if (hasAnimated.current || !shouldAnimate) {
-      setCount(end);
-      return;
-    }
-
-    hasAnimated.current = true;
-    const startTime = Date.now();
-    const easeOutQuad = (t) => t * (2 - t);
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOutQuad(progress);
-      const currentCount = Math.floor(easedProgress * end);
-
-      setCount(currentCount);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        setCount(end);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }, [end, duration, shouldAnimate]);
-
-  return count;
-};
 
 /**
  * Home Page - Main landing page displaying community projects
@@ -72,15 +38,6 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [statsVisible, setStatsVisible] = useState(false);
   const [expandedCards, setExpandedCards] = useState({});
-  const [shouldAnimateStats, setShouldAnimateStats] = useState(false);
-
-  useEffect(() => {
-    const hasAnimated = sessionStorage.getItem("statsAnimated");
-    if (!hasAnimated) {
-      setShouldAnimateStats(true);
-      sessionStorage.setItem("statsAnimated", "true");
-    }
-  }, []);
 
   // Toggle expanded state for about cards
   const toggleCard = (cardId) => {
@@ -184,12 +141,6 @@ export default function Home() {
     return { totalRaised, totalGoal, totalDonors, fundedCount };
   }, [visibleProjects]);
 
-  const animateStats = statsVisible && shouldAnimateStats;
-  const animatedProjects = useCountUp(visibleProjects.length, 2500, animateStats);
-  const animatedRaised = useCountUp(totalStats.totalRaised, 2500, animateStats);
-  const animatedDonors = useCountUp(totalStats.totalDonors, 2500, animateStats);
-  const animatedFunded = useCountUp(totalStats.fundedCount, 2500, animateStats);
-
   // Categories for filter dropdown
   const categories = [
     { value: "all", label: "All Categories" },
@@ -231,27 +182,19 @@ export default function Home() {
             className={`stats-dashboard${statsVisible ? " visible" : ""}`}
           >
             <div className="stat-card">
-              <span className="stat-value">
-                {animateStats ? animatedProjects : visibleProjects.length}
-              </span>
+              <span className="stat-value">{visibleProjects.length}</span>
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-card">
-              <span className="stat-value">
-                {formatCurrency(animateStats ? animatedRaised : totalStats.totalRaised)}
-              </span>
+              <span className="stat-value">{formatCurrency(totalStats.totalRaised)}</span>
               <span className="stat-label">Total Raised</span>
             </div>
             <div className="stat-card">
-              <span className="stat-value">
-                {animateStats ? animatedDonors : totalStats.totalDonors}
-              </span>
+              <span className="stat-value">{totalStats.totalDonors}</span>
               <span className="stat-label">Donors</span>
             </div>
             <div className="stat-card">
-              <span className="stat-value">
-                {animateStats ? animatedFunded : totalStats.fundedCount}
-              </span>
+              <span className="stat-value">{totalStats.fundedCount}</span>
               <span className="stat-label">Funded</span>
             </div>
           </div>
