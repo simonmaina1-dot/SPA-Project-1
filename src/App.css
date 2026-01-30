@@ -2649,9 +2649,23 @@ body {
 }
 
 .account-actions {
-  display: flex;
+  display: grid;
   gap: 12px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
   margin-top: 20px;
+  width: 100%;
+}
+
+.account-actions .btn-primary {
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .account-actions {
+    grid-template-columns: 1fr;
+  }
 }
 
 .submit-project-page .page-header {
