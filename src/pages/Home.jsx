@@ -22,7 +22,7 @@ import useForm from "../hooks/useForm";
  * - Scroll-triggered stats animation
  */
 export default function Home() {
-  const { projects, isLoading, getAllFeaturedProjects, formatCurrency } = useProjects();
+  const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
   const { showToast } = useContext(ToastContext);
   const { feedbackList, addFeedback } = useFeedback();
   const {
@@ -60,11 +60,16 @@ export default function Home() {
   };
 
   // Show welcome toast on first mount
+  const visibleProjects = useMemo(
+    () => projects.filter((project) => project.verificationStatus === "verified"),
+    [projects]
+  );
+
   useEffect(() => {
-    if (projects.length > 0) {
-      showToast(`Welcome! ${projects.length} projects available`, "info");
+    if (visibleProjects.length > 0) {
+      showToast(`Welcome! ${visibleProjects.length} projects available`, "info");
     }
-  }, [projects.length, showToast]);
+  }, [visibleProjects.length, showToast]);
 
   // Smooth scroll to about section
   useEffect(() => {
@@ -103,7 +108,7 @@ export default function Home() {
 
   // Filter projects based on search and category
   const filteredProjects = useMemo(() => {
-    let result = projects;
+    let result = visibleProjects;
 
     if (selectedCategory !== "all") {
       result = result.filter((p) => p.category === selectedCategory);
@@ -119,22 +124,22 @@ export default function Home() {
     }
 
     return result;
-  }, [projects, searchQuery, selectedCategory]);
+  }, [visibleProjects, searchQuery, selectedCategory]);
 
-  // Get featured projects (all approved projects)
+  // Get featured projects
   const featuredProjects = useMemo(() => {
-    return getAllFeaturedProjects();
-  }, [getAllFeaturedProjects]);
+    return getFeaturedProjects();
+  }, [getFeaturedProjects]);
 
   // Calculate total funding stats (from all projects)
   const totalStats = useMemo(() => {
-    const totalRaised = projects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
-    const totalGoal = projects.reduce((sum, p) => sum + (p.goal || 0), 0);
-    const totalDonors = projects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
-    const fundedCount = projects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
+    const totalRaised = visibleProjects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
+    const totalGoal = visibleProjects.reduce((sum, p) => sum + (p.goal || 0), 0);
+    const totalDonors = visibleProjects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
+    const fundedCount = visibleProjects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
 
     return { totalRaised, totalGoal, totalDonors, fundedCount };
-  }, [projects]);
+  }, [visibleProjects]);
 
   // Categories for filter dropdown
   const categories = [
@@ -177,7 +182,7 @@ export default function Home() {
             className={`stats-dashboard${statsVisible ? " visible" : ""}`}
           >
             <div className="stat-card">
-              <span className="stat-value">{projects.length}</span>
+              <span className="stat-value">{visibleProjects.length}</span>
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-card">
@@ -197,7 +202,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      {featuredProjects.length > 0 && (
+      {featuredProjects.length > 0 && visibleProjects.length >= 3 && (
         <section className="featured-section" id="featured">
           <h2>Featured Projects</h2>
           <div className="featured-grid">
@@ -506,4 +511,3 @@ export default function Home() {
     </div>
   );
 }
-

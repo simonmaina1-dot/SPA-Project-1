@@ -1,8 +1,10 @@
-import { useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import ProjectCard from "../components/ProjectCard";
 import useAuth from "../hooks/useAuth";
 import useDonations from "../hooks/useDonations";
 import useProjects from "../hooks/useProjects";
+import { ToastContext } from "../context/ToastContext";
 
 const formatDate = (value) => {
   if (!value) return "Unknown date";
@@ -18,7 +20,19 @@ const formatDate = (value) => {
 export default function UserDashboard() {
   const { currentUser, signOut } = useAuth();
   const { donations } = useDonations();
-  const { projects, formatCurrency } = useProjects();
+  const { projects, formatCurrency, updateProject } = useProjects();
+  const { showToast } = useContext(ToastContext);
+  const [dashboardView, setDashboardView] = useState("user");
+  const [usageDrafts, setUsageDrafts] = useState({});
+  const buildUsageDraft = useMemo(
+    () => () => ({
+      amount: "",
+      category: "operations",
+      note: "",
+      date: new Date().toISOString().slice(0, 10),
+    }),
+    []
+  );
 
   if (!currentUser) {
     return <Navigate to="/signin" replace />;
@@ -41,10 +55,10 @@ export default function UserDashboard() {
 
   const myProjects = useMemo(
     () =>
-      projects.filter(
-        (project) =>
-          project.createdBy?.email?.toLowerCase() === normalizedEmail
-      ),
+      projects.filter((project) => {
+        const ownerEmail = project.ownerEmail || project.createdBy?.email || "";
+        return ownerEmail.toLowerCase() === normalizedEmail;
+      }),
     [projects, normalizedEmail]
   );
 
@@ -71,18 +85,126 @@ export default function UserDashboard() {
         createdAt: project.createdAt,
       }));
 
-    return [...donationItems, ...projectItems]
+    const usageItems = myProjects.flatMap((project) =>
+      (project.fundUsage || []).map((entry) => ({
+        id: entry.id,
+        type: "usage",
+        title: project.title,
+        amount: entry.amount || 0,
+        createdAt: entry.date || entry.createdAt,
+      }))
+    );
+
+    return [...donationItems, ...projectItems, ...usageItems]
       .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
       .slice(0, 6);
   }, [myDonations, myProjects]);
 
+  const verifiedProjects = useMemo(
+    () => projects.filter((project) => project.verificationStatus === "verified"),
+    [projects]
+  );
+
+  const verifiedStats = useMemo(() => {
+    const totalRaised = verifiedProjects.reduce(
+      (sum, project) => sum + (project.currentAmount || 0),
+      0
+    );
+    const donorCount = verifiedProjects.reduce(
+      (sum, project) => sum + (project.donorCount || 0),
+      0
+    );
+
+    return { totalRaised, donorCount };
+  }, [verifiedProjects]);
+
+  const updateUsageDraft = (projectId, field, value) => {
+    setUsageDrafts((prev) => ({
+      ...prev,
+      [projectId]: {
+        ...buildUsageDraft(),
+        ...(prev[projectId] || {}),
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleUsageSubmit = (project) => {
+    const draft = usageDrafts[project.id] || buildUsageDraft();
+    const amountValue = Number(draft.amount);
+    if (!amountValue || amountValue <= 0) {
+      showToast("Enter a valid usage amount.", "warning");
+      return;
+    }
+
+    const entry = {
+      id: `fu-${Date.now()}`,
+      amount: amountValue,
+      category: draft.category || "operations",
+      note: draft.note?.trim() || "",
+      date: draft.date || new Date().toISOString().slice(0, 10),
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedUsage = [entry, ...(project.fundUsage || [])];
+    updateProject(project.id, { fundUsage: updatedUsage });
+    showToast("Fund usage entry added.", "success");
+    setUsageDrafts((prev) => ({ ...prev, [project.id]: buildUsageDraft() }));
+  };
+
   return (
     <div className="page user-dashboard-page">
       <section className="page-header">
-        <h1>Your dashboard</h1>
+        <h1>{dashboardView === "donor" ? "Donor dashboard" : "Your dashboard"}</h1>
         <p>Welcome back, {currentUser.name}.</p>
+        <div className="dashboard-toggle">
+          <button
+            type="button"
+            className={`btn btn-secondary btn-small${dashboardView === "user" ? " active" : ""}`}
+            onClick={() => setDashboardView("user")}
+          >
+            My account
+          </button>
+          <button
+            type="button"
+            className={`btn btn-secondary btn-small${dashboardView === "donor" ? " active" : ""}`}
+            onClick={() => setDashboardView("donor")}
+          >
+            Donor dashboard
+          </button>
+          <button type="button" className="btn btn-secondary btn-small" onClick={signOut}>
+            Sign out
+          </button>
+        </div>
       </section>
 
+      {dashboardView === "donor" ? (
+        <div className="user-dashboard-grid">
+      <section className="user-card user-card-wide">
+        <div className="user-card-header">
+          <div>
+            <h2>Verified projects</h2>
+            <p className="user-card-subtitle">
+              {verifiedProjects.length} reviewed projects ·{" "}
+              {formatCurrency(verifiedStats.totalRaised)} raised
+            </p>
+          </div>
+        </div>
+
+        {verifiedProjects.length ? (
+          <div className="donor-projects-grid">
+            {verifiedProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        ) : (
+          <p className="user-empty">
+            No reviewed projects yet. Check back soon.
+          </p>
+        )}
+      </section>
+        </div>
+      ) : (
       <div className="user-dashboard-grid">
         <section className="user-card">
           <div className="user-card-header">
@@ -123,8 +245,8 @@ export default function UserDashboard() {
                 {myProjects.length} active projects
               </p>
             </div>
-            <Link to="/add" className="btn btn-secondary btn-small">
-              Start a project
+            <Link to="/submit-project" className="btn btn-secondary btn-small">
+              Submit a project
             </Link>
           </div>
 
@@ -149,6 +271,154 @@ export default function UserDashboard() {
             </div>
           ) : (
             <p className="user-empty">No projects created yet.</p>
+          )}
+        </section>
+
+        <section className="user-card user-card-wide">
+          <div className="user-card-header">
+            <div>
+              <h2>Fund usage reports</h2>
+              <p className="user-card-subtitle">
+                Track how project funds are being used.
+              </p>
+            </div>
+          </div>
+
+          {myProjects.length ? (
+            <div className="user-fund-grid">
+              {myProjects.map((project) => {
+                const usedTotal = (project.fundUsage || []).reduce(
+                  (sum, entry) => sum + (entry.amount || 0),
+                  0
+                );
+                const draft = usageDrafts[project.id] || buildUsageDraft();
+
+                return (
+                  <div key={project.id} className="user-project-card">
+                    <div className="user-project-header">
+                      <div>
+                        <h3>{project.title}</h3>
+                        <p className="user-row-meta">
+                          {formatCurrency(project.currentAmount)} raised ·{" "}
+                          {formatCurrency(usedTotal)} reported
+                        </p>
+                      </div>
+                      <span
+                        className={`status-pill status-${project.status || "review"}`}
+                      >
+                        {project.verificationStatus || project.status}
+                      </span>
+                    </div>
+
+                    <div className="user-usage-list">
+                      {(project.fundUsage || []).length ? (
+                        project.fundUsage.map((entry) => (
+                          <div className="user-usage-row" key={entry.id}>
+                            <div>
+                              <p className="user-row-title">
+                                {entry.category || "Usage update"}
+                              </p>
+                              <p className="user-row-meta">
+                                {formatDate(entry.date || entry.createdAt)} ·{" "}
+                                {entry.note || "No notes"}
+                              </p>
+                            </div>
+                            <span className="user-row-amount">
+                              {formatCurrency(entry.amount)}
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="user-empty">
+                          No usage updates reported yet.
+                        </p>
+                      )}
+                    </div>
+
+                    <form
+                      className="user-usage-form"
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        handleUsageSubmit(project);
+                      }}
+                    >
+                      <label className="form-field">
+                        <span className="form-label">Amount spent (KSh)</span>
+                        <input
+                          type="number"
+                          min="0"
+                          value={draft.amount}
+                          onChange={(event) =>
+                            updateUsageDraft(
+                              project.id,
+                              "amount",
+                              event.target.value
+                            )
+                          }
+                          placeholder="2500"
+                          required
+                        />
+                      </label>
+                      <label className="form-field">
+                        <span className="form-label">Category</span>
+                        <select
+                          value={draft.category}
+                          onChange={(event) =>
+                            updateUsageDraft(
+                              project.id,
+                              "category",
+                              event.target.value
+                            )
+                          }
+                        >
+                          <option value="operations">Operations</option>
+                          <option value="supplies">Supplies</option>
+                          <option value="labor">Labor</option>
+                          <option value="logistics">Logistics</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </label>
+                      <label className="form-field">
+                        <span className="form-label">Usage date</span>
+                        <input
+                          type="date"
+                          value={draft.date}
+                          onChange={(event) =>
+                            updateUsageDraft(
+                              project.id,
+                              "date",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="form-field form-field-wide">
+                        <span className="form-label">Notes</span>
+                        <textarea
+                          rows="2"
+                          value={draft.note}
+                          onChange={(event) =>
+                            updateUsageDraft(
+                              project.id,
+                              "note",
+                              event.target.value
+                            )
+                          }
+                          placeholder="Explain what the funds covered"
+                        />
+                      </label>
+                      <div className="form-actions">
+                        <button type="submit" className="btn btn-primary btn-small">
+                          Add usage update
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="user-empty">No projects to report yet.</p>
           )}
         </section>
 
@@ -184,13 +454,9 @@ export default function UserDashboard() {
             <p className="user-empty">No recent activity yet.</p>
           )}
 
-          <div className="user-card-actions">
-            <button type="button" className="btn btn-secondary" onClick={signOut}>
-              Sign out
-            </button>
-          </div>
         </section>
       </div>
+      )}
     </div>
   );
 }
