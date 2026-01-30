@@ -106,28 +106,25 @@
       "2.jpg"
     ],
     "goal": 18000,
-    "currentAmount": 17560,
-    "donorCount": 74,
+    "currentAmount": 20890,
+    "donorCount": 75,
     "status": "funded",
     "verificationStatus": "approved",
-    "fundUsage": [
-      {
-        "id": "fu-1769785648486-391",
-        "amount": 665,
-        "category": "supplies",
-        "note": "Reported usage",
-        "date": "2025-02-15",
-        "createdAt": "2025-02-15T15:07:28.483Z"
-      },
-      {
-        "id": "fu-1769785648486-29",
-        "amount": 5966,
-        "category": "operations",
-        "note": "Reported usage",
-        "date": "2026-01-09",
-        "createdAt": "2026-01-09T15:07:28.483Z"
-      }
-    ]
+    "ownerId": "",
+    "ownerName": "",
+    "ownerEmail": "",
+    "ownerPhone": "",
+    "identityDocument": "",
+    "verificationNotes": "",
+    "adminReviewer": null,
+    "reviewedAt": null,
+    "criteriaMet": {
+      "communityImpact": false,
+      "budgetClarity": false,
+      "timelineReady": false,
+      "stakeholderSupport": false
+    },
+    "fundUsage": []
   },
   {
     "id": "p-1004",
@@ -227,36 +224,25 @@
       "2.jpg"
     ],
     "goal": 8000,
-    "currentAmount": 7600,
-    "donorCount": 54,
-    "status": "active",
+    "currentAmount": 10933,
+    "donorCount": 55,
+    "status": "funded",
     "verificationStatus": "approved",
-    "fundUsage": [
-      {
-        "id": "fu-1769785648486-994",
-        "amount": 623,
-        "category": "operations",
-        "note": "Reported usage",
-        "date": "2025-11-27",
-        "createdAt": "2025-11-27T15:07:28.483Z"
-      },
-      {
-        "id": "fu-1769785648486-377",
-        "amount": 993,
-        "category": "logistics",
-        "note": "Reported usage",
-        "date": "2025-11-05",
-        "createdAt": "2025-11-05T15:07:28.483Z"
-      },
-      {
-        "id": "fu-1769785648486-426",
-        "amount": 1249,
-        "category": "other",
-        "note": "Reported usage",
-        "date": "2025-06-16",
-        "createdAt": "2025-06-16T15:07:28.483Z"
-      }
-    ]
+    "ownerId": "",
+    "ownerName": "",
+    "ownerEmail": "",
+    "ownerPhone": "",
+    "identityDocument": "",
+    "verificationNotes": "",
+    "adminReviewer": null,
+    "reviewedAt": null,
+    "criteriaMet": {
+      "communityImpact": false,
+      "budgetClarity": false,
+      "timelineReady": false,
+      "stakeholderSupport": false
+    },
+    "fundUsage": []
   },
   {
     "id": "p-1007",
@@ -349,23 +335,96 @@
     "donorCount": 45,
     "status": "active",
     "verificationStatus": "approved",
+    "verificationNotes": "",
+    "criteriaMet": {
+      "communityImpact": true,
+      "budgetClarity": true,
+      "timelineReady": true,
+      "stakeholderSupport": true
+    },
+    "fundUsage": [],
+    "adminReviewer": null,
+    "reviewedAt": null
+  },
+  {
+    "id": "p-1769763268694",
+    "title": "testing",
+    "description": "testing",
+    "category": "health",
+    "imageUrl": "",
+    "galleryUrls": [],
+    "galleryCount": 0,
+    "goal": 12133132,
+    "currentAmount": 0,
+    "donorCount": 0,
+    "status": "review",
+    "createdAt": "2026-01-30T08:54:28.694Z",
+    "createdBy": {
+      "id": "u-1769761817554",
+      "name": "simon waititu maina",
+      "email": "mainawaititu2026@gmail.com"
+    },
+    "ownerId": "u-1769761817554",
+    "ownerName": "simon waititu maina",
+    "ownerEmail": "mainawaititu2026@gmail.com",
+    "ownerPhone": "+254723800951",
+    "identityDocument": "411144",
+    "verificationStatus": "submitted",
+    "verificationNotes": "",
+    "criteriaMet": {
+      "communityImpact": true,
+      "budgetClarity": true,
+      "timelineReady": true,
+      "stakeholderSupport": true
+    },
+    "fundUsage": [],
+    "adminReviewer": null,
+    "reviewedAt": null
+  },
+  {
+    "id": "p-1769792428289",
+    "title": "Clean Water for Rural Schools",
+    "description": "We aim to provide safe and clean drinking water to rural schools in our region. Donations will help install water filters, repair broken wells, and educate students on hygiene.",
+    "category": "community",
+    "imageUrl": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
+    "galleryUrls": [
+      "https://images.unsplash.com/photo-1517430816045-df4b7de1d0c4?auto=format&fit=crop&w=900&q=80"
+    ],
+    "galleryCount": 0,
+    "goal": 900000,
+    "currentAmount": 0,
+    "donorCount": 0,
+    "status": "review",
+    "createdAt": "2026-01-30T17:00:28.288Z",
+    "createdBy": {
+      "id": "u-1769787400680",
+      "name": "ian koech",
+      "email": "iankip5@gmail.com"
+    },
+    "ownerId": "u-1769787400680",
+    "ownerName": "ian koech",
+    "ownerEmail": "iankip5@gmail.com",
+    "ownerPhone": "0723345668",
+    "identityDocument": "https://www.freecodecamp.org/",
+    "verificationStatus": "submitted",
+    "verificationNotes": "",
+    "criteriaMet": {
+      "communityImpact": true,
+      "budgetClarity": true,
+      "timelineReady": true,
+      "stakeholderSupport": true
+    },
     "fundUsage": [
       {
-        "id": "fu-1769785648486-894",
-        "amount": 447,
-        "category": "labor",
-        "note": "Reported usage",
-        "date": "2025-05-25",
-        "createdAt": "2025-05-25T15:07:28.483Z"
-      },
-      {
-        "id": "fu-1769785648486-645",
-        "amount": 3028,
+        "id": "fu-1769792480117",
+        "amount": 4900,
         "category": "supplies",
-        "note": "Reported usage",
-        "date": "2025-03-18",
-        "createdAt": "2025-03-18T15:07:28.483Z"
+        "note": "ef",
+        "date": "2026-01-30",
+        "createdAt": "2026-01-30T17:01:20.117Z"
       }
-    ]
+    ],
+    "adminReviewer": null,
+    "reviewedAt": null
   }
 ]

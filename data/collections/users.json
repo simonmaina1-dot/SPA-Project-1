@@ -5,5 +5,19 @@
     "email": "kashiku79@gmail.com",
     "password": "ashanti-2026",
     "role": "user"
+  },
+  {
+    "id": "u-1769785786446",
+    "name": "ryy",
+    "email": "iankip@gmail.com",
+    "password": "Qwerty33",
+    "role": "user"
+  },
+  {
+    "id": "u-1769787400680",
+    "name": "ian koech",
+    "email": "iankip5@gmail.com",
+    "password": "Ian@1234",
+    "role": "user"
   }
 ]

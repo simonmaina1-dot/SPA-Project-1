@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { ToastContext } from "../context/ToastContext";
+import { loginSchema } from "../validations/authSchemas";
+import { validateForm } from "../utils/validationHelper";
 
 export default function SignIn() {
   const { showToast } = useContext(ToastContext);
@@ -16,13 +18,27 @@ export default function SignIn() {
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
     setLoginValues((prev) => ({ ...prev, [name]: value }));
+    setLoginError(""); 
   };
 
-  const handleLoginSubmit = (event) => {
+  const handleLoginSubmit = async (event) => {
     event.preventDefault();
     setLoginError("");
 
-    const result = signInAdmin(loginValues.email, loginValues.password);
+    
+    const { isValid, errors } = await validateForm(loginSchema, loginValues);
+    if (!isValid) {
+      const errorMessage = Object.values(errors).join(", ");
+      setLoginError(errorMessage);
+      showToast(errorMessage, "warning"); 
+      return; 
+    }
+
+    
+    const isAdminLogin = loginValues.role === "admin";
+    const loginFn = isAdminLogin ? signInAdmin : signInUser;
+    const result = loginFn(loginValues.email, loginValues.password);
+
     if (!result.ok) {
       const userResult = signInUser(loginValues.email, loginValues.password);
       if (!userResult.ok) {
@@ -84,7 +100,6 @@ export default function SignIn() {
                 value={loginValues.email}
                 onChange={handleLoginChange}
                 placeholder="you@example.com"
-                required
               />
             </label>
 
@@ -96,7 +111,6 @@ export default function SignIn() {
                 value={loginValues.password}
                 onChange={handleLoginChange}
                 placeholder="Enter your password"
-                required
               />
             </label>
           </div>

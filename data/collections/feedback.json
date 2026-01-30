@@ -174,5 +174,21 @@
     "message": "Please add more payment options. Not everyone has a card - M-Pesa would reach more Kenyans.",
     "createdAt": "2024-01-15T08:20:00Z",
     "status": "new"
+  },
+  {
+    "id": "f-1769786649128",
+    "name": "ryan kk",
+    "email": "ryan5@gmail.com",
+    "message": "sdfgfghjkl;lkjh",
+    "createdAt": "2026-01-30T15:24:09.128Z",
+    "status": "new"
+  },
+  {
+    "id": "f-1769786682769",
+    "name": "George",
+    "email": "iankip@gmail.com",
+    "message": "sdfgh",
+    "createdAt": "2026-01-30T15:24:42.769Z",
+    "status": "new"
   }
 ]

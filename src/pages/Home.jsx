@@ -5,11 +5,12 @@ import ProjectCard from "../components/common/ProjectCard";
 import { ToastContext } from "../context/ToastContext";
 import useFeedback from "../hooks/useFeedback";
 import useForm from "../hooks/useForm";
-
+import { feedbackSchema } from "../validations/feedbackSchema";
+import { validateForm } from "../utils/validationHelper";
 
 /**
  * Home Page - Main landing page displaying community projects
- * 
+ *
  * KEY FEATURES:
  * - Displays all existing projects (no vetting required for existing projects)
  * - New project submissions go through vetting process
@@ -22,7 +23,8 @@ import useForm from "../hooks/useForm";
  * - Scroll-triggered stats animation
  */
 export default function Home() {
-  const { projects, isLoading, getFeaturedProjects, formatCurrency } = useProjects();
+  const { projects, isLoading, getFeaturedProjects, formatCurrency } =
+    useProjects();
   const { showToast } = useContext(ToastContext);
   const { feedbackList, addFeedback } = useFeedback();
   const {
@@ -33,7 +35,7 @@ export default function Home() {
   const location = useLocation();
   const aboutRef = useRef(null);
   const statsRef = useRef(null);
-  
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [statsVisible, setStatsVisible] = useState(false);
@@ -41,19 +43,24 @@ export default function Home() {
 
   // Toggle expanded state for about cards
   const toggleCard = (cardId) => {
-    setExpandedCards((prev) =>
-      prev[cardId] ? {} : { [cardId]: true }
-    );
+    setExpandedCards((prev) => (prev[cardId] ? {} : { [cardId]: true }));
   };
 
-  const handleFeedbackSubmit = (event) => {
+  const handleFeedbackSubmit = async (event) => {
     event.preventDefault();
 
-    if (!feedbackValues.name.trim() || !feedbackValues.message.trim()) {
-      showToast("Add your name and feedback message.", "warning");
-      return;
+    
+    const { isValid, errors } = await validateForm(
+      feedbackSchema,
+      feedbackValues,
+    );
+    if (!isValid) {
+      const errorMessage = Object.values(errors).join(", ");
+      showToast(errorMessage, "warning"); 
+      return; 
     }
 
+    
     addFeedback(feedbackValues);
     showToast("Thanks for sharing your feedback!", "success");
     resetFeedback();
@@ -61,13 +68,17 @@ export default function Home() {
 
   // Show welcome toast on first mount
   const visibleProjects = useMemo(
-    () => projects.filter((project) => project.verificationStatus === "approved"),
-    [projects]
+    () =>
+      projects.filter((project) => project.verificationStatus === "approved"),
+    [projects],
   );
 
   useEffect(() => {
     if (visibleProjects.length > 0) {
-      showToast(`Welcome! ${visibleProjects.length} projects available`, "info");
+      showToast(
+        `Welcome! ${visibleProjects.length} projects available`,
+        "info",
+      );
     }
   }, [visibleProjects.length, showToast]);
 
@@ -89,10 +100,10 @@ export default function Home() {
           }
         });
       },
-      { 
+      {
         threshold: 0.2,
-        rootMargin: '0px 0px -50px 0px'
-      }
+        rootMargin: "0px 0px -50px 0px",
+      },
     );
 
     if (statsRef.current) {
@@ -119,7 +130,7 @@ export default function Home() {
       result = result.filter(
         (p) =>
           p.title.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query)
+          p.description.toLowerCase().includes(query),
       );
     }
 
@@ -133,10 +144,21 @@ export default function Home() {
 
   // Calculate total funding stats (from all projects)
   const totalStats = useMemo(() => {
-    const totalRaised = visibleProjects.reduce((sum, p) => sum + (p.currentAmount || 0), 0);
-    const totalGoal = visibleProjects.reduce((sum, p) => sum + (p.goal || 0), 0);
-    const totalDonors = visibleProjects.reduce((sum, p) => sum + (p.donorCount || 0), 0);
-    const fundedCount = visibleProjects.filter((p) => (p.currentAmount || 0) >= (p.goal || 0)).length;
+    const totalRaised = visibleProjects.reduce(
+      (sum, p) => sum + (p.currentAmount || 0),
+      0,
+    );
+    const totalGoal = visibleProjects.reduce(
+      (sum, p) => sum + (p.goal || 0),
+      0,
+    );
+    const totalDonors = visibleProjects.reduce(
+      (sum, p) => sum + (p.donorCount || 0),
+      0,
+    );
+    const fundedCount = visibleProjects.filter(
+      (p) => (p.currentAmount || 0) >= (p.goal || 0),
+    ).length;
 
     return { totalRaised, totalGoal, totalDonors, fundedCount };
   }, [visibleProjects]);
@@ -151,7 +173,7 @@ export default function Home() {
     { value: "technology", label: "Technology" },
     { value: "arts", label: "Arts & Culture" },
     { value: "sports", label: "Sports & Recreation" },
-    { value: "other", label: "Other" }
+    { value: "other", label: "Other" },
   ];
 
   // Loading state
@@ -175,10 +197,10 @@ export default function Home() {
           <p className="hero-subtitle">
             Support meaningful projects making a difference in our community
           </p>
-          
+
           {/* Stats Dashboard with Scroll Animation */}
-          <div 
-            ref={statsRef} 
+          <div
+            ref={statsRef}
             className={`stats-dashboard${statsVisible ? " visible" : ""}`}
           >
             <div className="stat-card">
@@ -186,7 +208,9 @@ export default function Home() {
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-card">
-              <span className="stat-value">{formatCurrency(totalStats.totalRaised)}</span>
+              <span className="stat-value">
+                {formatCurrency(totalStats.totalRaised)}
+              </span>
               <span className="stat-label">Total Raised</span>
             </div>
             <div className="stat-card">
@@ -223,9 +247,17 @@ export default function Home() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="M21 21l-4.35-4.35"/>
+          <svg
+            className="search-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
           </svg>
         </div>
 
@@ -262,10 +294,13 @@ export default function Home() {
       <section className="projects-section" id="all-projects">
         <div className="section-header">
           <h2>
-            {selectedCategory === "all" ? "All Projects" : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Projects`}
+            {selectedCategory === "all"
+              ? "All Projects"
+              : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Projects`}
           </h2>
           <span className="project-count">
-            {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} found
+            {filteredProjects.length}{" "}
+            {filteredProjects.length === 1 ? "project" : "projects"} found
           </span>
         </div>
 
@@ -274,9 +309,16 @@ export default function Home() {
             {searchQuery || selectedCategory !== "all" ? (
               <>
                 <div className="empty-icon">
-                  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="M21 21l-4.35-4.35"/>
+                  <svg
+                    width="64"
+                    height="64"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
                   </svg>
                 </div>
                 <h3>No projects found</h3>
@@ -285,11 +327,18 @@ export default function Home() {
             ) : (
               <>
                 <div className="empty-icon">
-                  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="12" y1="18" x2="12" y2="12"/>
-                    <line x1="9" y1="15" x2="15" y2="15"/>
+                  <svg
+                    width="64"
+                    height="64"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="12" y1="18" x2="12" y2="12" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
                   </svg>
                 </div>
                 <h3>No projects yet</h3>
@@ -314,10 +363,10 @@ export default function Home() {
         <div className="about-header">
           <h2>About the Community</h2>
           <p className="about-lead">
-            Behind every funded project is a parent who stayed up late submitting
-            updates, a volunteer who showed up on a Saturday morning, a donor
-            who gave Ksh 18,000 because they remembered what it felt like to need help
-            and not get it.
+            Behind every funded project is a parent who stayed up late
+            submitting updates, a volunteer who showed up on a Saturday morning,
+            a donor who gave Ksh 18,000 because they remembered what it felt
+            like to need help and not get it.
           </p>
         </div>
 
@@ -386,9 +435,9 @@ export default function Home() {
                   Category trends show where attention is flowing—and where it's
                   needed. If education projects are surging while health
                   initiatives stall, that's information worth having. If a
-                  neighborhood food pantry is Ksh 200 short of its next milestone
-                  with three days left, we surface that so people who want to
-                  help can act while it still matters.
+                  neighborhood food pantry is Ksh 200 short of its next
+                  milestone with three days left, we surface that so people who
+                  want to help can act while it still matters.
                 </p>
                 <p className="about-emphasis">
                   This isn't gamification. It's coordination.{" "}
@@ -458,7 +507,10 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <form className="feedback-form-card form-card" onSubmit={handleFeedbackSubmit}>
+          <form
+            className="feedback-form-card form-card"
+            onSubmit={handleFeedbackSubmit}
+          >
             <div className="form-grid">
               <label className="form-field">
                 <span className="form-label">Name</span>

@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { ToastContext } from "../context/ToastContext";
+import { registerSchema } from "../validations/authSchemas";
+import { validateForm } from "../utils/validationHelper";
 
 export default function SignUp() {
   const { showToast } = useContext(ToastContext);
@@ -17,12 +19,23 @@ export default function SignUp() {
   const handleSignupChange = (event) => {
     const { name, value } = event.target;
     setSignupValues((prev) => ({ ...prev, [name]: value }));
+    setSignupError(""); 
   };
 
   const handleSignupSubmit = async (event) => {
     event.preventDefault();
     setSignupError("");
 
+    
+    const { isValid, errors } = await validateForm(registerSchema, signupValues);
+    if (!isValid) {
+      const errorMessage = Object.values(errors).join(", ");
+      setSignupError(errorMessage);
+      showToast(errorMessage, "warning"); 
+      return; 
+    }
+
+  
     const result = await registerAccount(signupValues);
     if (!result.ok) {
       setSignupError(result.message);
@@ -78,7 +91,6 @@ export default function SignUp() {
                 value={signupValues.name}
                 onChange={handleSignupChange}
                 placeholder="Jane Doe"
-                required
               />
             </label>
 
@@ -90,7 +102,6 @@ export default function SignUp() {
                 value={signupValues.email}
                 onChange={handleSignupChange}
                 placeholder="jane@example.com"
-                required
               />
             </label>
 
@@ -102,10 +113,8 @@ export default function SignUp() {
                 value={signupValues.password}
                 onChange={handleSignupChange}
                 placeholder="Create a password"
-                required
               />
             </label>
-
           </div>
 
           <div className="form-actions">
