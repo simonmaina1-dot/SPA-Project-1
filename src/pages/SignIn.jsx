@@ -114,9 +114,6 @@ export default function SignIn() {
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
-                  <span className="password-toggle-label">
-                    {showPassword ? "Hide" : "Show"}
-                  </span>
                   {showPassword ? (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path

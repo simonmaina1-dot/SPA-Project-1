@@ -1854,12 +1854,6 @@ body {
   gap: 6px;
 }
 
-.password-toggle-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
 .password-toggle svg {
   width: 18px;
   height: 18px;
