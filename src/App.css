@@ -1531,6 +1531,15 @@ body {
   font-weight: 500;
 }
 
+.about-card em,
+.about-card i {
+  font-style: normal;
+}
+
+.about-card .read-more-link {
+  text-decoration: none !important;
+}
+
 @keyframes expandIn {
   from {
     opacity: 0;
