@@ -27,6 +27,7 @@ export default function ProjectDetails() {
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [isDonateOpen, setIsDonateOpen] = useState(false);
   const [isDonorsOpen, setIsDonorsOpen] = useState(false);
+  const [selectedDonor, setSelectedDonor] = useState(null);
   const { values, handleChange, reset } = useForm(donationInitialValues);
 
   const galleryImages = [];
@@ -178,6 +179,7 @@ export default function ProjectDetails() {
         acc[key] = {
           key,
           name,
+          email,
           count: 0,
           totalAmount: 0,
           lastDonation: donation?.createdAt || "",
@@ -198,6 +200,15 @@ export default function ProjectDetails() {
     if (!b.lastDonation) return -1;
     return b.lastDonation.localeCompare(a.lastDonation);
   });
+
+  const selectedDonorPayments = selectedDonor
+    ? sortedDonations.filter((donation) => {
+        const name = donation?.donorName?.trim() || "Anonymous";
+        const email = donation?.donorEmail?.trim().toLowerCase() || "";
+        const key = `${name.toLowerCase()}|${email}`;
+        return key === selectedDonor.key;
+      })
+    : [];
 
   return (
     <div className="page project-details-page">
@@ -514,7 +525,7 @@ export default function ProjectDetails() {
         isOpen={isDonorsOpen}
         onClose={() => setIsDonorsOpen(false)}
         title="Donor list"
-        className="modal-sm"
+        className="modal-sm modal-square"
         footer={
           <div className="modal-actions">
             <button
@@ -545,6 +556,55 @@ export default function ProjectDetails() {
                   </div>
                   <div className="donor-amount">
                     {formatCurrency(donor.totalAmount)}
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-small"
+                    onClick={() => setSelectedDonor(donor)}
+                  >
+                    View payments
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={Boolean(selectedDonor)}
+        onClose={() => setSelectedDonor(null)}
+        title={selectedDonor ? `${selectedDonor.name} payments` : "Payments"}
+        className="modal-sm modal-square"
+        footer={
+          <div className="modal-actions">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setSelectedDonor(null)}
+            >
+              Close
+            </button>
+          </div>
+        }
+      >
+        <div className="donor-list">
+          {selectedDonorPayments.length === 0 ? (
+            <p className="donor-empty">No payments found.</p>
+          ) : (
+            <ul className="donor-rows">
+              {selectedDonorPayments.map((payment) => (
+                <li key={payment.id} className="donor-row">
+                  <div>
+                    <p className="donor-name">
+                      {payment.createdAt
+                        ? new Date(payment.createdAt).toLocaleDateString()
+                        : "Date unavailable"}
+                    </p>
+                    <p className="donor-meta">{payment.message || "No note"}</p>
+                  </div>
+                  <div className="donor-amount">
+                    {formatCurrency(payment.amount || 0)}
                   </div>
                 </li>
               ))}
