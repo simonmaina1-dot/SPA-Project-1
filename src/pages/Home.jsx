@@ -531,6 +531,7 @@ export default function Home() {
                   value={feedbackValues.email}
                   onChange={handleFeedbackChange}
                   placeholder="email@example.com"
+                  required
                 />
               </label>
               <label className="form-field form-field-wide">

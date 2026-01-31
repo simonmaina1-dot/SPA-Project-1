@@ -4,6 +4,7 @@ const sourceLabels = {
   card: "Card",
   mpesa: "M-Pesa",
   bank: "Bank transfer",
+  cash: "Cash",
   other: "Other",
 };
 

@@ -9,6 +9,7 @@ export default function SignUp() {
   const { showToast } = useContext(ToastContext);
   const { registerAccount, currentUser } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const [signupValues, setSignupValues] = useState({
     name: "",
     email: "",
@@ -116,6 +117,8 @@ export default function SignUp() {
               />
             </label>
           </div>
+
+          {signupError && <p className="form-error">{signupError}</p>}
 
           <div className="form-actions">
             <button type="submit" className="btn btn-primary">
