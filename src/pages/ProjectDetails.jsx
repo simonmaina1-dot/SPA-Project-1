@@ -210,6 +210,15 @@ export default function ProjectDetails() {
       })
     : [];
 
+  const getPossessiveLabel = (fullName = "") => {
+    const parts = fullName.trim().split(/\s+/).filter(Boolean);
+    const lastName = parts.length ? parts[parts.length - 1] : fullName.trim();
+    if (!lastName) return "Payments";
+    const lower = lastName.toLowerCase();
+    const suffix = lower.endsWith("s") ? "'" : "'s";
+    return `${lastName}${suffix} payments`;
+  };
+
   return (
     <div className="page project-details-page">
       {/* Hero Section with Image Gallery */}
@@ -574,7 +583,11 @@ export default function ProjectDetails() {
       <Modal
         isOpen={Boolean(selectedDonor)}
         onClose={() => setSelectedDonor(null)}
-        title={selectedDonor ? `${selectedDonor.name} payments` : "Payments"}
+        title={
+          selectedDonor
+            ? getPossessiveLabel(selectedDonor.name)
+            : "Payments"
+        }
         className="modal-sm modal-square"
         footer={
           <div className="modal-actions">
