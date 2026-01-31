@@ -1654,6 +1654,12 @@ body {
   max-height: 70vh;
 }
 
+.modal.modal-square {
+  max-width: 520px;
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
+
 @keyframes modalFadeIn {
   from {
     opacity: 0;
