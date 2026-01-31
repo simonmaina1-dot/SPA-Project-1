@@ -254,9 +254,9 @@
       "https://images.pexels.com/photos/7656721/pexels-photo-7656721.jpeg?cs=srgb&dl=pexels-thirdman-7656721.jpg&fm=jpg"
     ],
     "goal": 22000,
-    "currentAmount": 6400,
-    "donorCount": 36,
-    "status": "active",
+    "currentAmount": 25300,
+    "donorCount": 18,
+    "status": "funded",
     "verificationStatus": "approved",
     "fundUsage": [
       {
