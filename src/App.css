@@ -1832,25 +1832,32 @@ body {
 }
 
 .password-field input {
-  padding-right: 52px;
+  padding-right: 84px;
 }
 
 .password-toggle {
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
   border: 1px solid var(--color-border);
-  background: #ffffff;
+  background: var(--color-bg);
   color: var(--color-text-secondary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  gap: 6px;
+}
+
+.password-toggle-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .password-toggle svg {
