@@ -9,9 +9,11 @@ export default function SignIn() {
   const { showToast } = useContext(ToastContext);
   const { signInAdmin, signInUser, currentUser } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const [loginValues, setLoginValues] = useState({
     email: "",
     password: "",
+    role: "user",
   });
   const [loginError, setLoginError] = useState("");
 
@@ -40,21 +42,14 @@ export default function SignIn() {
     const result = loginFn(loginValues.email, loginValues.password);
 
     if (!result.ok) {
-      const userResult = signInUser(loginValues.email, loginValues.password);
-      if (!userResult.ok) {
-        setLoginError(userResult.message);
-        showToast(userResult.message, "warning");
-        return;
-      }
-      showToast(`Welcome back, ${userResult.user.name}.`, "success");
-      setLoginValues({ email: "", password: "" });
-      navigate("/user-dashboard");
+      setLoginError(result.message);
+      showToast(result.message, "warning");
       return;
     }
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
-    setLoginValues({ email: "", password: "" });
-    navigate("/admin");
+    setLoginValues({ email: "", password: "", role: "user" });
+    navigate(isAdminLogin ? "/admin" : "/user-dashboard");
   };
 
   if (currentUser) {
@@ -105,10 +100,72 @@ export default function SignIn() {
 
             <label className="form-field">
               <span className="form-label">Password</span>
-              <input
-                type="password"
-                name="password"
-                value={loginValues.password}
+              <div className="password-field">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={loginValues.password}
+                  onChange={handleLoginChange}
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  <span className="password-toggle-label">
+                    {showPassword ? "Hide" : "Show"}
+                  </span>
+                  {showPassword ? (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path
+                        d="M3 3l18 18"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10.6 10.6a3 3 0 0 0 4.2 4.2"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M9.9 4.24A10.94 10.94 0 0 1 12 4c5 0 9.27 3.11 11 8-0.53 1.49-1.32 2.82-2.3 3.94M6.09 6.08C4.23 7.27 2.77 9.02 2 12c1.73 4.89 6 8 10 8 1.4 0 2.75-0.3 4-0.86"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path
+                        d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="3"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </label>
+
+            <label className="form-field">
+              <span className="form-label">Account type</span>
+              <select
+                name="role"
+                value={loginValues.role}
                 onChange={handleLoginChange}
                 placeholder="Enter your password"
               />

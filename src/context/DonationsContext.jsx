@@ -8,33 +8,6 @@ const normalizeDonation = (donation) => ({
   source: donation.source || donation.method || "card",
 });
 
-const useDonationsValue = ({
-  donations,
-  addDonation,
-  getDonationsByProject,
-  getRecentDonations,
-  getTotalDonated,
-  getUniqueDonors,
-}) =>
-  useMemo(
-    () => ({
-      donations,
-      addDonation,
-      getDonationsByProject,
-      getRecentDonations,
-      getTotalDonated,
-      getUniqueDonors,
-    }),
-    [
-      donations,
-      addDonation,
-      getDonationsByProject,
-      getRecentDonations,
-      getTotalDonated,
-      getUniqueDonors,
-    ]
-  );
-
 export function DonationsProvider({ children }) {
   const [donations, setDonations] = useState(
     seedDonations.map(normalizeDonation)
@@ -128,14 +101,24 @@ export function DonationsProvider({ children }) {
     return new Set(emails).size;
   }, [donations]);
 
-  const value = useDonationsValue({
-    donations,
-    addDonation,
-    getDonationsByProject,
-    getRecentDonations,
-    getTotalDonated,
-    getUniqueDonors,
-  });
+  const value = useMemo(
+    () => ({
+      donations,
+      addDonation,
+      getDonationsByProject,
+      getRecentDonations,
+      getTotalDonated,
+      getUniqueDonors,
+    }),
+    [
+      donations,
+      addDonation,
+      getDonationsByProject,
+      getRecentDonations,
+      getTotalDonated,
+      getUniqueDonors,
+    ]
+  );
 
   return (
     <DonationsContext.Provider value={value}>

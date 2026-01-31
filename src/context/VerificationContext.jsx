@@ -6,14 +6,13 @@ export function VerificationProvider({ children }) {
   const [submissions, setSubmissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiAvailable, setApiAvailable] = useState(false);
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3002";
 
   // Fetch verification submissions from JSON Server
   useEffect(() => {
     let isActive = true;
     const loadSubmissions = async () => {
       try {
-        const res = await fetch(`${apiUrl}/verificationSubmissions`);
+        const res = await fetch("/verificationSubmissions");
         if (!res.ok) throw new Error("API unavailable");
         const data = await res.json();
         if (!isActive) return;
@@ -58,7 +57,7 @@ export function VerificationProvider({ children }) {
 
     if (apiAvailable) {
       try {
-        const res = await fetch(`${apiUrl}/verificationSubmissions`, {
+        const res = await fetch("/verificationSubmissions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newSubmission),
@@ -91,7 +90,7 @@ export function VerificationProvider({ children }) {
     if (apiAvailable) {
       try {
         const res = await fetch(
-          `${apiUrl}/verificationSubmissions/${submissionId}`,
+          `/verificationSubmissions/${submissionId}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -151,3 +150,4 @@ export function VerificationProvider({ children }) {
     </VerificationContext.Provider>
   );
 }
+
