@@ -13,7 +13,6 @@ export default function SignIn() {
   const [loginValues, setLoginValues] = useState({
     email: "",
     password: "",
-    role: "user",
   });
   const [loginError, setLoginError] = useState("");
 
@@ -48,8 +47,8 @@ export default function SignIn() {
     }
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
-    setLoginValues({ email: "", password: "", role: "user" });
-    navigate(isAdminLogin ? "/admin" : "/user-dashboard");
+    setLoginValues({ email: "", password: "" });
+    navigate(result.user.isAdmin ? "/admin" : "/user-dashboard");
   };
 
   if (currentUser) {
