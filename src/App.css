@@ -1507,6 +1507,7 @@ body {
 
 .read-more-link:hover {
   color: var(--color-primary-dark);
+  text-decoration: none;
 }
 
 .about-card-expanded {
