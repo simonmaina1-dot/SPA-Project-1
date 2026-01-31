@@ -2,11 +2,14 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { ToastContext } from "../context/ToastContext";
+import { loginSchema } from "../validations/authSchemas";
+import { validateForm } from "../utils/validationHelper";
 
 export default function SignIn() {
   const { showToast } = useContext(ToastContext);
   const { signInAdmin, signInUser, currentUser } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const [loginValues, setLoginValues] = useState({
     email: "",
     password: "",
@@ -19,7 +22,7 @@ export default function SignIn() {
     setLoginError(""); 
   };
 
-  const handleLoginSubmit = (event) => {
+  const handleLoginSubmit = async (event) => {
     event.preventDefault();
     setLoginError("");
 
@@ -38,25 +41,14 @@ export default function SignIn() {
     const result = loginFn(loginValues.email, loginValues.password);
 
     if (!result.ok) {
-      const userResult = signInUser(loginValues.email, loginValues.password);
-      if (!userResult.ok) {
-        setLoginError(userResult.message);
-        showToast(userResult.message, "warning");
-        return;
-      }
-      showToast(`Welcome back, ${userResult.user.name}.`, "success");
-      setLoginValues({ email: "", password: "" });
-      navigate("/user-dashboard");
+      setLoginError(result.message);
+      showToast(result.message, "warning");
       return;
     }
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
     setLoginValues({ email: "", password: "" });
-<<<<<<< HEAD
     navigate(result.user.isAdmin ? "/admin" : "/user-dashboard");
-=======
-    navigate("/admin");
->>>>>>> parent of 5aed94d (ui(auth): add visible show/hide password button)
   };
 
   if (currentUser) {
