@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import useProjects from "../../hooks/useProjects";
 
-export default function ProjectCard({ project, onClick, featured = false }) {
+export default function ProjectCard({ project, onClick, featured = true }) {
   const { formatCurrency } = useProjects();
 
   // Calculate funding progress
