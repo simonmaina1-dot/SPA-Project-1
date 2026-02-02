@@ -160,8 +160,9 @@ export default function ProjectDetails() {
   }
 
   const progress = project.goal
-    ? Math.min(100, Math.round((project.currentAmount / project.goal) * 100))
+    ? Math.round((project.currentAmount / project.goal) * 100)
     : 0;
+  const barWidth = Math.min(100, progress);
   const projectDonations = getDonationsByProject(projectId);
   const sortedDonations = [...projectDonations].sort((a, b) => {
     if (!a?.createdAt && !b?.createdAt) return 0;
@@ -388,9 +389,9 @@ export default function ProjectDetails() {
                 
                 <div className="funding-bar-container">
                   <div className="funding-bar-track">
-                    <div 
-                      className="funding-bar-fill" 
-                      style={{ width: `${progress}%` }}
+                    <div
+                      className="funding-bar-fill"
+                      style={{ width: `${barWidth}%` }}
                     />
                   </div>
                 </div>
