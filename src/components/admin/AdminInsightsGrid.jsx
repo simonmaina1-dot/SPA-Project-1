@@ -154,7 +154,11 @@ export default function AdminInsightsGrid({
                   {formatCurrency(project.currentAmount)} raised
                 </span>
               </div>
-              <span className="admin-pill">{project.progress}% funded</span>
+              <span className="admin-pill">
+                {project.progress > 100
+                  ? `${project.progress - 100}% over`
+                  : `${project.progress}% funded`}
+              </span>
             </div>
           ))}
         </div>
