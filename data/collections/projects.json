@@ -357,7 +357,7 @@
     "goal": 12133132,
     "currentAmount": 0,
     "donorCount": 0,
-    "status": "review",
+    "status": "active",
     "createdAt": "2026-01-30T08:54:28.694Z",
     "createdBy": {
       "id": "u-1769761817554",
@@ -369,7 +369,7 @@
     "ownerEmail": "mainawaititu2026@gmail.com",
     "ownerPhone": "+254723800951",
     "identityDocument": "411144",
-    "verificationStatus": "submitted",
+    "verificationStatus": "approved",
     "verificationNotes": "",
     "criteriaMet": {
       "communityImpact": true,
@@ -394,7 +394,7 @@
     "goal": 900000,
     "currentAmount": 0,
     "donorCount": 0,
-    "status": "review",
+    "status": "active",
     "createdAt": "2026-01-30T17:00:28.288Z",
     "createdBy": {
       "id": "u-1769787400680",
@@ -406,7 +406,7 @@
     "ownerEmail": "iankip5@gmail.com",
     "ownerPhone": "0723345668",
     "identityDocument": "https://www.freecodecamp.org/",
-    "verificationStatus": "submitted",
+    "verificationStatus": "approved",
     "verificationNotes": "",
     "criteriaMet": {
       "communityImpact": true,
