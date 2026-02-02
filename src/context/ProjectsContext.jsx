@@ -246,13 +246,22 @@ export function ProjectsProvider({ children }) {
       .catch((err) => console.error("Failed to update verification status:", err));
   }, [projects, apiUrl]);
 
-  // Format currency in Kenyan Shillings
+  // Format currency in Kenyan Shillings (compact for large numbers)
   const formatCurrency = useCallback((amount) => {
+    const value = amount || 0;
+    if (value >= 10000) {
+      return new Intl.NumberFormat("en-KE", {
+        style: "currency",
+        currency: "KES",
+        notation: "compact",
+        maximumFractionDigits: 1,
+      }).format(value);
+    }
     return new Intl.NumberFormat("en-KE", {
       style: "currency",
       currency: "KES",
       maximumFractionDigits: 0,
-    }).format(amount || 0);
+    }).format(value);
   }, []);
 
   // Memoize context value
