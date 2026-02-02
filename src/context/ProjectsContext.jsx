@@ -53,7 +53,7 @@ export function ProjectsProvider({ children }) {
 
   // Fetch projects from JSON Server when component mounts
   useEffect(() => {
-    fetch(`${apiUrl}/projects`)
+    fetch("/projects")
       .then((res) => res.json())
       .then((data) => {
         setProjects(data.map(normalizeProject));
@@ -112,7 +112,7 @@ export function ProjectsProvider({ children }) {
     });
 
     // Send new project to JSON Server
-    fetch(`${apiUrl}/projects`, {
+    fetch("/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProject),
@@ -133,7 +133,7 @@ export function ProjectsProvider({ children }) {
 
     const updatedProject = normalizeProject({ ...projectToUpdate, ...updates });
 
-    fetch(`${apiUrl}/projects/${id}`, {
+    fetch(`/projects/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
@@ -151,7 +151,7 @@ export function ProjectsProvider({ children }) {
 
   // Remove a project via DELETE request
   const removeProject = useCallback((id) => {
-    fetch(`${apiUrl}/projects/${id}`, {
+    fetch(`/projects/${id}`, {
       method: "DELETE",
     })
       .then(() => {
@@ -178,7 +178,7 @@ export function ProjectsProvider({ children }) {
       status: nextStatus,
     });
 
-    fetch(`${apiUrl}/projects/${id}`, {
+    fetch(`/projects/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
@@ -207,6 +207,11 @@ export function ProjectsProvider({ children }) {
     return sorted.slice(0, 3);
   }, [projects]);
 
+  // Get ALL featured projects that are approved (no limit)
+  const getAllFeaturedProjects = useCallback(() => {
+    return projects.filter((p) => p.verificationStatus === "approved");
+  }, [projects]);
+
   // Get only approved projects (for public display)
   const getApprovedProjects = useCallback(() => {
     return projects.filter((p) => p.verificationStatus === "approved");
@@ -232,7 +237,7 @@ export function ProjectsProvider({ children }) {
       verificationNotes: notes || "",
     });
 
-    fetch(`${apiUrl}/projects/${projectId}`, {
+    fetch(`/projects/${projectId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProject),
@@ -265,6 +270,7 @@ export function ProjectsProvider({ children }) {
       removeProject,
       addDonation,
       getFeaturedProjects,
+      getAllFeaturedProjects,
       getApprovedProjects,
       getPendingVerificationProjects,
       updateVerificationStatus,
@@ -278,6 +284,7 @@ export function ProjectsProvider({ children }) {
       removeProject,
       addDonation,
       getFeaturedProjects,
+      getAllFeaturedProjects,
       getApprovedProjects,
       getPendingVerificationProjects,
       updateVerificationStatus,
@@ -292,3 +299,4 @@ export function ProjectsProvider({ children }) {
     </ProjectsContext.Provider>
   );
 }
+
