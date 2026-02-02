@@ -53,15 +53,29 @@ export function ProjectsProvider({ children }) {
 
   // Fetch projects from JSON Server when component mounts
   useEffect(() => {
+    // Try to fetch from API first (works in development with JSON server)
     fetch("/projects")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("API not available");
+        return res.json();
+      })
       .then((data) => {
         setProjects(data.map(normalizeProject));
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to fetch projects:", err);
-        setIsLoading(false);
+        console.warn("API not available, falling back to public data:", err);
+        // Fallback to public JSON file for production (Vercel)
+        fetch("/data/collections/projects.json")
+          .then((res) => res.json())
+          .then((data) => {
+            setProjects(data.map(normalizeProject));
+            setIsLoading(false);
+          })
+          .catch((fallbackErr) => {
+            console.error("Failed to fetch projects from public data:", fallbackErr);
+            setIsLoading(false);
+          });
       });
   }, []);
 
