@@ -1,16 +1,30 @@
-import * as Yup from "yup";
-import { emailField, strongPasswordField, nameField, roleField } from "./commonFields";
+export const loginSchema = {
+  email: {
+    required: true,
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    message: "Please enter a valid email address",
+  },
+  password: {
+    required: true,
+    minLength: 6,
+    message: "Password must be at least 6 characters",
+  },
+};
 
-// Login schema for SignIn form 
-export const loginSchema = Yup.object({
-  email: emailField,
-  password: strongPasswordField,
-});
-
-// Register schema 
-export const registerSchema = Yup.object({
-  name: nameField,
-  email: emailField,
-  password: strongPasswordField,
-  role: roleField, 
-});
+export const registerSchema = {
+  name: {
+    required: true,
+    minLength: 2,
+    message: "Name must be at least 2 characters",
+  },
+  email: {
+    required: true,
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    message: "Please enter a valid email address",
+  },
+  password: {
+    required: true,
+    minLength: 6,
+    message: "Password must be at least 6 characters",
+  },
+};
