@@ -2,10 +2,10 @@
    ADMIN VETTING QUEUE STYLES
    ========================================== */
 
-/* Teal Header Colors */
+/* Common Green Colors */
 :root {
-  --vetting-teal: #0D9488;
-  --vetting-teal-dark: #0f766e;
+  --vetting-teal: #1db954;
+  --vetting-teal-dark: #1aa34a;
   --vetting-orange: #F97316;
   --vetting-blue: #3B82F6;
   --vetting-bg: #F3F4F6;
@@ -199,7 +199,7 @@
 
 /* Hover Effect: Subtle Shadow and Scale */
 .vetting-card:hover {
-  box-shadow: 0 12px 24px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 12px 24px rgba(29, 185, 84, 0.15);
   transform: translateY(-4px) scale(1.02);
 }
 
@@ -528,7 +528,7 @@
 .notes-textarea:focus {
   outline: none;
   border-color: var(--vetting-teal);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
 }
 
 .notes-textarea::placeholder {
@@ -572,7 +572,7 @@
 
 .btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.3);
 }
 
 .btn-success {
