@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { ToastContext } from "../context/ToastContext";
@@ -13,33 +13,41 @@ export default function SignIn() {
   const [loginValues, setLoginValues] = useState({
     email: "",
     password: "",
+    role: "user",
   });
   const [loginError, setLoginError] = useState("");
+  const cardRef = useRef(null);
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
     setLoginValues((prev) => ({ ...prev, [name]: value }));
-    setLoginError(""); 
+    setLoginError("");
+  };
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     setLoginError("");
 
-    
     const { isValid, errors } = await validateForm(loginSchema, loginValues);
     if (!isValid) {
       const errorMessage = Object.values(errors).join(", ");
       setLoginError(errorMessage);
-      showToast(errorMessage, "warning"); 
-      return; 
+      showToast(errorMessage, "warning");
+      return;
     }
 
-    // Try admin login first, then fall back to user login
-    let result = signInAdmin(loginValues.email, loginValues.password);
-    if (!result.ok) {
-      result = signInUser(loginValues.email, loginValues.password);
-    }
+    const isAdminLogin = loginValues.role === "admin";
+    const loginFn = isAdminLogin ? signInAdmin : signInUser;
+    const result = loginFn(loginValues.email, loginValues.password);
 
     if (!result.ok) {
       setLoginError(result.message);
@@ -48,25 +56,25 @@ export default function SignIn() {
     }
 
     showToast(`Welcome back, ${result.user.name}.`, "success");
-    setLoginValues({ email: "", password: "" });
-    navigate(result.user.isAdmin ? "/admin" : "/user-dashboard");
+    setLoginValues({ email: "", password: "", role: "user" });
+    navigate(isAdminLogin ? "/dashboard" : "/user-dashboard");
   };
 
   if (currentUser) {
-    const accountDestination = currentUser.isAdmin ? "/admin" : "/user-dashboard";
+    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/user-dashboard";
     return (
-      <div className="page account-page">
-        <section className="page-header">
-          <h1>Already signed in</h1>
-          <p>You are signed in as {currentUser.name}.</p>
-        </section>
-        <div className="account-grid">
-          <div className="account-card">
-            <div className="account-actions">
-              <Link to={accountDestination} className="btn btn-primary">
+      <div className="page signin-page">
+        <div className="signin-card-container">
+          <div className="signin-card" ref={cardRef} onMouseMove={handleMouseMove}>
+            <div className="signin-header">
+              <h1>Already signed in</h1>
+              <p>You are signed in as {currentUser.name}.</p>
+            </div>
+            <div className="signin-actions">
+              <Link to={accountDestination} className="btn btn-primary signin-btn">
                 Go to dashboard
               </Link>
-              <Link to="/" className="btn btn-secondary">
+              <Link to="/" className="btn btn-secondary signin-btn">
                 Back home
               </Link>
             </div>
@@ -77,16 +85,15 @@ export default function SignIn() {
   }
 
   return (
-    <div className="page account-page">
-      <section className="page-header">
-        <h1>Sign in</h1>
-        <p>Access your account.</p>
-      </section>
+    <div className="page signin-page">
+      <div className="signin-card-container">
+        <div className="signin-card" ref={cardRef} onMouseMove={handleMouseMove}>
+          <div className="signin-header">
+            <h1>Welcome back</h1>
+            <p>Sign in to your account to continue</p>
+          </div>
 
-      <div className="account-grid account-grid-single">
-        <form className="account-card account-card--narrow" onSubmit={handleLoginSubmit}>
-          <h2>Sign in</h2>
-          <div className="form-grid">
+          <form className="signin-form" onSubmit={handleLoginSubmit}>
             <label className="form-field">
               <span className="form-label">Email</span>
               <input
@@ -129,12 +136,6 @@ export default function SignIn() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
-                      <path
-                        d="M9.9 4.24A10.94 10.94 0 0 1 12 4c5 0 9.27 3.11 11 8-0.53 1.49-1.32 2.82-2.3 3.94M6.09 6.08C4.23 7.27 2.77 9.02 2 12c1.73 4.89 6 8 10 8 1.4 0 2.75-0.3 4-0.86"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
                     </svg>
                   ) : (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -158,20 +159,32 @@ export default function SignIn() {
               </div>
             </label>
 
-          </div>
+            <label className="form-field">
+              <span className="form-label">Account type</span>
+              <select
+                name="role"
+                value={loginValues.role}
+                onChange={handleLoginChange}
+                className="signin-select"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
 
-          {loginError && <p className="form-error">{loginError}</p>}
+            {loginError && <p className="form-error">{loginError}</p>}
 
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primary">
-              Sign in
-            </button>
-          </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary signin-btn">
+                Sign in
+              </button>
+            </div>
 
-          <p className="account-note">
-            Need an account? <Link to="/signup">Create one</Link>
-          </p>
-        </form>
+            <p className="signin-note">
+              Need an account? <Link to="/signup">Create one</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

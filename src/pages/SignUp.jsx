@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { ToastContext } from "../context/ToastContext";
@@ -16,27 +16,35 @@ export default function SignUp() {
     password: "",
   });
   const [signupError, setSignupError] = useState("");
+  const cardRef = useRef(null);
 
   const handleSignupChange = (event) => {
     const { name, value } = event.target;
     setSignupValues((prev) => ({ ...prev, [name]: value }));
-    setSignupError(""); 
+    setSignupError("");
+  };
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   const handleSignupSubmit = async (event) => {
     event.preventDefault();
     setSignupError("");
 
-    
     const { isValid, errors } = await validateForm(registerSchema, signupValues);
     if (!isValid) {
       const errorMessage = Object.values(errors).join(", ");
       setSignupError(errorMessage);
-      showToast(errorMessage, "warning"); 
-      return; 
+      showToast(errorMessage, "warning");
+      return;
     }
 
-  
     const result = await registerAccount(signupValues);
     if (!result.ok) {
       setSignupError(result.message);
@@ -50,20 +58,20 @@ export default function SignUp() {
   };
 
   if (currentUser) {
-    const accountDestination = currentUser.isAdmin ? "/admin" : "/user-dashboard";
+    const accountDestination = currentUser.isAdmin ? "/dashboard" : "/user-dashboard";
     return (
-      <div className="page account-page">
-        <section className="page-header">
-          <h1>Account already active</h1>
-          <p>You are signed in as {currentUser.name}.</p>
-        </section>
-        <div className="account-grid">
-          <div className="account-card">
-            <div className="account-actions">
-              <Link to={accountDestination} className="btn btn-primary">
+      <div className="page signup-page">
+        <div className="signup-card-container">
+          <div className="signup-card" ref={cardRef} onMouseMove={handleMouseMove}>
+            <div className="signup-header">
+              <h1>Account already active</h1>
+              <p>You are signed in as {currentUser.name}.</p>
+            </div>
+            <div className="signup-actions">
+              <Link to={accountDestination} className="btn btn-primary signup-btn">
                 Go to dashboard
               </Link>
-              <Link to="/" className="btn btn-secondary">
+              <Link to="/" className="btn btn-secondary signup-btn">
                 Back home
               </Link>
             </div>
@@ -74,16 +82,15 @@ export default function SignUp() {
   }
 
   return (
-    <div className="page account-page">
-      <section className="page-header">
-        <h1>Create account</h1>
-        <p>Create your user account to get started.</p>
-      </section>
+    <div className="page signup-page">
+      <div className="signup-card-container">
+        <div className="signup-card" ref={cardRef} onMouseMove={handleMouseMove}>
+          <div className="signup-header">
+            <h1>Create account</h1>
+            <p>Sign up to get started with Community Donation Hub</p>
+          </div>
 
-      <div className="account-grid account-grid-single">
-        <form className="account-card account-card--narrow" onSubmit={handleSignupSubmit}>
-          <h2>Sign up</h2>
-          <div className="form-grid">
+          <form className="signup-form" onSubmit={handleSignupSubmit}>
             <label className="form-field">
               <span className="form-label">Full name</span>
               <input
@@ -108,28 +115,71 @@ export default function SignUp() {
 
             <label className="form-field">
               <span className="form-label">Password</span>
-              <input
-                type="password"
-                name="password"
-                value={signupValues.password}
-                onChange={handleSignupChange}
-                placeholder="Create a password"
-              />
+              <div className="password-field">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={signupValues.password}
+                  onChange={handleSignupChange}
+                  placeholder="Create a password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path
+                        d="M3 3l18 18"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10.6 10.6a3 3 0 0 0 4.2 4.2"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path
+                        d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="3"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </label>
-          </div>
 
-          {signupError && <p className="form-error">{signupError}</p>}
+            {signupError && <p className="form-error">{signupError}</p>}
 
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primary">
-              Create account
-            </button>
-          </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary signup-btn">
+                Create account
+              </button>
+            </div>
 
-          <p className="account-note">
-            Already have an account? <Link to="/signin">Sign in</Link>
-          </p>
-        </form>
+            <p className="signup-note">
+              Already have an account? <Link to="/signin">Sign in</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
