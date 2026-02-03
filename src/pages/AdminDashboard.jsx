@@ -365,6 +365,7 @@ export default function AdminDashboard() {
     onConfirmDelete: handleConfirmDelete,
     onCancelDelete: handleCancelDelete,
     getProjectTitle,
+    onOpenAddModal: handleOpenModal,
   };
   const feedbackProps = {
     feedbackList,
@@ -398,7 +399,7 @@ export default function AdminDashboard() {
       <AdminNavbar currentUser={currentUser} onSignOut={handleSignOut} />
 
       {/* Move AdminDashboardHeader OUTSIDE admin-content */}
-      <AdminDashboardHeader role={currentUser.role} onAddProject={handleOpenModal} />
+      <AdminDashboardHeader role={currentUser.role} />
 
       <div className="admin-content">
         <AdminDashboardGrid
