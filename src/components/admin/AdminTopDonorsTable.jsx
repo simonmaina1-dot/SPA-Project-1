@@ -10,47 +10,26 @@ export default function AdminTopDonorsTable({ donorMetrics, formatCurrency }) {
           </p>
         </div>
       </div>
-      <div className="admin-table-container">
-        {donorMetrics.topDonors.length === 0 ? (
-          <p className="admin-empty">No donor data yet.</p>
-        ) : (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Donor</th>
-                <th>Total Donated</th>
-                <th>Donations</th>
-                <th>Last Donation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {donorMetrics.topDonors.map((donor) => (
-                <tr key={donor.email}>
-                  <td className="admin-table-title">
-                    <div>
-                      <p>{donor.name}</p>
-                      <span className="admin-row-meta">{donor.email}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <strong>{formatCurrency(donor.totalAmount)}</strong>
-                  </td>
-                  <td>
-                    {donor.donationCount > 1 ? (
-                      <span className="admin-pill">{donor.donationCount}x</span>
-                    ) : (
-                      donor.donationCount
-                    )}
-                  </td>
-                  <td className="admin-row-meta">
-                    {new Date(donor.lastDonation).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      {donorMetrics.topDonors.length === 0 ? (
+        <p className="admin-empty">No donor data yet.</p>
+      ) : (
+        <div className="donor-list">
+          {donorMetrics.topDonors.map((donor, index) => (
+            <div key={donor.email} className="admin-donor-row">
+              <div className="admin-donor-info">
+                <span className="admin-donor-name">
+                  <span style={{ marginRight: '8px', color: '#1db954' }}>#{index + 1}</span>
+                  {donor.name}
+                </span>
+                <span className="admin-donor-count">{donor.email}</span>
+              </div>
+              <span className="admin-donor-amount">
+                {formatCurrency(donor.totalAmount)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </article>
   );
 }

@@ -14,24 +14,32 @@ export default function AdminFeedbackList({
           </p>
         </div>
       </div>
-      <div className="admin-feedback-list">
+      <div className="admin-feedback-grid">
         {feedbackList.length === 0 ? (
-          <p className="admin-empty">No feedback received yet.</p>
+          <p className="admin-empty col-span-2">No feedback received yet.</p>
         ) : (
-          feedbackList.map((feedback) => (
-            <div key={feedback.id} className="admin-feedback-card">
+          feedbackList.map((feedback, index) => (
+            <div 
+              key={feedback.id} 
+              className={`admin-feedback-item animation-scroll-up ${
+                feedback.status === 'reviewed' ? 'admin-feedback-reviewed' : ''
+              }`}
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
               <div className="admin-feedback-header">
-                <div>
-                  <p className="admin-row-title">{feedback.name}</p>
-                  <span className="admin-row-meta">{feedback.email}</span>
+                <div className="admin-feedback-user">
+                  <span className="admin-feedback-name">{feedback.name}</span>
+                  <span className="admin-feedback-email">{feedback.email}</span>
                 </div>
-                <span className="admin-row-meta">
+                <span className="admin-feedback-date">
                   {new Date(feedback.createdAt).toLocaleDateString()}
                 </span>
               </div>
-              <p className="admin-feedback-message">{feedback.message}</p>
+              <div className="admin-feedback-content">
+                <p>{feedback.message}</p>
+              </div>
               <div className="admin-feedback-actions">
-                {feedback.status === "new" && (
+                {feedback.status !== "reviewed" && (
                   <button
                     type="button"
                     className="btn btn-secondary btn-small"

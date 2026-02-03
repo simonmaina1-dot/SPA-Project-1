@@ -13,8 +13,6 @@ export default function AdminDashboardGrid({
   metrics,
   reviewList,
   donorMetrics,
-  onApprove,
-  onFlag,
   projectManagementProps,
   feedbackProps,
   vettingProps,
@@ -30,15 +28,13 @@ export default function AdminDashboardGrid({
 
       <AdminRecentActivity projects={projects} formatCurrency={formatCurrency} />
 
-      <AdminProjectManagement {...projectManagementProps} />
-
       <AdminInsightsGrid
         metrics={metrics}
         reviewList={reviewList}
         formatCurrency={formatCurrency}
-        onApprove={onApprove}
-        onFlag={onFlag}
       />
+
+      <AdminProjectManagement {...projectManagementProps} />
 
       <AdminVettingQueue {...vettingProps} />
 
