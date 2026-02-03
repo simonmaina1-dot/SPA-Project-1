@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const sourceLabels = {
   card: "Card",
@@ -19,17 +19,9 @@ const formatDate = (value) => {
   });
 };
 
-const toTitleCase = (value) => {
-  if (!value) return "General";
-  return value
-    .toString()
-    .replace(/[_-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-};
-
 export default function AdminFundTracking({ projects, donations, formatCurrency }) {
+  const [selectedSource, setSelectedSource] = useState(null);
+
   const usageEntries = useMemo(
     () =>
       projects.flatMap((project) =>
@@ -84,6 +76,14 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
     return Object.values(sourceMap).sort((a, b) => b.total - a.total);
   }, [donations]);
 
+  const filteredDonations = useMemo(() => {
+    if (!selectedSource) return [];
+    return donations
+      .filter((d) => (d.source || "other") === selectedSource)
+      .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
+      .slice(0, 10);
+  }, [donations, selectedSource]);
+
   const recentUsage = useMemo(
     () =>
       [...usageEntries]
@@ -93,10 +93,10 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
   );
 
   return (
-    <article className="admin-card admin-card-wide admin-fund-tracking">
+    <article className="admin-card admin-card-wide">
       <div className="admin-section-header">
         <div>
-          <h3>Fund utilization</h3>
+          <h3>Fund Utilization</h3>
           <p className="admin-card-subtitle">
             Track donation sources and project spending updates from owners.
           </p>
@@ -104,29 +104,29 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
       </div>
 
       <div className="admin-fund-summary">
-        <div className="admin-stat">
-          <span className="admin-stat-value">
+        <div className="admin-fund-item">
+          <div className="admin-fund-value">
             {formatCurrency(usageSummary.totalRaised)}
-          </span>
-          <span className="admin-stat-label">Total raised</span>
+          </div>
+          <div className="admin-fund-label">Total Raised</div>
         </div>
-        <div className="admin-stat">
-          <span className="admin-stat-value">
+        <div className="admin-fund-item">
+          <div className="admin-fund-value">
             {formatCurrency(usageSummary.totalUsed)}
-          </span>
-          <span className="admin-stat-label">Total reported usage</span>
+          </div>
+          <div className="admin-fund-label">Total Used</div>
         </div>
-        <div className="admin-stat">
-          <span className="admin-stat-value">
+        <div className="admin-fund-item">
+          <div className="admin-fund-value">
             {formatCurrency(usageSummary.remaining)}
-          </span>
-          <span className="admin-stat-label">Remaining balance</span>
+          </div>
+          <div className="admin-fund-label">Remaining</div>
         </div>
       </div>
 
       <div className="admin-fund-grid">
         <div className="admin-fund-panel">
-          <h4>Project utilization</h4>
+          <h4>Project Utilization</h4>
           <div className="admin-table-container">
             <table className="admin-table">
               <thead>
@@ -152,30 +152,69 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
         </div>
 
         <div className="admin-fund-panel">
-          <h4>Donation sources</h4>
-          <div className="admin-source-grid">
+          <h4>Donation Sources</h4>
+          <div className="admin-source-buttons">
             {sourceSummary.length ? (
               sourceSummary.map((source) => (
-                <div key={source.source} className="admin-source-row">
-                  <div>
-                    <p className="admin-row-title">
-                      {sourceLabels[source.source] || "Other"}
-                    </p>
-                    <p className="admin-row-meta">{source.count} donations</p>
-                  </div>
-                  <span className="admin-row-amount">
+                <button
+                  key={source.source}
+                  type="button"
+                  className={`admin-source-btn ${selectedSource === source.source ? "active" : ""}`}
+                  onClick={() => setSelectedSource(
+                    selectedSource === source.source ? null : source.source
+                  )}
+                >
+                  <span className="admin-source-btn-label">
+                    {sourceLabels[source.source] || "Other"}
+                  </span>
+                  <span className="admin-source-btn-count">
+                    {source.count} donations
+                  </span>
+                  <span className="admin-source-btn-amount">
                     {formatCurrency(source.total)}
                   </span>
-                </div>
+                </button>
               ))
             ) : (
               <p className="admin-empty">No donation sources recorded yet.</p>
             )}
           </div>
 
-          <div className="admin-divider" />
+          {selectedSource && (
+            <div className="admin-donor-list">
+              <h5>
+                {sourceLabels[selectedSource] || "Other"} Donors
+                <button
+                  type="button"
+                  className="admin-close-btn"
+                  onClick={() => setSelectedSource(null)}
+                >
+                  ×
+                </button>
+              </h5>
+              {filteredDonations.length ? (
+                filteredDonations.map((donation) => (
+                  <div key={donation.id} className="admin-donor-row">
+                    <div>
+                      <p className="admin-row-title">
+                        {donation.donorName || "Anonymous"}
+                      </p>
+                      <p className="admin-row-meta">
+                        {formatDate(donation.createdAt)}
+                      </p>
+                    </div>
+                    <span className="admin-row-amount">
+                      {formatCurrency(donation.amount)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p className="admin-empty">No donations from this source.</p>
+              )}
+            </div>
+          )}
 
-          <h4>Recent usage reports</h4>
+          <h4 className="mt-3">Recent Usage Reports</h4>
           <div className="admin-source-list">
             {recentUsage.length ? (
               recentUsage.map((entry) => (
@@ -183,7 +222,7 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
                   <div>
                     <p className="admin-row-title">{entry.projectTitle}</p>
                     <p className="admin-row-meta">
-                      {formatDate(entry.date)} · {toTitleCase(entry.category)}
+                      {formatDate(entry.date)} · {entry.category || "General"}
                     </p>
                   </div>
                   <span className="admin-row-amount">
