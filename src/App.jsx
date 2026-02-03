@@ -1,12 +1,12 @@
 import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
-import Navbar from "./components/common/Navbar";
-import Toast from "./components/common/Toast";
+import Navbar from "./components/Navbar/Navbar";
+import Toast from "./components/Toast/Toast";
 import Home from "./pages/Home";
 import AddProject from "./pages/AddProject";
 import ProjectDetails from "./pages/ProjectDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import Donate from "./pages/Donate";
-import UserDashboard from "./pages/UserDashboard";
+import UserDashboard from "./pages/UserDashboard/UserDashboard";
 import SubmitProject from "./pages/SubmitProject";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
