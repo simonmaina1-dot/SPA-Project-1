@@ -5,7 +5,7 @@
 .toast-container,
 .toast-stack {
   position: fixed;
-  top: var(--spacing-lg);
+  bottom: var(--spacing-lg);
   right: var(--spacing-lg);
   z-index: 3000;
   display: flex;
