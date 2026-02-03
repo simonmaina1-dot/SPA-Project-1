@@ -213,7 +213,7 @@
       "goal": 12133132,
       "currentAmount": 0,
       "donorCount": 0,
-      "status": "review",
+      "status": "active",
       "createdAt": "2026-01-30T08:54:28.694Z",
       "createdBy": {
         "id": "u-1769761817554",
@@ -225,7 +225,7 @@
       "ownerEmail": "mainawaititu2026@gmail.com",
       "ownerPhone": "+254723800951",
       "identityDocument": "411144",
-      "verificationStatus": "under_review",
+      "verificationStatus": "approved",
       "verificationNotes": "",
       "criteriaMet": {
         "communityImpact": true,
