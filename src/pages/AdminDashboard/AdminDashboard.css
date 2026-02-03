@@ -172,10 +172,27 @@
   grid-column: span 2;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   border-color: #e5e7eb;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-card-snapshot .admin-stats {
+  flex: 1;
+  align-content: center;
 }
 
 .admin-card-activity {
   grid-column: span 2;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-card-activity .admin-timeline {
+  flex: 1;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .admin-card-insight {
@@ -381,8 +398,18 @@
 .admin-table th,
 .admin-table td {
   padding: 14px 16px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table th:first-child,
+.admin-table td:first-child {
+  text-align: left;
+}
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+  text-align: right;
 }
 
 .admin-table th {
@@ -424,6 +451,7 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 /* ==========================================
