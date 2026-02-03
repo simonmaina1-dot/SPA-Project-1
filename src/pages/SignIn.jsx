@@ -35,10 +35,11 @@ export default function SignIn() {
       return; 
     }
 
-    
-    const isAdminLogin = loginValues.role === "admin";
-    const loginFn = isAdminLogin ? signInAdmin : signInUser;
-    const result = loginFn(loginValues.email, loginValues.password);
+    // Try admin login first, then fall back to user login
+    let result = signInAdmin(loginValues.email, loginValues.password);
+    if (!result.ok) {
+      result = signInUser(loginValues.email, loginValues.password);
+    }
 
     if (!result.ok) {
       setLoginError(result.message);
@@ -157,15 +158,6 @@ export default function SignIn() {
               </div>
             </label>
 
-            <label className="form-field">
-              <span className="form-label">Account type</span>
-              <select
-                name="role"
-                value={loginValues.role}
-                onChange={handleLoginChange}
-                placeholder="Enter your password"
-              />
-            </label>
           </div>
 
           {loginError && <p className="form-error">{loginError}</p>}

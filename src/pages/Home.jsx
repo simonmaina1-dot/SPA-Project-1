@@ -35,6 +35,7 @@ export default function Home() {
   const location = useLocation();
   const aboutRef = useRef(null);
   const statsRef = useRef(null);
+  const welcomeShownRef = useRef(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -74,7 +75,8 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (visibleProjects.length > 0) {
+    if (visibleProjects.length > 0 && !welcomeShownRef.current) {
+      welcomeShownRef.current = true;
       showToast(
         `Welcome! ${visibleProjects.length} projects available`,
         "info",
