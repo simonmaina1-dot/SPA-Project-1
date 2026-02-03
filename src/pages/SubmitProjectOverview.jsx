@@ -5,6 +5,7 @@ import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import { defaultCriteriaMet, projectCriteria } from "../data/projectCriteria";
 import Modal from "../components/Modal/Modal";
+import ProjectDetailsModal from "../components/ProjectDetailsModal/ProjectDetailsModal";
 import "./SubmitProject.css";
 
 // Step configuration
@@ -588,6 +589,7 @@ export default function SubmitProjectOverview() {
   const [activeStep, setActiveStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showProjectDetailsModal, setShowProjectDetailsModal] = useState(false);
   const [formValues, setFormValues] = useState(() =>
     buildInitialState(currentUser)
   );
@@ -627,6 +629,11 @@ export default function SubmitProjectOverview() {
   };
 
   const handleCardClick = (step) => {
+    // Use ProjectDetailsModal for step 2
+    if (step === 2) {
+      setShowProjectDetailsModal(true);
+      return;
+    }
     // Can only open step 4 if step 3 is complete
     if (step === 4 && !completedSteps[3]) {
       showToast("Please complete step 3 first.", "warning");
@@ -638,6 +645,31 @@ export default function SubmitProjectOverview() {
 
   const handleModalClose = () => {
     setShowModal(false);
+  };
+
+  const handleProjectDetailsModalClose = () => {
+    setShowProjectDetailsModal(false);
+  };
+
+  const handleProjectDetailsSave = (data) => {
+    // Update form values with project details
+    setFormValues((prev) => ({
+      ...prev,
+      title: data.title,
+      category: data.category,
+      goal: data.targetAmount,
+      description: data.description,
+      webUrl: data.webUrl,
+    }));
+
+    // Mark step 2 as complete
+    setCompletedSteps((prev) => ({
+      ...prev,
+      [2]: true,
+    }));
+
+    showToast("Project details saved successfully!", "success");
+    handleProjectDetailsModalClose();
   };
 
   const handleSubmit = () => {
@@ -788,6 +820,21 @@ export default function SubmitProjectOverview() {
           )}
         </div>
       </Modal>
+
+      {/* Project Details Modal for Step 2 */}
+      <ProjectDetailsModal
+        isOpen={showProjectDetailsModal}
+        onClose={handleProjectDetailsModalClose}
+        onSave={handleProjectDetailsSave}
+        initialData={{
+          title: formValues.title,
+          category: formValues.category,
+          goal: formValues.goal,
+          description: formValues.description,
+          webUrl: formValues.webUrl,
+        }}
+        isEdit={completedSteps[2]}
+      />
     </div>
   );
 }

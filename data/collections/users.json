@@ -138,5 +138,12 @@
     "email": "iankip5@gmail.com",
     "password": "Ian@1234",
     "role": "user"
+  },
+  {
+    "id": "u-1770109022125",
+    "name": "kipp opp",
+    "email": "pvega@gmail.com",
+    "password": "Denis-2026",
+    "role": "user"
   }
 ]

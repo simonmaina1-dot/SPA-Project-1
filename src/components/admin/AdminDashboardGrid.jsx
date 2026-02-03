@@ -2,21 +2,19 @@ import AdminSnapshotCard from "./AdminSnapshotCard";
 import AdminRecentActivity from "./AdminRecentActivity";
 import AdminProjectManagement from "./AdminProjectManagement";
 import AdminInsightsGrid from "./AdminInsightsGrid";
-import AdminTopDonorsTable from "./AdminTopDonorsTable";
 import AdminFeedbackList from "./AdminFeedbackList";
 import AdminVettingQueue from "./AdminVettingQueue";
-import AdminFundTracking from "./AdminFundTracking";
+import FundUtilizationSection from "./FundUtilizationSection";
 
 export default function AdminDashboardGrid({
   projects,
+  donations,
   formatCurrency,
   metrics,
   reviewList,
-  donorMetrics,
   projectManagementProps,
   feedbackProps,
   vettingProps,
-  fundTrackingProps,
 }) {
   return (
     <section className="admin-grid">
@@ -38,12 +36,13 @@ export default function AdminDashboardGrid({
 
       <AdminVettingQueue {...vettingProps} />
 
-      <AdminFundTracking {...fundTrackingProps} />
-
-      <AdminTopDonorsTable
-        donorMetrics={donorMetrics}
-        formatCurrency={formatCurrency}
-      />
+      <div className="admin-grid-full-width">
+        <FundUtilizationSection
+          projects={projects}
+          donations={donations}
+          formatCurrency={formatCurrency}
+        />
+      </div>
 
       <AdminFeedbackList {...feedbackProps} />
     </section>

@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { emailField, strongPasswordField, nameField, roleField } from "./commonFields";
+import { emailField, strongPasswordField, nameField } from "./commonFields";
 
 // Login schema for SignIn form 
 export const loginSchema = Yup.object({
@@ -11,6 +11,5 @@ export const loginSchema = Yup.object({
 export const registerSchema = Yup.object({
   name: nameField,
   email: emailField,
-  password: strongPasswordField,
-  role: roleField, 
+  password: strongPasswordField, 
 });

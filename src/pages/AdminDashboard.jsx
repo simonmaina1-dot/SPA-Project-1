@@ -377,11 +377,7 @@ export default function AdminDashboard() {
     updateProject,
     formatCurrency,
     showToast,
-  };
-  const fundTrackingProps = {
-    projects,
-    donations,
-    formatCurrency,
+    onAddProject: handleOpenModal,
   };
 
  return (
@@ -403,6 +399,7 @@ export default function AdminDashboard() {
       <div className="admin-content">
         <AdminDashboardGrid
           projects={projects}
+          donations={donations}
           formatCurrency={formatCurrency}
           metrics={metrics}
           reviewList={reviewList}
@@ -412,7 +409,6 @@ export default function AdminDashboard() {
           projectManagementProps={projectManagementProps}
           feedbackProps={feedbackProps}
           vettingProps={vettingProps}
-          fundTrackingProps={fundTrackingProps}
         />
       </div>
       

@@ -21,6 +21,7 @@ export default function AdminVettingQueue({
   projects,
   updateProject,
   showToast,
+  onAddProject,
 }) {
   const { queue, getProjectDraft, toggleCriteria, updateDraft } =
     useVettingQueue(projects);
@@ -268,6 +269,7 @@ export default function AdminVettingQueue({
         onClose={handleCloseModal}
         title={selectedProject?.title || "Project Details"}
         hideHeader={true}
+        onAddProject={onAddProject}
       >
         {selectedProject && (
           <div className="vetting-modal-content">
