@@ -1,5 +1,6 @@
 import { createContext, useCallback, useMemo, useState, useEffect } from "react";
 import { defaultCriteriaMet } from "../data/projectCriteria";
+import { seedProjects } from "../data/seedData";
 
 // Create the ProjectsContext
 export const ProjectsContext = createContext(null);
@@ -43,8 +44,8 @@ const normalizeProject = (project) => {
 };
 
 export function ProjectsProvider({ children }) {
-  // State to hold projects fetched from JSON Server
-  const [projects, setProjects] = useState([]);
+  // State to hold projects - initialize with seed data for immediate display
+  const [projects, setProjects] = useState(seedProjects.map(normalizeProject));
   // State to track loading status
   const [isLoading, setIsLoading] = useState(true);
 
@@ -73,7 +74,8 @@ export function ProjectsProvider({ children }) {
             setIsLoading(false);
           })
           .catch((fallbackErr) => {
-            console.error("Failed to fetch projects from public data:", fallbackErr);
+            console.warn("Using seed projects:", fallbackErr);
+            setProjects(seedProjects.map(normalizeProject));
             setIsLoading(false);
           });
       });
