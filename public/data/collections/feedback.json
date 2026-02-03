@@ -2,7 +2,7 @@
   {
     "id": "f-1001",
     "name": "Jane Mwangi",
-    "email": "jane.mwangi@gmail.com",
+    "email": "jane.mwangi@email.com",
     "message": "Love the platform! Would be great to have email notifications for project updates.",
     "createdAt": "2026-01-25T10:30:00Z",
     "status": "new"
@@ -10,7 +10,7 @@
   {
     "id": "f-1002",
     "name": "Peter Ochieng",
-    "email": "peter.ochieng@hotmail.com",
+    "email": "peter.o@email.com",
     "message": "The donation process is smooth. Can we add M-Pesa integration?",
     "createdAt": "2026-01-20T14:15:00Z",
     "status": "reviewed"
@@ -18,7 +18,7 @@
   {
     "id": "f-1003",
     "name": "Grace Achieng",
-    "email": "grace.achieng@icloud.com",
+    "email": "grace.achieng@email.com",
     "message": "I've donated to multiple projects and love how transparent the tracking is. Keep it up!",
     "createdAt": "2025-12-15T09:45:00Z",
     "status": "reviewed"
@@ -26,7 +26,7 @@
   {
     "id": "f-1004",
     "name": "James Kimani",
-    "email": "james.kimani@outlook.com",
+    "email": "james.kimani@email.com",
     "message": "As a regular donor, I'd appreciate a donor dashboard to see all my contributions in one place.",
     "createdAt": "2025-11-28T16:20:00Z",
     "status": "new"
@@ -42,7 +42,7 @@
   {
     "id": "f-1006",
     "name": "Mary Wanjiku",
-    "email": "mary.wanjiku@proton.me",
+    "email": "mary.wanjiku@email.com",
     "message": "Can you add a feature to set up recurring monthly donations? Would make it easier to budget.",
     "createdAt": "2025-09-05T08:15:00Z",
     "status": "new"
@@ -50,7 +50,7 @@
   {
     "id": "f-1007",
     "name": "Andrew Kiptoo",
-    "email": "andrew.kiptoo@aol.com",
+    "email": "andrew.kiptoo@email.com",
     "message": "The solar garden project is exactly what our neighborhood needs. Thank you for facilitating this!",
     "createdAt": "2025-07-22T14:50:00Z",
     "status": "reviewed"
@@ -58,7 +58,7 @@
   {
     "id": "f-1008",
     "name": "Dr. Sarah Okonkwo",
-    "email": "sarah.okonkwo@mail.com",
+    "email": "sarah.okonkwo@email.com",
     "message": "As a healthcare professional, I'm thrilled to support the Mobile Health Clinic. Would love to volunteer too!",
     "createdAt": "2025-06-10T10:00:00Z",
     "status": "reviewed"
@@ -66,7 +66,7 @@
   {
     "id": "f-1009",
     "name": "George Odhiambo",
-    "email": "george.odhiambo@gmail.com",
+    "email": "george.odhiambo@email.com",
     "message": "The website loads fast and works well on my phone. Very user-friendly!",
     "createdAt": "2025-04-28T15:35:00Z",
     "status": "new"
@@ -74,7 +74,7 @@
   {
     "id": "f-1010",
     "name": "Margaret Kemunto",
-    "email": "margaret.kemunto@aol.com",
+    "email": "margaret.kemunto@email.com",
     "message": "It would be nice to have project updates sent via SMS for those without reliable internet.",
     "createdAt": "2025-03-15T12:20:00Z",
     "status": "new"
@@ -82,7 +82,7 @@
   {
     "id": "f-1011",
     "name": "Alice Mwikali",
-    "email": "alice.mwikali@yahoo.com",
+    "email": "alice.mwikali@email.com",
     "message": "The Arts Collective is changing lives! I've seen the kids in my neighborhood flourish because of it.",
     "createdAt": "2025-02-02T09:10:00Z",
     "status": "reviewed"
@@ -90,7 +90,7 @@
   {
     "id": "f-1012",
     "name": "Quincy Mwangi",
-    "email": "quincy.mwangi@gmail.com",
+    "email": "quincy.mwangi@email.com",
     "message": "Can we get receipts for tax deduction purposes? That would help encourage more donations.",
     "createdAt": "2024-12-20T17:45:00Z",
     "status": "new"
@@ -98,7 +98,7 @@
   {
     "id": "f-1013",
     "name": "Yusuf Mwangi",
-    "email": "yusuf.mwangi@mail.com",
+    "email": "yusuf.mwangi@email.com",
     "message": "The clean water station project is crucial for our area. Thank you for making this possible!",
     "createdAt": "2024-11-08T08:30:00Z",
     "status": "reviewed"
@@ -106,7 +106,7 @@
   {
     "id": "f-1014",
     "name": "Richard Ouma",
-    "email": "richard.ouma@yahoo.com",
+    "email": "richard.ouma@email.com",
     "message": "My son plays in the youth soccer program. The equipment drive has been a blessing. Asante sana!",
     "createdAt": "2024-09-25T14:00:00Z",
     "status": "reviewed"
@@ -114,55 +114,63 @@
   {
     "id": "f-1015",
     "name": "Faith Muthoni",
-    "email": "faith.muthoni@mail.com",
+    "email": "faith.muthoni@email.com",
     "message": "I'd love to see more education-focused projects. The Learning Lab is amazing!",
     "createdAt": "2024-08-12T11:25:00Z",
     "status": "new"
   },
   {
     "id": "f-1016",
+    "name": "Daniel Njoroge",
+    "email": "daniel.njoroge@email.com",
+    "message": "Great platform but the search function could be improved. Hard to find specific projects.",
+    "createdAt": "2024-07-01T16:40:00Z",
+    "status": "new"
+  },
+  {
+    "id": "f-1017",
     "name": "Lucy Wambui",
-    "email": "lucy.wambui@proton.me",
+    "email": "lucy.wambui@email.com",
     "message": "The progress bars on each project are motivating! Love seeing how close we are to goals.",
     "createdAt": "2024-05-18T10:05:00Z",
     "status": "reviewed"
   },
   {
-    "id": "f-1017",
+    "id": "f-1018",
     "name": "Samuel Karanja",
-    "email": "samuel.karanja@yahoo.com",
+    "email": "samuel.karanja@email.com",
     "message": "Consider adding a leaderboard for top donors. It might encourage friendly competition!",
     "createdAt": "2024-04-05T13:50:00Z",
-    "status": "reviewed"
+    "status": "new"
   },
   {
-    "id": "f-1018",
+    "id": "f-1019",
     "name": "Agnes Chebet",
-    "email": "agnes.chebet@mail.com",
+    "email": "agnes.chebet@email.com",
     "message": "The food pantry fridge has helped so many families in our neighborhood. God bless you all.",
     "createdAt": "2024-03-22T09:15:00Z",
     "status": "reviewed"
   },
   {
-    "id": "f-1019",
+    "id": "f-1020",
     "name": "Victor Simiyu",
-    "email": "victor.simiyu@outlook.com",
+    "email": "victor.simiyu@email.com",
     "message": "Would be great to have WhatsApp sharing buttons for each project to spread the word easier.",
     "createdAt": "2024-02-10T15:30:00Z",
     "status": "new"
   },
   {
-    "id": "f-1020",
+    "id": "f-1021",
     "name": "Nancy Wangari",
-    "email": "nancy.wangari@mail.com",
+    "email": "nancy.wangari@email.com",
     "message": "The tree planting initiative is wonderful. Our streets are getting greener every month!",
     "createdAt": "2024-01-28T11:00:00Z",
     "status": "reviewed"
   },
   {
-    "id": "f-1021",
+    "id": "f-1022",
     "name": "Joseph Wekesa",
-    "email": "joseph.wekesa@yahoo.com",
+    "email": "joseph.wekesa@email.com",
     "message": "Please add more payment options. Not everyone has a card - M-Pesa would reach more Kenyans.",
     "createdAt": "2024-01-15T08:20:00Z",
     "status": "new"

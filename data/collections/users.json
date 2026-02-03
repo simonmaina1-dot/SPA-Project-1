@@ -1,30 +1,142 @@
 [
   {
-    "id": "u-1769761817554",
-    "name": "simon waititu maina",
-    "email": "mainawaititu2026@gmail.com",
-    "password": "simon-2026",
+    "id": "u-1769794093622-1790",
+    "name": "Alice Mwikali",
+    "email": "alice.mwikali@yahoo.com",
+    "password": "LDiENY53WJqv",
     "role": "user"
   },
   {
-    "id": "u-1769801487054",
-    "name": "chris brian",
-    "email": "cronos@gmail.com",
-    "password": "denis-2026",
+    "id": "u-1769794093621-3622",
+    "name": "Andrew Kiptoo",
+    "email": "andrew.kiptoo@aol.com",
+    "password": "7as!#4pF!#7$",
     "role": "user"
   },
   {
-    "id": "u-1769845604431",
-    "name": "kipp opp",
-    "email": "hilla@gmail.com",
-    "password": "denis-2026",
+    "id": "u-1769794093621-6520",
+    "name": "Dr. Sarah Okonkwo",
+    "email": "sarah.okonkwo@mail.com",
+    "password": "F3!tdCui5Qgi",
     "role": "user"
   },
   {
-    "id": "u-1770033309856",
-    "name": "text",
-    "email": "ypvega@gmail.com",
-    "password": "denis-2026",
+    "id": "u-1769794093622-1732",
+    "name": "Faith Muthoni",
+    "email": "faith.muthoni@mail.com",
+    "password": "KvKURvswFGQ3",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093621-3563",
+    "name": "Grace Achieng",
+    "email": "grace.achieng@icloud.com",
+    "password": "D6aZ3SfTJ8aY",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093621-9754",
+    "name": "James Kimani",
+    "email": "james.kimani@outlook.com",
+    "password": "RNq4#Kk&@6yq",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-1196",
+    "name": "John Mutua",
+    "email": "john.mutua@aol.com",
+    "password": "hRSR$QHsWZ3c",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-845",
+    "name": "Joseph Wekesa",
+    "email": "joseph.wekesa@yahoo.com",
+    "password": "tn2Hd6NzjGst",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-2732",
+    "name": "Lucy Wambui",
+    "email": "lucy.wambui@proton.me",
+    "password": "gCDa7C6m*sYj",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093621-6253",
+    "name": "Margaret Kemunto",
+    "email": "margaret.kemunto@aol.com",
+    "password": "f5r5oH7nQTbx",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093621-2048",
+    "name": "Mary Wanjiku",
+    "email": "mary.wanjiku@proton.me",
+    "password": "rD@uuKmFqbM*",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-6848",
+    "name": "Nancy Wangari",
+    "email": "nancy.wangari@mail.com",
+    "password": "mxyZwFmDnL4s",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093621-5649",
+    "name": "Peter Ochieng",
+    "email": "peter.ochieng@hotmail.com",
+    "password": "Kw$M*h&XBjRw",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-3476",
+    "name": "Richard Ouma",
+    "email": "richard.ouma@yahoo.com",
+    "password": "eqL3htkx62Zq",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-2580",
+    "name": "Samuel Karanja",
+    "email": "samuel.karanja@yahoo.com",
+    "password": "K9K5hRCmS5!A",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-6493",
+    "name": "Sarah Njeri",
+    "email": "sarah.njeri@aol.com",
+    "password": "36HuCixa5j4Y",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093622-3936",
+    "name": "Victor Simiyu",
+    "email": "victor.simiyu@outlook.com",
+    "password": "hRxobv3d9Ghz",
+    "role": "user"
+  },
+  {
+    "id": "u-1769794093621-6455",
+    "name": "Yusuf Mwangi",
+    "email": "yusuf.mwangi@mail.com",
+    "password": "zW^QmC!96h!m",
+    "role": "user"
+  },
+  {
+    "id": "u-1769785786446",
+    "name": "ryy",
+    "email": "iankip@gmail.com",
+    "password": "Qwerty33",
+    "role": "user"
+  },
+  {
+    "id": "u-1769787400680",
+    "name": "ian koech",
+    "email": "iankip5@gmail.com",
+    "password": "Ian@1234",
     "role": "user"
   }
 ]
