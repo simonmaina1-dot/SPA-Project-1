@@ -4,7 +4,7 @@ import useProjects from "../hooks/useProjects";
 import useDonations from "../hooks/useDonations";
 import useForm from "../hooks/useForm";
 import { ToastContext } from "../context/ToastContext";
-import Modal from "../components/common/Modal";
+import Modal from "../components/Modal/Modal";
 
 
 const initialValues = {

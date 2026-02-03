@@ -6,7 +6,7 @@ import useProjects from "../hooks/useProjects";
 import useAuth from "../hooks/useAuth";
 
 import { ToastContext } from "../context/ToastContext";
-import Modal from "../components/common/Modal";
+import Modal from "../components/Modal/Modal";
 
 import { defaultCriteriaMet } from "../data/projectCriteria";
 import { addProjectSchema } from "../validations/addProjectSchema";
