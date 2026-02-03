@@ -7,8 +7,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
-  background: linear-gradient(135deg, rgba(29, 185, 84, 0.85) 0%, rgba(29, 185, 84, 0.7) 100%);
-  border-bottom: 1px solid rgba(29, 185, 84, 0.9);
+  background: linear-gradient(135deg, #1db954 0%, #1aa34a 100%);
+  border-bottom: 1px solid #169c46;
   position: sticky;
   top: 0;
   z-index: 1000;
