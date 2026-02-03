@@ -256,7 +256,6 @@
 /* Feedback Section */
 .feedback-section {
   padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-2xl);
-  background: var(--color-bg);
 }
 
 .feedback-section .admin-card {

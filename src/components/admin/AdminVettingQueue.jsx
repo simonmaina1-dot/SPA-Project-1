@@ -294,29 +294,71 @@ export default function AdminVettingQueue({
             <div className="modal-section">
               <h4 className="modal-section-title">Identity Document</h4>
               {selectedProject.identityDocument ? (
-                <div className="document-row">
-                  <a
-                    href={selectedProject.identityDocument}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="document-link"
-                  >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1="16" y1="13" x2="8" y2="13" />
-                      <line x1="16" y1="17" x2="8" y2="17" />
-                      <polyline points="10 9 9 9 8 9" />
-                    </svg>
-                    View Document
-                  </a>
+                <div className="document-display">
+                  {selectedProject.identityDocument.startsWith("data:image") ? (
+                    <div className="document-image-preview">
+                      <img
+                        src={selectedProject.identityDocument}
+                        alt="Identity document"
+                        className="document-preview-img"
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => {
+                          const win = window.open();
+                          win.document.write(`<img src="${selectedProject.identityDocument}" style="max-width:100%;"/>`);
+                        }}
+                      >
+                        Open Full Size
+                      </button>
+                    </div>
+                  ) : selectedProject.identityDocument.startsWith("data:application/pdf") ? (
+                    <div className="document-pdf-preview">
+                      <div className="pdf-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        <span>{selectedProject.identityDocumentFileName || "PDF Document"}</span>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => {
+                          const win = window.open();
+                          win.document.write(`<embed src="${selectedProject.identityDocument}" type="application/pdf" width="100%" height="100%"/>`);
+                        }}
+                      >
+                        View PDF
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="document-row">
+                      <a
+                        href={selectedProject.identityDocument}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="document-link"
+                      >
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                          <line x1="16" y1="13" x2="8" y2="13" />
+                          <line x1="16" y1="17" x2="8" y2="17" />
+                          <polyline points="10 9 9 9 8 9" />
+                        </svg>
+                        View Document
+                      </a>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <p className="no-document">No identity document provided</p>
