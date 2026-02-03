@@ -179,6 +179,104 @@
   background: var(--color-bg);
 }
 
+/* Document upload area */
+.document-upload-area {
+  margin-bottom: var(--spacing-lg);
+}
+
+.document-upload-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  padding: var(--spacing-xl);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text-secondary);
+}
+
+.document-upload-btn:hover {
+  border-color: var(--color-primary);
+  background: rgba(29, 185, 84, 0.05);
+  color: var(--color-primary);
+}
+
+.document-upload-btn svg {
+  opacity: 0.6;
+}
+
+.document-upload-btn:hover svg {
+  opacity: 1;
+}
+
+.document-upload-btn span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.document-upload-btn .upload-hint {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.document-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  background: rgba(29, 185, 84, 0.05);
+}
+
+.document-preview-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: var(--radius-md);
+  object-fit: contain;
+}
+
+.document-preview-file {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-primary);
+}
+
+.document-preview-file svg {
+  color: var(--color-primary);
+}
+
+.document-preview-file span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
 /* Responsive submit project page */
 @media (max-width: 767.98px) {
   .submit-project-page {

@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProjects from "../hooks/useProjects";
@@ -13,6 +13,8 @@ import {
   projectSchema,
 } from "../validations/projectSchemas";
 import { validateForm } from "../utils/validationHelper";
+
+const IDENTITY_VERIFICATION_ENABLED = true;
 
 const buildInitialState = (currentUser) => ({
   identityDocumentUrl: "",
@@ -51,6 +53,41 @@ export default function SubmitProject() {
     () => stepLabels.map((label, index) => ({ label, index: index + 1 })),
     [],
   );
+  const fileInputRef = useRef(null);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
+    if (!allowedTypes.includes(file.type)) {
+      showToast("Please upload an image (JPEG, PNG, GIF) or PDF file.", "warning");
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      showToast("File size must be less than 5MB.", "warning");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFormValues((prev) => ({
+        ...prev,
+        identityDocumentUpload: e.target.result,
+        identityDocumentFileName: file.name,
+      }));
+      showToast("Document uploaded successfully.", "success");
+    };
+    reader.onerror = () => {
+      showToast("Failed to read file. Please try again.", "error");
+    };
+    reader.readAsDataURL(file);
+  };
+
   if (!currentUser) {
     return <Navigate to="/signup" replace />;
   }
@@ -110,6 +147,8 @@ export default function SubmitProject() {
       name: currentUser.name,
       email: currentUser.email,
     };
+    // Use uploaded file (base64) or URL
+    const identityDocument = formValues.identityDocumentUpload || formValues.identityDocumentUrl || "";
     addProject({
       title: formValues.title,
       description: formValues.description,
@@ -124,6 +163,7 @@ export default function SubmitProject() {
       ownerEmail: formValues.ownerEmail,
       ownerPhone: formValues.ownerPhone,
       identityDocument,
+      identityDocumentFileName: formValues.identityDocumentFileName,
       verificationStatus: "submitted",
       verificationNotes: "",
       criteriaMet: formValues.criteriaMet,
@@ -167,11 +207,73 @@ export default function SubmitProject() {
             <div className="submit-section">
               <h2>Identity verification</h2>
               <p className="submit-hint">
-                Upload a scan/photo or provide a secure link to your document.
+                Upload a scan/photo of your government-issued ID or passport.
               </p>
+
+              <div className="document-upload-area">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  accept="image/jpeg,image/png,image/gif,application/pdf"
+                  style={{ display: "none" }}
+                />
+
+                {formValues.identityDocumentUpload ? (
+                  <div className="document-preview">
+                    {formValues.identityDocumentUpload.startsWith("data:image") ? (
+                      <img
+                        src={formValues.identityDocumentUpload}
+                        alt="Document preview"
+                        className="document-preview-image"
+                      />
+                    ) : (
+                      <div className="document-preview-file">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        <span>{formValues.identityDocumentFileName}</span>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => {
+                        setFormValues((prev) => ({
+                          ...prev,
+                          identityDocumentUpload: "",
+                          identityDocumentFileName: "",
+                        }));
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="document-upload-btn"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="17 8 12 3 7 8" />
+                      <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    <span>Click to upload document</span>
+                    <span className="upload-hint">JPEG, PNG, GIF or PDF (max 5MB)</span>
+                  </button>
+                )}
+              </div>
+
+              <div className="form-divider">
+                <span>or provide a URL</span>
+              </div>
+
               <label className="form-field">
                 <span className="form-label">
-                  Government ID / Passport URL *
+                  Document URL (optional)
                 </span>
                 <input
                   type="url"
@@ -181,6 +283,7 @@ export default function SubmitProject() {
                     updateValue("identityDocumentUrl", event.target.value)
                   }
                   placeholder="https://secure-file-link.com/document"
+                  disabled={!!formValues.identityDocumentUpload}
                 />
               </label>
             </div>
