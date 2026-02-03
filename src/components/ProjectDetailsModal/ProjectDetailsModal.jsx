@@ -1,99 +1,266 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useContext, useCallback } from 'react';
+import { ToastContext } from '../../context/ToastContext';
 import './ProjectDetailsModal.css';
 
+// X Icon Component
+function XIcon({ className, onClick }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className={className}
+      onClick={onClick}
+      style={{ cursor: 'pointer' }}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
+// Photo Icon Component
+function PhotoIcon({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className={className}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+      />
+    </svg>
+  );
+}
+
+// Delete Icon Component
+function DeleteIcon({ className, onClick }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className={className}
+      onClick={onClick}
+      style={{ cursor: 'pointer' }}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
 const CATEGORIES = [
-  { value: 'community', label: 'Community' },
   { value: 'education', label: 'Education' },
-  { value: 'health', label: 'Health & Medical' },
+  { value: 'health', label: 'Health' },
   { value: 'environment', label: 'Environment' },
+  { value: 'arts', label: 'Arts' },
   { value: 'technology', label: 'Technology' },
-  { value: 'arts', label: 'Arts & Culture' },
-  { value: 'sports', label: 'Sports & Recreation' },
-  { value: 'other', label: 'Other' },
+  { value: 'community', label: 'Community' },
 ];
+
+const MAX_IMAGES = 5;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const ProjectDetailsModal = ({
   isOpen,
   onClose,
+  onSubmit,
   onSave,
   initialData = {},
   isEdit = false,
 }) => {
+  const { showToast } = useContext(ToastContext);
+  
+  // ✅ STATE INITIALIZATION - Critical for controlled inputs
   const [formData, setFormData] = useState({
-    title: '',
-    category: 'community',
+    projectTitle: '',
+    category: '',
     targetAmount: '',
     description: '',
-    webUrl: '',
   });
+  
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
 
-  // Initialize form with existing data
+  // ✅ RESET FORM DATA - Called when modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
-        title: initialData.title || '',
-        category: initialData.category || 'community',
-        targetAmount: initialData.targetAmount || initialData.goal || '',
+        projectTitle: initialData.title || '',
+        category: initialData.category || '',
+        targetAmount: initialData.goal ? String(initialData.goal) : '',
         description: initialData.description || '',
-        webUrl: initialData.webUrl || '',
       });
+      setUploadedImages(initialData.images || []);
       setErrors({});
       setTouched({});
     }
   }, [isOpen, initialData]);
 
+  // Prevent body scroll
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  // ✅ HANDLE INPUT CHANGE - This makes text appear
+  const handleChange = useCallback((field) => (e) => {
+    const value = e.target.value;
+    
+    console.log(`✅ ${field} changed to:`, value); // Debug log
+    
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error for this field
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  }, [errors]);
+
+  // ✅ HANDLE BLUR - Mark field as touched and validate
+  const handleBlur = useCallback((field) => () => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    const error = validateField(field, formData[field]);
+    setErrors(prev => ({ ...prev, [field]: error }));
+  }, [formData]);
+
+  // ✅ VALIDATE A SINGLE FIELD
   const validateField = (name, value) => {
+    let error = '';
     switch (name) {
-      case 'title':
-        if (!value.trim()) return 'Project title is required';
-        if (value.trim().length < 3) return 'Title must be at least 3 characters';
-        if (value.trim().length > 100) return 'Title must be less than 100 characters';
-        return '';
-      case 'category':
-        if (!value) return 'Please select a category';
-        return '';
-      case 'targetAmount':
-        if (!value) return 'Target amount is required';
-        const amount = parseFloat(value);
-        if (isNaN(amount) || amount <= 0) return 'Please enter a valid amount';
-        if (amount < 100) return 'Minimum target amount is KSh 100';
-        if (amount > 10000000) return 'Maximum target amount is KSh 10,000,000';
-        return '';
-      case 'description':
-        if (!value.trim()) return 'Description is required';
-        if (value.trim().length < 20) return 'Description must be at least 20 characters';
-        if (value.trim().length > 2000) return 'Description must be less than 2000 characters';
-        return '';
-      case 'webUrl':
-        if (value && !/^https?:\/\/.+/.test(value)) {
-          return 'Please enter a valid URL (starting with http:// or https://)';
+      case 'projectTitle':
+        if (!value || !value.trim()) {
+          error = 'Project title is required';
         }
-        return '';
+        break;
+      case 'category':
+        if (!value) {
+          error = 'Category is required';
+        }
+        break;
+      case 'targetAmount':
+        if (!value || Number(value) <= 0) {
+          error = 'Target amount must be greater than 0';
+        }
+        break;
+      case 'description':
+        if (!value || !value.trim()) {
+          error = 'Description is required';
+        } else if (value.trim().length < 50) {
+          error = 'Description must be at least 50 characters';
+        }
+        break;
       default:
-        return '';
+        break;
+    }
+    return error;
+  };
+
+  // ✅ VALIDATE FILE
+  const validateFile = (file) => {
+    if (!file.type.startsWith('image/')) {
+      return 'File must be an image';
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return 'File size must be less than 5MB';
+    }
+    return null;
+  };
+
+  // ✅ HANDLE IMAGE UPLOAD
+  const handleImageUpload = (files) => {
+    const fileArray = Array.from(files);
+    
+    if (uploadedImages.length + fileArray.length > MAX_IMAGES) {
+      showToast(`Maximum ${MAX_IMAGES} images allowed`, 'warning');
+      return;
+    }
+    
+    fileArray.forEach(file => {
+      const error = validateFile(file);
+      if (error) {
+        showToast(error, 'error');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImages(prev => [...prev, {
+          file: file,
+          preview: reader.result,
+          name: file.name,
+          size: file.size,
+        }]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileInputChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleImageUpload(e.target.files);
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleDeleteImage = (index) => {
+    setUploadedImages(prev => prev.filter((_, i) => i !== index));
+  };
 
-    // Validate on change if field has been touched
-    if (touched[name]) {
-      const error = validateField(name, value);
-      setErrors((prev) => ({ ...prev, [name]: error }));
+  // ✅ DRAG AND DROP HANDLERS
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleImageUpload(e.dataTransfer.files);
     }
   };
 
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setTouched((prev) => ({ ...prev, [name]: true }));
-    const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
   };
 
+  // ✅ VALIDATE ENTIRE FORM
   const validateForm = () => {
     const newErrors = {};
     let isValid = true;
@@ -108,175 +275,291 @@ const ProjectDetailsModal = ({
 
     setErrors(newErrors);
     setTouched({
-      title: true,
+      projectTitle: true,
       category: true,
       targetAmount: true,
       description: true,
-      webUrl: true,
     });
 
     return isValid;
   };
 
+  // ✅ HANDLE SUBMIT
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      const savedData = {
-        title: formData.title.trim(),
-        category: formData.category,
-        targetAmount: parseFloat(formData.targetAmount),
-        description: formData.description.trim(),
-        webUrl: formData.webUrl.trim() || undefined,
-      };
-      onSave(savedData);
+    console.log('✅ Form submitted with data:', formData);
+
+    if (!validateForm()) {
+      console.log('Validation failed:', errors);
+      return;
+    }
+
+    const submitData = {
+      title: formData.projectTitle.trim(),
+      category: formData.category,
+      goal: parseFloat(formData.targetAmount),
+      description: formData.description.trim(),
+      images: uploadedImages,
+    };
+
+    console.log('✅ Submitting:', submitData);
+    
+    // Support both onSubmit and onSave for compatibility
+    if (onSubmit) {
+      onSubmit(submitData);
+    } else if (onSave) {
+      onSave(submitData);
     }
   };
 
+  // ✅ HANDLE CANCEL
   const handleCancel = () => {
-    setErrors({});
-    setTouched({});
+    const hasChanges =
+      formData.projectTitle ||
+      formData.category ||
+      formData.targetAmount ||
+      formData.description ||
+      uploadedImages.length > 0;
+
+    if (hasChanges) {
+      const confirmed = window.confirm(
+        'You have unsaved changes. Are you sure you want to cancel?'
+      );
+      if (!confirmed) return;
+    }
+
     onClose();
+  };
+
+  // Format file size
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
   if (!isOpen) return null;
 
-  const getInputClassName = (fieldName) => {
-    const baseClass = 'ios-input';
-    if (touched[fieldName] && errors[fieldName]) {
-      return `${baseClass} error`;
-    }
-    if (touched[fieldName] && !errors[fieldName] && formData[fieldName]) {
-      return `${baseClass} success`;
-    }
-    return baseClass;
-  };
-
   return (
     <div className="modal-overlay" onClick={handleCancel}>
-      <div className="project-details-modal" onClick={(e) => e.stopPropagation()}>
-        {/* Teal Gradient Header */}
-        <div className="modal-teal-header">
-          <h2>PROJECT DETAILS</h2>
+      <div
+        className="project-details-modal-container"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Icon */}
+        <button
+          className="modal-close-icon"
+          onClick={handleCancel}
+          aria-label="Close modal"
+        >
+          <XIcon className="w-6 h-6" />
+        </button>
+
+        {/* Header */}
+        <div className="modal-header-gradient">
+          <h2 className="modal-title">Project Details</h2>
         </div>
 
-        {/* Form Content */}
-        <form onSubmit={handleSubmit} className="project-details-form">
-          {/* First Row - Project Title + Category */}
-          <div className="form-row">
-            <div className="input-group">
-              <label htmlFor="title">project title</label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter project title"
-                className={getInputClassName('title')}
-                autoComplete="off"
-              />
-              {touched.title && errors.title && (
-                <span className="error-message">{errors.title}</span>
-              )}
-            </div>
-            <div className="input-group">
-              <label htmlFor="category">category</label>
-              <select
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`ios-select ${touched.category && errors.category ? 'error' : ''}`}
-              >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </option>
-                ))}
-              </select>
-              {touched.category && errors.category && (
-                <span className="error-message">{errors.category}</span>
-              )}
-            </div>
-          </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="modal-form">
+          <div className="form-content">
+            {/* Row 1: Project Title & Category */}
+            <div className="form-row">
+              {/* Project Title - ✅ CRITICAL FIX */}
+              <div className="form-field">
+                <label className="form-label">
+                  Project Title <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.projectTitle}
+                  onChange={handleChange('projectTitle')}
+                  onBlur={handleBlur('projectTitle')}
+                  placeholder="Enter project name"
+                  className={`form-input ${
+                    touched.projectTitle && errors.projectTitle ? 'error' : ''
+                  }`}
+                  style={{
+                    WebkitTextFillColor: '#111827',
+                    opacity: 1
+                  }}
+                />
+                {touched.projectTitle && errors.projectTitle && (
+                  <span className="error-message">{errors.projectTitle}</span>
+                )}
+              </div>
 
-          {/* Second Row - Target Amount (aligned with category) */}
-          <div className="form-row">
-            <div className="input-group input-group-empty">
-              {/* Empty left side for alignment */}
+              {/* Category - ✅ CRITICAL FIX */}
+              <div className="form-field">
+                <label className="form-label">
+                  Category <span className="required">*</span>
+                </label>
+                <select
+                  value={formData.category}
+                  onChange={handleChange('category')}
+                  onBlur={handleBlur('category')}
+                  className={`form-select ${
+                    touched.category && errors.category ? 'error' : ''
+                  }`}
+                  style={{
+                    WebkitTextFillColor: '#111827',
+                    opacity: 1
+                  }}
+                >
+                  <option value="">Select category</option>
+                  {CATEGORIES.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
+                {touched.category && errors.category && (
+                  <span className="error-message">{errors.category}</span>
+                )}
+              </div>
             </div>
-            <div className="input-group">
-              <label htmlFor="targetAmount">target amount (ksh)</label>
+
+            {/* Target Amount - ✅ CRITICAL FIX */}
+            <div className="form-field">
+              <label className="form-label">
+                Target Amount (Ksh) <span className="required">*</span>
+              </label>
               <input
                 type="number"
-                id="targetAmount"
-                name="targetAmount"
                 value={formData.targetAmount}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                onChange={handleChange('targetAmount')}
+                onBlur={handleBlur('targetAmount')}
                 placeholder="50000"
-                min="100"
-                max="10000000"
-                className={getInputClassName('targetAmount')}
-                autoComplete="off"
+                min="0"
+                step="100"
+                className={`form-input ${
+                  touched.targetAmount && errors.targetAmount ? 'error' : ''
+                }`}
+                style={{
+                  WebkitTextFillColor: '#111827',
+                  opacity: 1
+                }}
               />
               {touched.targetAmount && errors.targetAmount && (
                 <span className="error-message">{errors.targetAmount}</span>
               )}
             </div>
+
+            {/* Description - ✅ CRITICAL FIX */}
+            <div className="form-field">
+              <label className="form-label">
+                Description <span className="required">*</span>
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={handleChange('description')}
+                onBlur={handleBlur('description')}
+                placeholder="Describe the project and its impact on the community..."
+                rows={6}
+                className={`form-textarea ${
+                  touched.description && errors.description ? 'error' : ''
+                }`}
+                style={{
+                  WebkitTextFillColor: '#111827',
+                  opacity: 1
+                }}
+              />
+              <div className="flex justify-between items-center mt-1">
+                {touched.description && errors.description ? (
+                  <span className="error-message">{errors.description}</span>
+                ) : (
+                  <span className="char-count">
+                    {formData.description.length} characters (minimum 50)
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Add Images */}
+            <div className="form-field">
+              <label className="form-label">
+                Add Images <span className="optional">(Optional)</span>
+              </label>
+
+              {/* Upload Area */}
+              <div
+                className={`upload-area ${isDragging ? 'drag-over' : ''} ${
+                  uploadedImages.length > 0 ? 'has-files' : ''
+                }`}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onClick={handleUploadClick}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && handleUploadClick()}
+                aria-label="Click or drag files to upload"
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileInputChange}
+                  className="file-input"
+                  aria-hidden="true"
+                />
+                <div className="upload-content">
+                  <PhotoIcon className="upload-icon" />
+                  <p className="upload-text">
+                    <span className="upload-highlight">Click to upload</span> or
+                    drag and drop
+                  </p>
+                  <p className="upload-hint">
+                    PNG, JPG, WEBP up to 5MB each (Max {MAX_IMAGES} images)
+                  </p>
+                </div>
+              </div>
+
+              {/* Image Previews */}
+              {uploadedImages.length > 0 && (
+                <div className="image-preview-grid">
+                  {uploadedImages.map((image, index) => (
+                    <div key={index} className="image-preview-item">
+                      <img
+                        src={image.preview}
+                        alt={`Upload ${index + 1}`}
+                        className="image-preview-img"
+                      />
+                      <button
+                        type="button"
+                        className="image-delete-btn"
+                        onClick={() => handleDeleteImage(index)}
+                        aria-label={`Remove ${image.name}`}
+                      >
+                        <DeleteIcon className="w-4 h-4" />
+                      </button>
+                      <span className="image-size">
+                        {formatFileSize(image.size)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Third Row - Description */}
-          <div className="input-group form-row-full">
-            <label htmlFor="description">description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Describe the project and its impact on the community..."
-              rows="6"
-              className={`ios-textarea ${touched.description && errors.description ? 'error' : ''}`}
-            />
-            {touched.description && errors.description && (
-              <span className="error-message">{errors.description}</span>
-            )}
-          </div>
-
-          {/* Fourth Row - Web URL */}
-          <div className="input-group form-row-full">
-            <label htmlFor="webUrl">web url</label>
-            <input
-              type="url"
-              id="webUrl"
-              name="webUrl"
-              value={formData.webUrl}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="https://project-website.com (optional)"
-              className={getInputClassName('webUrl')}
-              autoComplete="off"
-            />
-            {touched.webUrl && errors.webUrl && (
-              <span className="error-message">{errors.webUrl}</span>
-            )}
-          </div>
-
-          {/* Footer Buttons */}
-          <div className="form-footer">
+          {/* Footer */}
+          <div className="modal-footer">
             <button
               type="button"
-              className="ios-btn-secondary"
+              className="btn-cancel"
               onClick={handleCancel}
             >
-              cancel
+              Cancel
             </button>
-            <button type="submit" className="ios-btn-primary">
-              {isEdit ? 'update details' : 'save & continue'}
+            <button
+              type="submit"
+              className="btn-save"
+            >
+              {isEdit ? 'Save Changes' : 'Submit'}
             </button>
           </div>
         </form>

@@ -167,7 +167,8 @@ export default function AdminDashboard() {
   }, [donations]);
 
   useEffect(() => {
-    if (!projects.length) {
+    // Reset edit state if no projects
+    if (!projects || projects.length === 0) {
       setEditProjectId("");
       setEditValues({
         title: "",
@@ -181,13 +182,20 @@ export default function AdminDashboard() {
       return;
     }
 
-    const selected =
-      projects.find((project) => project.id === editProjectId) || projects[0];
+    // Find selected project or default to first project
+    const selected = projects.find((project) => project.id === editProjectId) || projects[0];
 
+    // Safety check - ensure selected is valid
+    if (!selected || !selected.id) {
+      return;
+    }
+
+    // Update edit project ID if changed
     if (selected.id !== editProjectId) {
       setEditProjectId(selected.id);
     }
 
+    // Update edit values with selected project data
     setEditValues({
       title: selected.title || "",
       description: selected.description || "",
@@ -237,28 +245,49 @@ export default function AdminDashboard() {
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
+    
+    // Safety check - ensure user is authenticated
+    if (!currentUser || currentUser.role !== 'admin') {
+      showToast("Session expired. Please log in again.", "error");
+      navigate('/signin');
+      return;
+    }
+
+    // Safety check - ensure project is selected
     if (!editProjectId) {
       showToast("Select a project to edit first.", "warning");
       return;
     }
 
-    const galleryUrls = editValues.galleryUrls
-      .split(",")
-      .map((url) => url.trim())
-      .filter(Boolean);
-    const goal = Number(editValues.goal) || 0;
+    // Safety check - ensure form values are valid
+    if (!editValues || !editValues.title?.trim()) {
+      showToast("Project title is required.", "warning");
+      return;
+    }
 
-    updateProject(editProjectId, {
-      title: editValues.title.trim(),
-      description: editValues.description.trim(),
-      category: editValues.category || "community",
-      goal,
-      status: editValues.status || "active",
-      imageUrl: editValues.imageUrl.trim(),
-      galleryUrls,
-    });
+    try {
+      const galleryUrls = editValues.galleryUrls
+        ?.split(",")
+        .map((url) => url.trim())
+        .filter(Boolean) || [];
+      const goal = Number(editValues.goal) || 0;
 
-    showToast("Project details updated.", "success");
+      updateProject(editProjectId, {
+        title: editValues.title?.trim() || "",
+        description: editValues.description?.trim() || "",
+        category: editValues.category || "community",
+        goal,
+        status: editValues.status || "active",
+        imageUrl: editValues.imageUrl?.trim() || "",
+        galleryUrls,
+        updatedAt: new Date().toISOString(),
+      });
+
+      showToast("Project details updated successfully!", "success");
+    } catch (error) {
+      console.error("Error updating project:", error);
+      showToast("Failed to update project. Please try again.", "error");
+    }
   };
 
   const handleNewProjectChange = (event) => {

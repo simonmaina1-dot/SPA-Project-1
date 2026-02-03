@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import "./AdminNavbar.css";
 
 export default function AdminNavbar({ currentUser, onSignOut }) {
+  // Safe access to user properties
+  const userName = currentUser?.name?.split(' ')[0] || 'Admin';
+  const userRole = currentUser?.role || 'admin';
+  
   return (
     <nav className="admin-navbar">
       <div className="admin-navbar-left">
@@ -26,7 +30,7 @@ export default function AdminNavbar({ currentUser, onSignOut }) {
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span>Signed in as {currentUser.name.split(' ')[0]} ({currentUser.role})</span>
+          <span>Signed in as {userName} ({userRole})</span>
         </div>
         <button type="button" className="btn btn-signout-red" onClick={onSignOut}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
