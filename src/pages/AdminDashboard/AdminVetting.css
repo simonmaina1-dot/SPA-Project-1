@@ -343,7 +343,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-3xl);
+  padding: 60px var(--spacing-3xl) var(--spacing-3xl);
   color: var(--color-text-secondary);
   text-align: center;
 }
