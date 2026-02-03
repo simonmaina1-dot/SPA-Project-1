@@ -3,35 +3,35 @@
     "id": "owner-simon",
     "name": "Simon Maina",
     "email": "mainawaititu2021@gmail.com",
-    "password": "Simon-2026",
+    "password": "simon-2026",
     "role": "CEO"
   },
   {
     "id": "auditor-george",
     "name": "George Okumu",
     "email": "george.okumu@moringaschool.com",
-    "password": "George-2026",
+    "password": "george-2026",
     "role": "Auditor"
   },
   {
     "id": "admin-ashanti",
     "name": "Ashanti Kweyu",
     "email": "kashiku789@gmail.com",
-    "password": "Ashanti-2026",
+    "password": "ashanti-2026",
     "role": "Admin"
   },
   {
     "id": "admin-ian",
     "name": "Ian Kipchirchir",
     "email": "iankipchirchir51@gmail.com",
-    "password": "Ian-2026",
+    "password": "ian-2026",
     "role": "Admin"
   },
   {
     "id": "admin-denis",
     "name": "Denis Kipruto",
     "email": "kypvega@gmail.com",
-    "password": "Denis-2026",
+    "password": "denis-2026",
     "role": "Admin"
   }
 ]
