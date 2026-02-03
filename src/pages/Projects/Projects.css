@@ -53,13 +53,13 @@
 }
 
 .projects-page .search-box:hover {
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  border-color: rgba(29, 185, 84, 0.4);
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.15);
 }
 
 .projects-page .search-box:focus-within {
-  border-color: rgba(59, 130, 246, 0.6);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  border-color: rgba(29, 185, 84, 0.6);
+  box-shadow: 0 0 0 4px rgba(29, 185, 84, 0.2);
 }
 
 /* SEARCH INPUT */
@@ -137,13 +137,13 @@
 
 .projects-page .filter-select:hover {
   border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.15);
 }
 
 .projects-page .filter-select:focus {
   outline: none;
-  border-color: rgba(59, 130, 246, 0.6);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  border-color: rgba(29, 185, 84, 0.6);
+  box-shadow: 0 0 0 4px rgba(29, 185, 84, 0.2);
 }
 
 /* Projects grid */
