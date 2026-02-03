@@ -83,10 +83,10 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
   );
 
   return (
-    <article className="admin-card admin-card-wide admin-fund-tracking">
+    <article className="admin-card admin-card-wide">
       <div className="admin-section-header">
         <div>
-          <h3>Fund utilization</h3>
+          <h3>Fund Utilization</h3>
           <p className="admin-card-subtitle">
             Track donation sources and project spending updates from owners.
           </p>
@@ -94,29 +94,29 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
       </div>
 
       <div className="admin-fund-summary">
-        <div className="admin-stat">
-          <span className="admin-stat-value">
+        <div className="admin-fund-item">
+          <div className="admin-fund-value">
             {formatCurrency(usageSummary.totalRaised)}
-          </span>
-          <span className="admin-stat-label">Total raised</span>
+          </div>
+          <div className="admin-fund-label">Total Raised</div>
         </div>
-        <div className="admin-stat">
-          <span className="admin-stat-value">
+        <div className="admin-fund-item">
+          <div className="admin-fund-value">
             {formatCurrency(usageSummary.totalUsed)}
-          </span>
-          <span className="admin-stat-label">Total reported usage</span>
+          </div>
+          <div className="admin-fund-label">Total Used</div>
         </div>
-        <div className="admin-stat">
-          <span className="admin-stat-value">
+        <div className="admin-fund-item">
+          <div className="admin-fund-value">
             {formatCurrency(usageSummary.remaining)}
-          </span>
-          <span className="admin-stat-label">Remaining balance</span>
+          </div>
+          <div className="admin-fund-label">Remaining</div>
         </div>
       </div>
 
       <div className="admin-fund-grid">
         <div className="admin-fund-panel">
-          <h4>Project utilization</h4>
+          <h4>Project Utilization</h4>
           <div className="admin-table-container">
             <table className="admin-table">
               <thead>
@@ -142,7 +142,7 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
         </div>
 
         <div className="admin-fund-panel">
-          <h4>Donation sources</h4>
+          <h4>Donation Sources</h4>
           <div className="admin-source-list">
             {sourceSummary.length ? (
               sourceSummary.map((source) => (
@@ -163,7 +163,7 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
             )}
           </div>
 
-          <h4 className="mt-3">Recent usage reports</h4>
+          <h4 className="mt-3">Recent Usage Reports</h4>
           <div className="admin-source-list">
             {recentUsage.length ? (
               recentUsage.map((entry) => (

@@ -1,7 +1,9 @@
 export default function AdminRecentActivity({ projects, formatCurrency }) {
   return (
     <article className="admin-card admin-card-activity">
-      <h3>Recent activity</h3>
+      <div className="admin-section-header">
+        <h3>Recent Activity</h3>
+      </div>
       <div className="admin-timeline">
         {projects
           .filter(
@@ -14,11 +16,11 @@ export default function AdminRecentActivity({ projects, formatCurrency }) {
           .map((project, index) => (
             <div key={project.id} className="admin-activity">
               <span className="admin-activity-dot" />
-              <div>
-                <p className="admin-row-title">
+              <div className="admin-activity-content">
+                <p className="admin-activity-title">
                   {project.title} received a donation
                 </p>
-                <span className="admin-row-meta">
+                <span className="admin-activity-meta">
                   {formatCurrency(Math.round((project.currentAmount || 0) / 4))} -{" "}
                   {project.category}
                 </span>

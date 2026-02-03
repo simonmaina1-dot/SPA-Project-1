@@ -48,8 +48,24 @@
     "goal": 18000,
     "currentAmount": 17560,
     "donorCount": 74,
-    "status": "funded",
-    "verificationStatus": "approved"
+    "status": "active",
+    "verificationStatus": "approved",
+    "ownerId": "",
+    "ownerName": "",
+    "ownerEmail": "",
+    "ownerPhone": "",
+    "identityDocument": "",
+    "verificationNotes": "",
+    "adminReviewer": null,
+    "reviewedAt": null,
+    "criteriaMet": {
+      "communityImpact": false,
+      "budgetClarity": false,
+      "timelineReady": false,
+      "stakeholderSupport": false
+    },
+    "fundUsage": [],
+    "galleryUrls": []
   },
   {
     "id": "p-1004",

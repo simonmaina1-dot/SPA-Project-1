@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import { defaultCriteriaMet, projectCriteria } from "../data/projectCriteria";
+import styles from "./SubmitProject.module.css";
 
 const buildInitialState = (currentUser) => ({
   identityDocument: "",
@@ -20,9 +21,9 @@ const buildInitialState = (currentUser) => ({
 });
 
 const stepLabels = [
-  "Identity verification",
   "Personal information",
   "Project details",
+  "Identity verification",
   "Review and submit",
 ];
 
@@ -65,13 +66,6 @@ export default function SubmitProject() {
 
   const validateStep = (currentStep) => {
     if (currentStep === 1) {
-      if (!formValues.identityDocument.trim()) {
-        showToast("Please add a government ID or passport URL.", "warning");
-        return false;
-      }
-    }
-
-    if (currentStep === 2) {
       if (!formValues.ownerName.trim()) {
         showToast("Please enter your full name.", "warning");
         return false;
@@ -86,7 +80,7 @@ export default function SubmitProject() {
       }
     }
 
-    if (currentStep === 3) {
+    if (currentStep === 2) {
       if (!formValues.title.trim() || !formValues.description.trim()) {
         showToast("Please enter a project title and description.", "warning");
         return false;
@@ -98,6 +92,13 @@ export default function SubmitProject() {
       const allCriteriaMet = Object.values(formValues.criteriaMet).every(Boolean);
       if (!allCriteriaMet) {
         showToast("Please confirm each project criteria item.", "warning");
+        return false;
+      }
+    }
+
+    if (currentStep === 3) {
+      if (!formValues.identityDocument.trim()) {
+        showToast("Please add a government ID or passport URL.", "warning");
         return false;
       }
     }
@@ -176,7 +177,9 @@ export default function SubmitProject() {
   };
 
   return (
-    <div className="page submit-project-page">
+    <div 
+      className={`page submit-project-page ${styles.submitPage}`}
+    >
       <section className="page-header">
         <h1>Submit a project</h1>
         <p>
@@ -190,7 +193,7 @@ export default function SubmitProject() {
           {steps.map((stepItem) => (
             <div
               key={stepItem.index}
-              className={`submit-step${step >= stepItem.index ? " active" : ""}`}
+              className={`submit-step${step >= stepItem.index ? " active" : ""}${step > stepItem.index ? " completed" : ""}`}
             >
               <span className="submit-step-index">{stepItem.index}</span>
               <span className="submit-step-label">{stepItem.label}</span>
@@ -200,29 +203,6 @@ export default function SubmitProject() {
 
         <form className="submit-card" onSubmit={handleSubmit}>
           {step === 1 && (
-            <div className="submit-section">
-              <h2>Identity verification</h2>
-              <p className="submit-hint">
-                Uploads are coming soon. For now, paste a secure link to your
-                government ID or passport scan.
-              </p>
-              <label className="form-field">
-                <span className="form-label">Government ID / Passport URL *</span>
-                <input
-                  type="url"
-                  name="identityDocument"
-                  value={formValues.identityDocument}
-                  onChange={(event) =>
-                    updateValue("identityDocument", event.target.value)
-                  }
-                  placeholder="https://secure-file-link.com/document"
-                  required
-                />
-              </label>
-            </div>
-          )}
-
-          {step === 2 && (
             <div className="submit-section">
               <h2>Personal information</h2>
               <div className="form-grid">
@@ -269,7 +249,7 @@ export default function SubmitProject() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 2 && (
             <div className="submit-section">
               <h2>Project details</h2>
               <div className="form-grid">
@@ -375,6 +355,29 @@ export default function SubmitProject() {
             </div>
           )}
 
+          {step === 3 && (
+            <div className="submit-section">
+              <h2>Identity verification</h2>
+              <p className="submit-hint">
+                Uploads are coming soon. For now, paste a secure link to your
+                government ID or passport scan.
+              </p>
+              <label className="form-field">
+                <span className="form-label">Government ID / Passport URL *</span>
+                <input
+                  type="url"
+                  name="identityDocument"
+                  value={formValues.identityDocument}
+                  onChange={(event) =>
+                    updateValue("identityDocument", event.target.value)
+                  }
+                  placeholder="https://secure-file-link.com/document"
+                  required
+                />
+              </label>
+            </div>
+          )}
+
           {step === 4 && (
             <div className="submit-section submit-review">
               <h2>Review your submission</h2>
@@ -383,10 +386,6 @@ export default function SubmitProject() {
               </p>
 
               <div className="review-grid">
-                <div>
-                  <p className="review-label">Identity document</p>
-                  <p className="review-value">{formValues.identityDocument}</p>
-                </div>
                 <div>
                   <p className="review-label">Owner name</p>
                   <p className="review-value">{formValues.ownerName}</p>
@@ -407,6 +406,10 @@ export default function SubmitProject() {
                   <p className="review-label">Funding goal</p>
                   <p className="review-value">KSh {formValues.goal}</p>
                 </div>
+                <div>
+                  <p className="review-label">Identity document</p>
+                  <p className="review-value">{formValues.identityDocument}</p>
+                </div>
                 <div className="review-block">
                   <p className="review-label">Description</p>
                   <p className="review-value">{formValues.description}</p>
@@ -425,29 +428,38 @@ export default function SubmitProject() {
             </div>
           )}
 
-          <div className="form-actions submit-actions">
+          <div className={styles.submitActions}>
             <button
               type="button"
-              className="btn btn-secondary"
               onClick={() => navigate("/user-dashboard")}
+              className={styles.btnSecondary}
             >
               Cancel
             </button>
+
             {step > 1 && (
               <button
                 type="button"
-                className="btn btn-secondary"
                 onClick={handleBack}
+                className={styles.btnSecondary}
               >
                 Back
               </button>
             )}
+
             {step < steps.length ? (
-              <button type="button" className="btn btn-primary" onClick={handleNext}>
+              <button 
+                type="button" 
+                onClick={handleNext}
+                className={styles.btnPrimary}
+              >
                 Continue
               </button>
             ) : (
-              <button type="submit" className="btn btn-primary">
+              <button 
+                type="submit"
+                className={styles.btnPrimary}
+              >
                 Submit for review
               </button>
             )}

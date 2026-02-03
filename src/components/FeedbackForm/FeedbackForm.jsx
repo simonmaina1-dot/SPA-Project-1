@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import useForm from "../hooks/useForm";
-import useFeedback from "../hooks/useFeedback";
-import { ToastContext } from "../context/ToastContext";
+import useForm from "../../hooks/useForm";
+import useFeedback from "../../hooks/useFeedback";
+import { ToastContext } from "../../context/ToastContext";
 
 const initialValues = {
   name: "",

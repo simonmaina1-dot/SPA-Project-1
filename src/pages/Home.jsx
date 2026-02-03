@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "../components/ProjectCard/ProjectCard";
 import { ToastContext } from "../context/ToastContext";
 import useFeedback from "../hooks/useFeedback";
 import useForm from "../hooks/useForm";
@@ -216,6 +216,10 @@ export default function Home() {
       {/* Search and Filter Section */}
       <section className="search-section">
         <div className="search-bar">
+          <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
           <input
             type="text"
             placeholder="Search projects..."
@@ -223,14 +227,14 @@ export default function Home() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="search-icon-right" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"/>
             <path d="M21 21l-4.35-4.35"/>
           </svg>
         </div>
 
-        <div className="filter-bar">
-          <label htmlFor="category-filter">Filter by:</label>
+        <div className="filter-container">
+          <span className="filter-label">Filter by:</span>
           <select
             id="category-filter"
             value={selectedCategory}
@@ -243,19 +247,19 @@ export default function Home() {
               </option>
             ))}
           </select>
-
-          {(searchQuery || selectedCategory !== "all") && (
-            <button
-              className="btn btn-text"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("all");
-              }}
-            >
-              Clear Filters
-            </button>
-          )}
         </div>
+
+        {(searchQuery || selectedCategory !== "all") && (
+          <button
+            className="btn btn-text clear-filter-btn"
+            onClick={() => {
+              setSearchQuery("");
+              setSelectedCategory("all");
+            }}
+          >
+            Clear Filters
+          </button>
+        )}
       </section>
 
       {/* Projects Grid */}

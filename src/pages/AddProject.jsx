@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
-import Modal from "../components/Modal";
+import Modal from "../components/Modal/Modal";
 import useAuth from "../hooks/useAuth";
 import { defaultCriteriaMet } from "../data/projectCriteria";
 

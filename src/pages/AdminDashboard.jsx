@@ -9,6 +9,7 @@ import AdminAccessGuard from "../components/admin/AdminAccessGuard";
 import AdminNavbar from "../components/admin/AdminNavbar";
 import AdminDashboardHeader from "../components/admin/AdminDashboardHeader";
 import AdminDashboardGrid from "../components/admin/AdminDashboardGrid";
+import Modal from "../components/Modal/Modal";
 
 export default function AdminDashboard() {
   const {
@@ -39,6 +40,7 @@ export default function AdminDashboard() {
   const [viewMode, setViewMode] = useState("table");
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [deleteFeedbackId, setDeleteFeedbackId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProject, setNewProject] = useState({
     title: "",
     description: "",
@@ -298,6 +300,25 @@ export default function AdminDashboard() {
     setViewMode("table");
   };
 
+  // Modal handlers
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleModalSubmit = (formData) => {
+    const galleryUrls = formData.imageFile ? [URL.createObjectURL(formData.imageFile)] : [];
+    
+    addProject({
+      title: formData.projectTitle.trim(),
+      description: formData.description.trim(),
+      category: formData.category || "community",
+      imageUrl: formData.imageUrl || galleryUrls[0] || "",
+      galleryUrls,
+      webUrl: formData.webUrl.trim(),
+    });
+
+    showToast("Project created successfully.", "success");
+  };
+
   const handleDeleteClick = (projectId) => {
     setDeleteConfirmId(projectId);
   };
@@ -363,36 +384,45 @@ export default function AdminDashboard() {
     formatCurrency,
   };
 
-  return (
-    <AdminAccessGuard
-      currentUser={currentUser}
-      credentials={credentials}
-      showPassword={showPassword}
-      errorMessage={errorMessage}
-      onChange={handleChange}
-      onTogglePassword={() => setShowPassword((prev) => !prev)}
-      onSubmit={handleLogin}
-    >
-      <div className="page admin-page">
-        <AdminNavbar currentUser={currentUser} onSignOut={handleSignOut} />
+ return (
+  <AdminAccessGuard
+    currentUser={currentUser}
+    credentials={credentials}
+    showPassword={showPassword}
+    errorMessage={errorMessage}
+    onChange={handleChange}
+    onTogglePassword={() => setShowPassword((prev) => !prev)}
+    onSubmit={handleLogin}
+  >
+    <div className="page admin-page">
+      <AdminNavbar currentUser={currentUser} onSignOut={handleSignOut} />
 
-        <div className="admin-content">
-          <AdminDashboardHeader role={currentUser.role} />
-          <AdminDashboardGrid
-            projects={projects}
-            formatCurrency={formatCurrency}
-            metrics={metrics}
-            reviewList={reviewList}
-            donorMetrics={donorMetrics}
-            onApprove={handleApprove}
-            onFlag={handleFlag}
-            projectManagementProps={projectManagementProps}
-            feedbackProps={feedbackProps}
-            vettingProps={vettingProps}
-            fundTrackingProps={fundTrackingProps}
-          />
-        </div>
+      {/* Move AdminDashboardHeader OUTSIDE admin-content */}
+      <AdminDashboardHeader role={currentUser.role} onAddProject={handleOpenModal} />
+
+      <div className="admin-content">
+        <AdminDashboardGrid
+          projects={projects}
+          formatCurrency={formatCurrency}
+          metrics={metrics}
+          reviewList={reviewList}
+          donorMetrics={donorMetrics}
+          onApprove={handleApprove}
+          onFlag={handleFlag}
+          projectManagementProps={projectManagementProps}
+          feedbackProps={feedbackProps}
+          vettingProps={vettingProps}
+          fundTrackingProps={fundTrackingProps}
+        />
       </div>
-    </AdminAccessGuard>
-  );
+      
+      {/* Add Project Modal */}
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal} 
+        onSubmit={handleModalSubmit}
+      />
+    </div>
+  </AdminAccessGuard>
+);
 }

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import useProjects from "../hooks/useProjects";
+import { useEffect, useState, useRef } from "react";
+import useProjects from "../../hooks/useProjects";
+import "./ProjectCard.css";
 
 export default function ProjectCard({ project, onClick, featured = false }) {
   const { formatCurrency } = useProjects();
@@ -43,64 +44,47 @@ export default function ProjectCard({ project, onClick, featured = false }) {
   }
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loadedIndexes, setLoadedIndexes] = useState(new Set());
-  const [imageErrors, setImageErrors] = useState(new Set());
-  const [hasAnyImageLoaded, setHasAnyImageLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef(null);
 
-  // Auto-slide with staggered timing for each card
+  // Intersection Observer - only run slideshow when card is visible
   useEffect(() => {
-    if (galleryImages.length <= 1) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible(entry.isIntersecting);
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, []);
+
+  // Auto-slide with staggered timing for each card - ONLY when visible
+  useEffect(() => {
+    if (galleryImages.length <= 1 || !isVisible) return;
 
     const randomDelay = Math.random() * 4000;
 
     const delayTimer = setTimeout(() => {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
-      }, 4000);
+      }, 4000); // Change every 4 seconds
 
       return () => clearInterval(interval);
     }, randomDelay);
 
     return () => clearTimeout(delayTimer);
-  }, [galleryImages.length]);
-
-  const handleImageLoad = (index) => {
-    setLoadedIndexes((prev) => {
-      const next = new Set(prev);
-      next.add(index);
-      return next;
-    });
-    setHasAnyImageLoaded(true);
-  };
-
-  const handleImageError = (index, src) => {
-    console.warn(`Image failed to load ${index} for ${project.id}:`, src);
-    setImageErrors((prev) => {
-      const next = new Set(prev);
-      next.add(index);
-      return next;
-    });
-  };
-
-  // Check if current image has error - auto-switch to next working image
-  useEffect(() => {
-    if (galleryImages.length <= 1 || !hasAnyImageLoaded) return;
-
-    const checkAndSwitch = () => {
-      if (imageErrors.has(currentIndex)) {
-        // Find next working image
-        for (let i = 1; i < galleryImages.length; i++) {
-          const nextIndex = (currentIndex + i) % galleryImages.length;
-          if (!imageErrors.has(nextIndex) && loadedIndexes.has(nextIndex)) {
-            setCurrentIndex(nextIndex);
-            return;
-          }
-        }
-      }
-    };
-
-    checkAndSwitch();
-  }, [currentIndex, galleryImages.length, imageErrors, loadedIndexes, hasAnyImageLoaded]);
+  }, [galleryImages.length, isVisible]);
 
   // Status badge class based on project status
   const getStatusBadgeClass = (status) => {
@@ -143,47 +127,26 @@ export default function ProjectCard({ project, onClick, featured = false }) {
 
   // Card body
   const cardBody = (
-    <article className={`project-card${featured ? " featured" : ""}`}>
+    <article ref={cardRef} className={`project-card${featured ? " featured" : ""}`}>
       {/* Background image slideshow */}
       <div className="project-card-slides">
         {galleryImages.length > 0 ? (
           galleryImages.map((src, index) => {
             const isActive = index === currentIndex;
-            const isLoaded = loadedIndexes.has(index);
-            const hasError = imageErrors.has(index);
-            const shouldShow = isActive && isLoaded && !hasError;
 
             return (
               <div
                 key={index}
-                className={`project-card-slide${shouldShow ? " active loaded" : ""}`}
+                className={`project-card-slide${isActive ? " active" : ""}`}
                 style={{
-                  backgroundImage: shouldShow ? `url(${src})` : "none",
+                  backgroundImage: `url(${src})`,
                 }}
-              >
-                <img
-                  src={src}
-                  alt={`${project.title} image ${index + 1}`}
-                  onLoad={() => handleImageLoad(index)}
-                  onError={() => handleImageError(index, src)}
-                  style={{ display: "none" }}
-                />
-              </div>
+              />
             );
           })
         ) : (
           <div
-            className="project-card-slide active loaded"
-            style={{
-              background: "linear-gradient(135deg, #1db954 0%, #1ed760 100%)",
-            }}
-          />
-        )}
-
-        {/* Fallback gradient when no images loaded */}
-        {!hasAnyImageLoaded && galleryImages.length === 0 && (
-          <div
-            className="project-card-slide active loaded"
+            className="project-card-slide active"
             style={{
               background: "linear-gradient(135deg, #1db954 0%, #1ed760 100%)",
             }}
@@ -191,35 +154,29 @@ export default function ProjectCard({ project, onClick, featured = false }) {
         )}
       </div>
 
-      {/* Gradient overlay */}
+      {/* Gradient overlay - ALWAYS VISIBLE */}
       <div className="project-card-overlay" />
 
-      {/* Content overlay */}
+      {/* Content overlay - ALWAYS ON TOP */}
       <div className="project-card-content">
         <div className="project-card-header">
-          {/* Status badge */}
-          <span className={`project-status-badge ${getStatusBadgeClass(project.status)}`}>
-            {project.status}
-          </span>
-          
-          <span className="project-category">{project.category}</span>
           <h3 className="project-title">{project.title}</h3>
           <p className="project-description">{project.description}</p>
         </div>
 
-        {/* Enhanced funding info */}
+        {/* Enhanced funding info - ALWAYS VISIBLE */}
         <div className="project-card-details">
           <div className="project-funding-info">
             <div className="funding-row">
-              <span className="funding-label">Raised</span>
+              <span className="funding-label">RAISED</span>
               <span className="funding-value">{formatCurrency(project.currentAmount)}</span>
             </div>
             <div className="funding-row">
-              <span className="funding-label">Goal</span>
+              <span className="funding-label">GOAL</span>
               <span className="funding-value">{formatCurrency(project.goal)}</span>
             </div>
             <div className="funding-row">
-              <span className="funding-label">Donors</span>
+              <span className="funding-label">DONORS</span>
               <span className="funding-value">{project.donorCount || 0}</span>
             </div>
           </div>

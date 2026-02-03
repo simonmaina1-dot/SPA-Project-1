@@ -1,0 +1,133 @@
+/* ==========================================
+   DONATE PAGE STYLES
+   ========================================== */
+
+.donate-page {
+  padding: var(--spacing-xl);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.donate-page h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-primary);
+  font-family: var(--font-google-sans), var(--font-roboto), sans-serif;
+}
+
+.donate-project-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.donate-project-image {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.donate-project-details h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--color-text-primary);
+}
+
+.donate-project-details p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Donation form */
+.donate-form {
+  background: var(--color-surface);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.donate-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.donate-amount-btn {
+  padding: var(--spacing-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.donate-amount-btn:hover {
+  border-color: var(--color-primary);
+}
+
+.donate-amount-btn.active {
+  border-color: var(--color-primary);
+  background: rgba(29, 185, 84, 0.1);
+  color: var(--color-primary);
+}
+
+.donate-custom-amount {
+  margin-bottom: var(--spacing-lg);
+}
+
+.donate-custom-amount label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-primary);
+}
+
+.donate-summary {
+  background: var(--color-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.donate-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.donate-total-amount {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  font-family: var(--font-google-sans), sans-serif;
+}
+
+/* Responsive donate page */
+@media (max-width: 767.98px) {
+  .donate-page {
+    padding: var(--spacing-lg);
+  }
+
+  .donate-amounts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .donate-form {
+    padding: var(--spacing-lg);
+  }
+}

@@ -1,4 +1,4 @@
-import Modal from "../Modal";
+import Modal from "../Modal/Modal";
 
 export default function AdminProjectManagement({
   projects,
@@ -30,15 +30,7 @@ export default function AdminProjectManagement({
             </p>
           </div>
           <div className="admin-section-actions">
-            {viewMode === "table" && (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => setViewMode("add")}
-              >
-                + Add Project
-              </button>
-            )}
+            {/* Add Project button removed - using modal instead */}
             {viewMode !== "table" && (
               <button
                 type="button"

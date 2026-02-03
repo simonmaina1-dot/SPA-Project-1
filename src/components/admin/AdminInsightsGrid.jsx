@@ -2,161 +2,107 @@ export default function AdminInsightsGrid({
   metrics,
   reviewList,
   formatCurrency,
-  onApprove,
-  onFlag,
 }) {
   return (
     <div className="admin-insights-grid admin-card-wide">
-      <article className="admin-card">
-        <h3>Funding health</h3>
-        <p className="admin-card-subtitle">
-          Track platform-wide progress toward the full fundraising goal.
-        </p>
-        <div className="admin-health">
-          <div className="admin-health-header">
-            <span className="admin-health-value">
-              {Math.min(100, Math.round(metrics.completion * 100))}%
-            </span>
-            <span className="admin-health-label">of total goal funded</span>
-          </div>
-          <div className="progress-bar large">
-            <div
-              className="progress-fill"
-              style={{
-                width: `${Math.min(100, Math.round(metrics.completion * 100))}%`,
-              }}
-            />
-          </div>
-          <div className="admin-health-meta">
-            <span>{formatCurrency(metrics.totalRaised)} raised</span>
-            <span>{formatCurrency(metrics.totalGoal)} goal</span>
-          </div>
+      <article className="admin-insight-card">
+        <div className="admin-insight-header">
+          <h4 className="admin-insight-title">Funding Health</h4>
+          <span className="admin-insight-badge">
+            {Math.min(100, Math.round(metrics.completion * 100))}%
+          </span>
         </div>
-        <div className="admin-health-grid">
-          <div className="admin-health-card">
-            <span className="admin-health-title">Average donation</span>
-            <span className="admin-health-stat">
-              {formatCurrency(metrics.averageDonation)}
-            </span>
-          </div>
-          <div className="admin-health-card">
-            <span className="admin-health-title">Active campaigns</span>
-            <span className="admin-health-stat">{metrics.activeCount}</span>
-          </div>
+        <div className="admin-insight-value">
+          {formatCurrency(metrics.totalRaised)}
+        </div>
+        <div className="admin-insight-label">
+          of {formatCurrency(metrics.totalGoal)} goal
+        </div>
+        <div className="progress-bar" style={{ marginTop: '16px' }}>
+          <div
+            className="progress-fill"
+            style={{
+              width: `${Math.min(100, Math.round(metrics.completion * 100))}%`,
+            }}
+          />
         </div>
       </article>
 
-      <article className="admin-card">
-        <h3>Category focus</h3>
-        <p className="admin-card-subtitle">
-          Where new projects are concentrated this cycle.
-        </p>
-        <div className="admin-breakdown">
-          {metrics.categoryBreakdown.length === 0 && (
-            <p className="admin-empty">No project categories yet.</p>
-          )}
-          {metrics.categoryBreakdown.map((item) => (
-            <div key={item.category} className="admin-breakdown-row">
-              <div className="admin-breakdown-label">
-                <span className="admin-row-title">
-                  {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
-                </span>
-                <span className="admin-row-meta">{"  " + item.count} projects</span>
-              </div>
-              <div className="admin-breakdown-bar">
-                <div
-                  className="admin-breakdown-fill"
-                  style={{
-                    width: `${(item.count / metrics.maxCategoryCount) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-          ))}
+      <article className="admin-insight-card">
+        <div className="admin-insight-header">
+          <h4 className="admin-insight-title">Category Focus</h4>
+          <span className="admin-insight-badge">
+            {metrics.categoryBreakdown.length} categories
+          </span>
+        </div>
+        <div className="admin-insight-value">
+          {metrics.categoryBreakdown[0]?.category?.charAt(0).toUpperCase() +
+            metrics.categoryBreakdown[0]?.category?.slice(1) || 'N/A'}
+        </div>
+        <div className="admin-insight-label">
+          Top category with {metrics.categoryBreakdown[0]?.count || 0} projects
         </div>
       </article>
 
-      <article className="admin-card">
-        <h3>Review queue</h3>
-        <p className="admin-card-subtitle">
+      <article className="admin-insight-card">
+        <div className="admin-insight-header">
+          <h4 className="admin-insight-title">Review Queue</h4>
+          <span className="admin-insight-badge">
+            {metrics.reviewQueue.length} pending
+          </span>
+        </div>
+        <div className="admin-insight-value">
+          {reviewList.length > 0 ? reviewList[0]?.title?.slice(0, 20) + '...' : 'All clear'}
+        </div>
+        <div className="admin-insight-label">
           {metrics.reviewQueue.length > 0
-            ? `${metrics.reviewQueue.length} project(s) flagged for review.`
-            : "No projects flagged. Quick check-in list below."}
-        </p>
-        <div className="admin-list">
-          {reviewList.map((project) => (
-            <div key={project.id} className="admin-row">
-              <div>
-                <p className="admin-row-title">{project.title}</p>
-                <span className="admin-row-meta">
-                  {project.category.charAt(0).toUpperCase() +
-                    project.category.slice(1)} - {project.donorCount || 0} donors
-                </span>
-              </div>
-              <div className="admin-row-actions">
-                {project.status === "review" ? (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => onApprove(project.id)}
-                  >
-                    Approve
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => onFlag(project.id)}
-                  >
-                    Flag
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
+            ? 'Project(s) flagged for review'
+            : 'No projects flagged'}
         </div>
       </article>
 
-      <article className="admin-card admin-card-stretch">
-        <h3>Needs attention</h3>
-        <p className="admin-card-subtitle">
-          Projects below 40% funded that may need outreach.
-        </p>
-        <div className="admin-list">
-          {metrics.needsAttention.length === 0 && (
-            <p className="admin-empty">All projects are tracking well.</p>
-          )}
-          {metrics.needsAttention.map((project) => (
-            <div key={project.id} className="admin-row">
-              <div>
-                <p className="admin-row-title">{project.title}</p>
-                <span className="admin-row-meta">
-                  {project.progress}% funded - {formatCurrency(project.currentAmount)} of{" "}
-                  {formatCurrency(project.goal)}
-                </span>
-              </div>
-            </div>
-          ))}
+      <article className="admin-insight-card">
+        <div className="admin-insight-header">
+          <h4 className="admin-insight-title">Needs Attention</h4>
+          <span className="admin-insight-badge">
+            {metrics.needsAttention.length} projects
+          </span>
+        </div>
+        <div className="admin-insight-value">
+          &lt;40% funded
+        </div>
+        <div className="admin-insight-label">
+          Projects below funding threshold
         </div>
       </article>
 
-      <article className="admin-card admin-card-stretch">
-        <h3>Top performers</h3>
-        <p className="admin-card-subtitle">
-          Highest funded campaigns right now.
-        </p>
-        <div className="admin-list">
-          {metrics.topProjects.map((project) => (
-            <div key={project.id} className="admin-row">
-              <div>
-                <p className="admin-row-title">{project.title}</p>
-                <span className="admin-row-meta">
-                  {formatCurrency(project.currentAmount)} raised
-                </span>
-              </div>
-              <span className="admin-pill">{project.progress}% funded</span>
-            </div>
-          ))}
+      <article className="admin-insight-card">
+        <div className="admin-insight-header">
+          <h4 className="admin-insight-title">Top Performers</h4>
+          <span className="admin-insight-badge">
+            {metrics.topProjects[0]?.progress || 0}%
+          </span>
+        </div>
+        <div className="admin-insight-value">
+          {metrics.topProjects[0]?.title?.slice(0, 20) || 'N/A'}...
+        </div>
+        <div className="admin-insight-label">
+          Highest funded campaign
+        </div>
+      </article>
+
+      <article className="admin-insight-card">
+        <div className="admin-insight-header">
+          <h4 className="admin-insight-title">Active Campaigns</h4>
+          <span className="admin-insight-badge">
+            {metrics.activeCount}
+          </span>
+        </div>
+        <div className="admin-insight-value">
+          {formatCurrency(metrics.averageDonation)}
+        </div>
+        <div className="admin-insight-label">
+          Average donation amount
         </div>
       </article>
     </div>

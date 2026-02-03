@@ -1,10 +1,11 @@
 import { useContext, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import ProjectCard from "../components/ProjectCard";
-import useAuth from "../hooks/useAuth";
-import useDonations from "../hooks/useDonations";
-import useProjects from "../hooks/useProjects";
-import { ToastContext } from "../context/ToastContext";
+import ProjectCard from "../../components/ProjectCard/ProjectCard";
+import useAuth from "../../hooks/useAuth";
+import useDonations from "../../hooks/useDonations";
+import useProjects from "../../hooks/useProjects";
+import { ToastContext } from "../../context/ToastContext";
+import "./UserDashboard.css";
 
 const formatDate = (value) => {
   if (!value) return "Unknown date";
@@ -39,7 +40,7 @@ export default function UserDashboard() {
   }
 
   if (currentUser.isAdmin) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/admin" replace />;
   }
 
   const normalizedEmail = currentUser.email.toLowerCase();
@@ -172,9 +173,6 @@ export default function UserDashboard() {
           >
             Donor dashboard
           </button>
-          <button type="button" className="btn btn-secondary btn-small" onClick={signOut}>
-            Sign out
-          </button>
         </div>
       </section>
 
@@ -206,7 +204,7 @@ export default function UserDashboard() {
         </div>
       ) : (
       <div className="user-dashboard-grid">
-        <section className="user-card">
+        <section className="user-card user-card-wide">
           <div className="user-card-header">
             <div>
               <h2>My donations</h2>
@@ -237,41 +235,82 @@ export default function UserDashboard() {
           )}
         </section>
 
-        <section className="user-card">
-          <div className="user-card-header">
+        <section className="user-card projects-created-card">
+          <div className="projects-created-header">
             <div>
               <h2>Projects created</h2>
-              <p className="user-card-subtitle">
+              <p className="projects-created-subtitle">
                 {myProjects.length} active projects
               </p>
             </div>
-            <Link to="/submit-project" className="btn btn-secondary btn-small">
+            <Link to="/submit-project" className="submit-project-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               Submit a project
             </Link>
           </div>
 
           {myProjects.length ? (
-            <div className="user-list">
-              {myProjects.map((project) => (
-                <div className="user-list-row" key={project.id}>
-                  <div>
-                    <p className="user-row-title">{project.title}</p>
-                    <p className="user-row-meta">
-                      {formatCurrency(project.currentAmount)} raised ·{" "}
-                      {formatCurrency(project.goal)}
-                    </p>
+            <div className="projects-created-content">
+              <div className="user-list">
+                {myProjects.map((project) => (
+                  <div className="user-list-row" key={project.id}>
+                    <div>
+                      <p className="user-row-title">{project.title}</p>
+                      <p className="user-row-meta">
+                        {formatCurrency(project.currentAmount)} raised ·{" "}
+                        {formatCurrency(project.goal)}
+                      </p>
+                    </div>
+                    <span
+                      className={`status-pill status-${project.status || "active"}`}
+                    >
+                      {project.status || "active"}
+                    </span>
                   </div>
-                  <span
-                    className={`status-pill status-${project.status || "active"}`}
-                  >
-                    {project.status || "active"}
-                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="projects-created-content">
+              <p className="user-empty">No projects created yet.</p>
+            </div>
+          )}
+        </section>
+
+        <section className="user-card">
+          <div className="user-card-header">
+            <div>
+              <h2>Recent activity</h2>
+              <p className="user-card-subtitle">Your latest updates</p>
+            </div>
+          </div>
+
+          {recentActivity.length ? (
+            <div className="user-list">
+              {recentActivity.map((item) => (
+                <div className="user-list-row" key={item.id}>
+                  <div>
+                    <p className="user-row-title">
+                      {item.type === "donation"
+                        ? `Donated to ${item.title}`
+                        : `Created ${item.title}`}
+                    </p>
+                    <p className="user-row-meta">{formatDate(item.createdAt)}</p>
+                  </div>
+                  {item.type === "donation" ? (
+                    <span className="user-row-amount">
+                      {formatCurrency(item.amount)}
+                    </span>
+                  ) : null}
                 </div>
               ))}
             </div>
           ) : (
-            <p className="user-empty">No projects created yet.</p>
+            <p className="user-empty">No recent activity yet.</p>
           )}
+
         </section>
 
         <section className="user-card user-card-wide">
@@ -339,8 +378,10 @@ export default function UserDashboard() {
                       className="user-usage-form"
                       onSubmit={(event) => {
                         event.preventDefault();
+                        event.stopPropagation();
                         handleUsageSubmit(project);
                       }}
+                      noValidate
                     >
                       <label className="form-field">
                         <span className="form-label">Amount spent (KSh)</span>
@@ -408,7 +449,11 @@ export default function UserDashboard() {
                         />
                       </label>
                       <div className="form-actions">
-                        <button type="submit" className="btn btn-primary btn-small">
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-small"
+                          onClick={() => handleUsageSubmit(project)}
+                        >
                           Add usage update
                         </button>
                       </div>
@@ -420,40 +465,6 @@ export default function UserDashboard() {
           ) : (
             <p className="user-empty">No projects to report yet.</p>
           )}
-        </section>
-
-        <section className="user-card">
-          <div className="user-card-header">
-            <div>
-              <h2>Recent activity</h2>
-              <p className="user-card-subtitle">Your latest updates</p>
-            </div>
-          </div>
-
-          {recentActivity.length ? (
-            <div className="user-list">
-              {recentActivity.map((item) => (
-                <div className="user-list-row" key={item.id}>
-                  <div>
-                    <p className="user-row-title">
-                      {item.type === "donation"
-                        ? `Donated to ${item.title}`
-                        : `Created ${item.title}`}
-                    </p>
-                    <p className="user-row-meta">{formatDate(item.createdAt)}</p>
-                  </div>
-                  {item.type === "donation" ? (
-                    <span className="user-row-amount">
-                      {formatCurrency(item.amount)}
-                    </span>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="user-empty">No recent activity yet.</p>
-          )}
-
         </section>
       </div>
       )}

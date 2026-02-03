@@ -1,0 +1,28 @@
+/* ==========================================
+   ADD PROJECT PAGE STYLES
+   ========================================== */
+
+.add-project-page {
+  padding: var(--spacing-xl);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-project-page h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xl);
+  color: var(--color-text-primary);
+  font-family: var(--font-google-sans), var(--font-roboto), sans-serif;
+}
+
+/* Responsive add project page */
+@media (max-width: 767.98px) {
+  .add-project-page {
+    padding: var(--spacing-lg);
+  }
+
+  .add-project-page h1 {
+    font-size: 1.5rem;
+  }
+}

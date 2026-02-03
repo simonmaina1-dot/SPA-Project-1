@@ -5,5 +5,26 @@
     "email": "mainawaititu2026@gmail.com",
     "password": "simon-2026",
     "role": "user"
+  },
+  {
+    "id": "u-1769801487054",
+    "name": "chris brian",
+    "email": "cronos@gmail.com",
+    "password": "denis-2026",
+    "role": "user"
+  },
+  {
+    "id": "u-1769845604431",
+    "name": "kipp opp",
+    "email": "hilla@gmail.com",
+    "password": "denis-2026",
+    "role": "user"
+  },
+  {
+    "id": "u-1770033309856",
+    "name": "text",
+    "email": "ypvega@gmail.com",
+    "password": "denis-2026",
+    "role": "user"
   }
 ]
