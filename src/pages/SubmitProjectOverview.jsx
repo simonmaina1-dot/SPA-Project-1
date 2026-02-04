@@ -349,7 +349,23 @@ const SubmitProjectOverview = () => {
         isOpen={showReview}
         onClose={() => setShowReview(false)}
         onSubmit={handleSubmitProject}
-        formData={formData}
+        onEdit={handleEditFromReview}
+        formValues={{
+          // From ProjectDetailsModal
+          title: formData.projectDetails?.title || '',
+          category: formData.projectDetails?.category || '',
+          goal: formData.projectDetails?.goal || 0,
+          description: formData.projectDetails?.description || '',
+          images: formData.projectDetails?.images || [],
+          // From IdentityVerificationForm
+          ownerName: formData.identityVerification?.fullName || '',
+          ownerEmail: formData.identityVerification?.email || '',
+          ownerPhone: formData.identityVerification?.phoneNumber || '',
+          fullName: formData.identityVerification?.fullName || '',
+          documentType: formData.identityVerification?.idType || '',
+          documentNumber: formData.identityVerification?.idNumber || '',
+          identityFiles: formData.identityVerification?.idDocument ? [formData.identityVerification.idDocument] : [],
+        }}
       />
     </div>
   );

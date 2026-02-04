@@ -376,13 +376,13 @@ textarea:focus {
 /* Grid layouts */
 .projects-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
 .featured-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   max-width: 1400px;
   margin: 0 auto;
@@ -7675,7 +7675,7 @@ body.is-scrolling .funding-progress {
 
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-xl);
   max-width: 1400px;
   margin: 0 auto;
@@ -8120,6 +8120,18 @@ body.is-scrolling .funding-progress {
   flex-direction: column;
   gap: 20px;
   max-width: 700px;
+}
+
+/* Override form-actions for feedback section - remove box styling */
+.about-feedback .form-actions {
+  position: static;
+  background: transparent;
+  backdrop-filter: none;
+  border-top: none;
+  box-shadow: none;
+  padding: 0;
+  margin-top: 0;
+  gap: 12px;
 }
 
 .form-field {
