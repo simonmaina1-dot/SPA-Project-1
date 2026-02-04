@@ -138,33 +138,5 @@
     "email": "iankip5@gmail.com",
     "password": "Ian@1234",
     "role": "user"
-  },
-  {
-    "id": "u-1770109022125",
-    "name": "kipp opp",
-    "email": "pvega@gmail.com",
-    "password": "Denis-2026",
-    "role": "user"
-  },
-  {
-    "id": "u-1769801487054",
-    "name": "chris brian",
-    "email": "cronos@gmail.com",
-    "password": "denis-2026",
-    "role": "user"
-  },
-  {
-    "id": "u-1769845604431",
-    "name": "kipp opp",
-    "email": "hilla@gmail.com",
-    "password": "denis-2026",
-    "role": "user"
-  },
-  {
-    "id": "u-1770033309856",
-    "name": "text",
-    "email": "ypvega@gmail.com",
-    "password": "denis-2026",
-    "role": "user"
   }
 ]

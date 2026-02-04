@@ -40,22 +40,7 @@
         "date": "2025-06-07",
         "createdAt": "2025-06-07T15:07:28.483Z"
       }
-    ],
-    "ownerId": "",
-    "ownerName": "",
-    "ownerEmail": "",
-    "ownerPhone": "",
-    "identityDocument": "",
-    "verificationNotes": "",
-    "adminReviewer": null,
-    "reviewedAt": null,
-    "criteriaMet": {
-      "communityImpact": false,
-      "budgetClarity": false,
-      "timelineReady": false,
-      "stakeholderSupport": false
-    },
-    "galleryUrls": []
+    ]
   },
   {
     "id": "p-1002",
@@ -241,7 +226,7 @@
     "goal": 8000,
     "currentAmount": 13271,
     "donorCount": 59,
-    "status": "active",
+    "status": "funded",
     "verificationStatus": "approved",
     "ownerId": "",
     "ownerName": "",
@@ -257,8 +242,7 @@
       "timelineReady": false,
       "stakeholderSupport": false
     },
-    "fundUsage": [],
-    "galleryUrls": []
+    "fundUsage": []
   },
   {
     "id": "p-1007",
@@ -440,37 +424,6 @@
         "createdAt": "2026-01-30T17:01:20.117Z"
       }
     ],
-    "adminReviewer": null,
-    "reviewedAt": null
-  },
-  {
-    "id": "p-1770123338802",
-    "title": "test",
-    "description": "weducation sector",
-    "category": "Education",
-    "imageUrl": "",
-    "galleryUrls": [],
-    "galleryCount": 0,
-    "goal": 0,
-    "currentAmount": 0,
-    "donorCount": 0,
-    "status": "review",
-    "createdAt": "2026-02-03T12:55:38.802Z",
-    "createdBy": null,
-    "ownerId": "",
-    "ownerName": "",
-    "ownerEmail": "",
-    "ownerPhone": "",
-    "identityDocument": "",
-    "verificationStatus": "submitted",
-    "verificationNotes": "",
-    "criteriaMet": {
-      "communityImpact": false,
-      "budgetClarity": false,
-      "timelineReady": false,
-      "stakeholderSupport": false
-    },
-    "fundUsage": [],
     "adminReviewer": null,
     "reviewedAt": null
   }
