@@ -3825,21 +3825,23 @@ body {
 
 .donor-projects-grid {
   display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(3, 1fr) !important;
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  max-width: 100%;
+  margin: 0;
+  padding: 24px;
 }
 
 @media (max-width: 991px) {
   .donor-projects-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 767px) {
   .donor-projects-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
+    padding: 20px;
   }
 }
 
