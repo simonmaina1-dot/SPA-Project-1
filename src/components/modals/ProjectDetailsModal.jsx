@@ -74,7 +74,7 @@ const ProjectDetailsModal = ({
   onClose,
   onSubmit,
   onSave,
-  initialData = {},
+  initialData,
   isEdit = false,
 }) => {
   const { showToast } = useContext(ToastContext);
@@ -96,13 +96,14 @@ const ProjectDetailsModal = ({
   // ✅ RESET FORM DATA - Called when modal opens
   useEffect(() => {
     if (isOpen) {
+      const resolvedInitial = initialData || {};
       setFormData({
-        projectTitle: initialData.title || '',
-        category: initialData.category || '',
-        targetAmount: initialData.goal ? String(initialData.goal) : '',
-        description: initialData.description || '',
+        projectTitle: resolvedInitial.title || '',
+        category: resolvedInitial.category || '',
+        targetAmount: resolvedInitial.goal ? String(resolvedInitial.goal) : '',
+        description: resolvedInitial.description || '',
       });
-      setUploadedImages(initialData.images || []);
+      setUploadedImages(resolvedInitial.images || []);
       setErrors({});
       setTouched({});
     }
@@ -121,22 +122,17 @@ const ProjectDetailsModal = ({
   // ✅ HANDLE INPUT CHANGE - This makes text appear
   const handleChange = useCallback((field) => (e) => {
     const value = e.target.value;
-    
-    console.log(`✅ ${field} changed to:`, value); // Debug log
-    
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
-    
-    // Clear error for this field
-    if (errors[field]) {
-      setErrors(prev => ({
-        ...prev,
-        [field]: ''
-      }));
-    }
-  }, [errors]);
+
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      return { ...prev, [field]: '' };
+    });
+  }, []);
 
   // ✅ HANDLE BLUR - Mark field as touched and validate
   const handleBlur = useCallback((field) => () => {
@@ -431,7 +427,7 @@ const ProjectDetailsModal = ({
                 onBlur={handleBlur('targetAmount')}
                 placeholder="50000"
                 min="0"
-                step="100"
+                step="any"
                 className={`form-input ${
                   touched.targetAmount && errors.targetAmount ? 'error' : ''
                 }`}
