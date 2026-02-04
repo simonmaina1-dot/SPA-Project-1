@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 const sourceLabels = {
   card: "Card",
@@ -20,8 +20,6 @@ const formatDate = (value) => {
 };
 
 export default function AdminFundTracking({ projects, donations, formatCurrency }) {
-  const [selectedSource, setSelectedSource] = useState(null);
-
   const usageEntries = useMemo(
     () =>
       projects.flatMap((project) =>
@@ -75,14 +73,6 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
 
     return Object.values(sourceMap).sort((a, b) => b.total - a.total);
   }, [donations]);
-
-  const filteredDonations = useMemo(() => {
-    if (!selectedSource) return [];
-    return donations
-      .filter((d) => (d.source || "other") === selectedSource)
-      .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
-      .slice(0, 10);
-  }, [donations, selectedSource]);
 
   const recentUsage = useMemo(
     () =>
@@ -153,66 +143,25 @@ export default function AdminFundTracking({ projects, donations, formatCurrency 
 
         <div className="admin-fund-panel">
           <h4>Donation Sources</h4>
-          <div className="admin-source-buttons">
+          <div className="admin-source-list">
             {sourceSummary.length ? (
               sourceSummary.map((source) => (
-                <button
-                  key={source.source}
-                  type="button"
-                  className={`admin-source-btn ${selectedSource === source.source ? "active" : ""}`}
-                  onClick={() => setSelectedSource(
-                    selectedSource === source.source ? null : source.source
-                  )}
-                >
-                  <span className="admin-source-btn-label">
-                    {sourceLabels[source.source] || "Other"}
-                  </span>
-                  <span className="admin-source-btn-count">
-                    {source.count} donations
-                  </span>
-                  <span className="admin-source-btn-amount">
+                <div key={source.source} className="admin-source-row">
+                  <div>
+                    <p className="admin-row-title">
+                      {sourceLabels[source.source] || "Other"}
+                    </p>
+                    <p className="admin-row-meta">{source.count} donations</p>
+                  </div>
+                  <span className="admin-row-amount">
                     {formatCurrency(source.total)}
                   </span>
-                </button>
+                </div>
               ))
             ) : (
               <p className="admin-empty">No donation sources recorded yet.</p>
             )}
           </div>
-
-          {selectedSource && (
-            <div className="admin-donor-list">
-              <h5>
-                {sourceLabels[selectedSource] || "Other"} Donors
-                <button
-                  type="button"
-                  className="admin-close-btn"
-                  onClick={() => setSelectedSource(null)}
-                >
-                  ×
-                </button>
-              </h5>
-              {filteredDonations.length ? (
-                filteredDonations.map((donation) => (
-                  <div key={donation.id} className="admin-donor-row">
-                    <div>
-                      <p className="admin-row-title">
-                        {donation.donorName || "Anonymous"}
-                      </p>
-                      <p className="admin-row-meta">
-                        {formatDate(donation.createdAt)}
-                      </p>
-                    </div>
-                    <span className="admin-row-amount">
-                      {formatCurrency(donation.amount)}
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <p className="admin-empty">No donations from this source.</p>
-              )}
-            </div>
-          )}
 
           <h4 className="mt-3">Recent Usage Reports</h4>
           <div className="admin-source-list">

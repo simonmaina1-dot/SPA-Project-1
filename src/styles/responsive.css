@@ -96,18 +96,6 @@
   }
 }
 
-/* Tablets (less than 1024px) */
-@media (max-width: 1024px) {
-  .about-section .about-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .about-section .about-card:hover {
-    transform: translateY(-4px);
-  }
-}
-
 /* Mobile devices (less than 768px) */
 @media (max-width: 767.98px) {
   .hero {
@@ -155,26 +143,6 @@
 
   .featured-grid {
     grid-template-columns: 1fr;
-  }
-
-  .about-section {
-    padding: 40px 16px;
-  }
-
-  .about-section .about-header h2 {
-    font-size: 1.75rem;
-  }
-
-  .about-section .about-lead {
-    font-size: 1rem;
-  }
-
-  .about-section .about-card {
-    padding: 24px;
-  }
-
-  .feedback-section {
-    padding: var(--spacing-lg) var(--spacing-md);
   }
 
   .app-footer {

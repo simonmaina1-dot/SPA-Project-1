@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Modal.css';
 
 const Modal = ({ 
@@ -7,28 +7,41 @@ const Modal = ({
   onSubmit, 
   children,
   showAddProjectForm = false,
-  showFooter = true
+  showFooter = true,
+  onAddProject
 }) => {
   const [formData, setFormData] = useState({
     projectTitle: '',
     category: '',
+    targetAmount: '',
     description: '',
     imageUrl: '',
-    imageFile: null,
-    webUrl: ''
+    webUrl: '',
+    imageFile: null
   });
+  const [showAddForm, setShowAddForm] = useState(showAddProjectForm);
 
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
+  const handleAddProjectClick = () => {
+    setShowAddForm(true);
+    if (onAddProject) {
+      onAddProject();
     }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen]);
+  };
+
+  const handleClose = () => {
+    // Reset form data when closing
+    setFormData({
+      projectTitle: '',
+      category: '',
+      targetAmount: '',
+      description: '',
+      imageUrl: '',
+      webUrl: '',
+      imageFile: null
+    });
+    setShowAddForm(showAddProjectForm);
+    onClose();
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,31 +64,32 @@ const Modal = ({
     if (onSubmit) {
       onSubmit(formData);
     }
-    
-    // Reset form
-    setFormData({
-      projectTitle: '',
-      category: '',
-      description: '',
-      imageUrl: '',
-      imageFile: null,
-      webUrl: ''
-    });
-    
-    onClose();
+    handleClose();
   };
 
   if (!isOpen) return null;
 
-  // Render children content (for vetting modal, etc.)
-  if (children && !showAddProjectForm) {
+  // Render children content (for vetting modal) with Add Project button
+  if (children && !showAddForm) {
     return (
-      <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-overlay" onClick={handleClose}>
         <div className="project-modal" onClick={(e) => e.stopPropagation()}>
           <div className="modal-card-spotlight"></div>
           <div className="modal-children-content">
             {children}
           </div>
+          {/* Add Project Button in vetting modal */}
+          {onAddProject && (
+            <div className="modal-add-project-btn-container">
+              <button 
+                type="button" 
+                className="btn btn-primary modal-add-project-btn"
+                onClick={handleAddProjectClick}
+              >
+                + Add Project
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -83,9 +97,14 @@ const Modal = ({
 
   // Render Add Project form with iOS styling
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={handleClose}>
       <div className="project-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-card-spotlight"></div>
+        
+        {/* Header - PROJECT DETAILS */}
+        <div className="modal-header">
+          <h2>PROJECT DETAILS</h2>
+        </div>
         
         <form onSubmit={handleSubmit} className="project-form">
           {/* First Row - Project Title + Category */}
@@ -124,7 +143,29 @@ const Modal = ({
             </div>
           </div>
 
-          {/* Second Row - Description */}
+          {/* Second Row - Target Amount (aligned with category) */}
+          <div className="form-row">
+            <div className="input-group input-group-empty">
+              {/* Empty left side for alignment */}
+            </div>
+            <div className="input-group">
+              <label htmlFor="targetAmount">target amount (ksh)</label>
+              <input
+                type="number"
+                id="targetAmount"
+                name="targetAmount"
+                value={formData.targetAmount}
+                onChange={handleChange}
+                placeholder="50000"
+                required
+                min="1"
+                autoComplete="off"
+                className="ios-input"
+              />
+            </div>
+          </div>
+
+          {/* Third Row - Description */}
           <div className="input-group form-row-full">
             <label htmlFor="description">description</label>
             <textarea
@@ -133,15 +174,15 @@ const Modal = ({
               value={formData.description}
               onChange={handleChange}
               placeholder="Describe the project and its impact on the community..."
-              rows="6"
+              rows="8"
               required
               className="ios-input ios-textarea"
             />
           </div>
 
-          {/* Third Row - Image URL + Add Image */}
-          <div className="form-row">
-            <div className="input-group form-group-narrow">
+          {/* Fourth Row - Image URL + Web URL | Add Image Upload Box */}
+          <div className="form-row form-row-images">
+            <div className="input-group image-urls-group">
               <label htmlFor="imageUrl">image url</label>
               <input
                 type="text"
@@ -153,8 +194,19 @@ const Modal = ({
                 autoComplete="off"
                 className="ios-input"
               />
+              <label htmlFor="webUrl" style={{ marginTop: '0.75rem' }}>web url</label>
+              <input
+                type="url"
+                id="webUrl"
+                name="webUrl"
+                value={formData.webUrl}
+                onChange={handleChange}
+                placeholder="https://project-website.com"
+                autoComplete="off"
+                className="ios-input"
+              />
             </div>
-            <div className="input-group form-group-wide">
+            <div className="input-group">
               <label>add image</label>
               <div className="image-upload-box">
                 <input
@@ -174,25 +226,10 @@ const Modal = ({
             </div>
           </div>
 
-          {/* Fourth Row - Web URL */}
-          <div className="input-group form-row-full">
-            <label htmlFor="webUrl">web url</label>
-            <input
-              type="url"
-              id="webUrl"
-              name="webUrl"
-              value={formData.webUrl}
-              onChange={handleChange}
-              placeholder="https://project-website.com"
-              autoComplete="off"
-              className="ios-input"
-            />
-          </div>
-
-          {/* Fifth Row - iOS Style Footer Buttons */}
+          {/* Footer Buttons */}
           {showFooter && (
             <div className="form-footer">
-              <button type="button" className="ios-btn-secondary" onClick={onClose}>
+              <button type="button" className="ios-btn-secondary" onClick={handleClose}>
                 cancel
               </button>
               <button type="submit" className="ios-btn-primary">

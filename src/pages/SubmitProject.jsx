@@ -1,27 +1,13 @@
-import { useContext, useMemo, useState, useRef } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProjects from "../hooks/useProjects";
-import useVerification from "../hooks/useVerification";
 import { ToastContext } from "../context/ToastContext";
 import { defaultCriteriaMet, projectCriteria } from "../data/projectCriteria";
-import {
-  identitySchema,
-  personalInfoSchema,
-  projectDetailsSchema,
-  criteriaSchema,
-  projectSchema,
-} from "../validations/projectSchemas";
-import { validateForm } from "../utils/validationHelper";
-
-const IDENTITY_VERIFICATION_ENABLED = true;
+import styles from "./SubmitProject.module.css";
 
 const buildInitialState = (currentUser) => ({
-  identityDocumentUrl: "",
-  identityDocumentUpload: "",
-  identityDocumentFileName: "",
-  identityDocumentType: "national_id",
-  documentNumber: "",
+  identityDocument: "",
   ownerName: currentUser?.name || "",
   ownerEmail: currentUser?.email || "",
   ownerPhone: "",
@@ -33,122 +19,136 @@ const buildInitialState = (currentUser) => ({
   galleryUrls: "",
   criteriaMet: { ...defaultCriteriaMet },
 });
+
 const stepLabels = [
-  "Identity verification",
   "Personal information",
   "Project details",
+  "Identity verification",
   "Review and submit",
 ];
+
 export default function SubmitProject() {
   const { currentUser } = useAuth();
   const { addProject } = useProjects();
-  const { createSubmission } = useVerification();
   const { showToast } = useContext(ToastContext);
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState(() =>
-    buildInitialState(currentUser),
+    buildInitialState(currentUser)
   );
+
   const steps = useMemo(
     () => stepLabels.map((label, index) => ({ label, index: index + 1 })),
-    [],
+    []
   );
-  const fileInputRef = useRef(null);
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
-    if (!allowedTypes.includes(file.type)) {
-      showToast("Please upload an image (JPEG, PNG, GIF) or PDF file.", "warning");
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) {
-      showToast("File size must be less than 5MB.", "warning");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setFormValues((prev) => ({
-        ...prev,
-        identityDocumentUpload: e.target.result,
-        identityDocumentFileName: file.name,
-      }));
-      showToast("Document uploaded successfully.", "success");
-    };
-    reader.onerror = () => {
-      showToast("Failed to read file. Please try again.", "error");
-    };
-    reader.readAsDataURL(file);
-  };
 
   if (!currentUser) {
     return <Navigate to="/signup" replace />;
   }
+
   if (currentUser.isAdmin) {
     return <Navigate to="/add" replace />;
   }
+
   const updateValue = (field, value) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
+
   const toggleCriteria = (key) => {
     setFormValues((prev) => ({
       ...prev,
-      criteriaMet: { ...prev.criteriaMet, [key]: !prev.criteriaMet[key] },
+      criteriaMet: {
+        ...prev.criteriaMet,
+        [key]: !prev.criteriaMet[key],
+      },
     }));
   };
-  const validateStep = async (currentStep) => {
-    let schema;
-    if (currentStep === 1) schema = identitySchema;
-    if (currentStep === 2) schema = personalInfoSchema;
-    if (currentStep === 3) schema = projectDetailsSchema;
-    if (currentStep === 4) schema = criteriaSchema;
-    if (schema) {
-      const { isValid, errors } = await validateForm(schema, formValues);
-      if (!isValid) {
-        showToast(Object.values(errors).join(", "), "warning");
+
+  const validateStep = (currentStep) => {
+    if (currentStep === 1) {
+      if (!formValues.ownerName.trim()) {
+        showToast("Please enter your full name.", "warning");
+        return false;
+      }
+      if (!formValues.ownerEmail.trim()) {
+        showToast("Please enter a valid email address.", "warning");
+        return false;
+      }
+      if (!formValues.ownerPhone.trim()) {
+        showToast("Please enter a phone number.", "warning");
         return false;
       }
     }
+
+    if (currentStep === 2) {
+      if (!formValues.title.trim() || !formValues.description.trim()) {
+        showToast("Please enter a project title and description.", "warning");
+        return false;
+      }
+      if (!formValues.goal || Number(formValues.goal) <= 0) {
+        showToast("Please enter a valid funding goal.", "warning");
+        return false;
+      }
+      const allCriteriaMet = Object.values(formValues.criteriaMet).every(Boolean);
+      if (!allCriteriaMet) {
+        showToast("Please confirm each project criteria item.", "warning");
+        return false;
+      }
+    }
+
+    if (currentStep === 3) {
+      if (!formValues.identityDocument.trim()) {
+        showToast("Please add a government ID or passport URL.", "warning");
+        return false;
+      }
+    }
+
     return true;
   };
-  const validateAll = async () => {
-    const { isValid, errors } = await validateForm(projectSchema, formValues);
-    if (!isValid) {
-      showToast(Object.values(errors).join(", "), "warning");
+
+  const validateAll = () => {
+    if (!validateStep(1)) {
+      setStep(1);
+      return false;
+    }
+    if (!validateStep(2)) {
+      setStep(2);
+      return false;
+    }
+    if (!validateStep(3)) {
+      setStep(3);
       return false;
     }
     return true;
   };
-  const handleNext = async () => {
-    if (!(await validateStep(step))) return;
+
+  const handleNext = () => {
+    if (!validateStep(step)) return;
     setStep((prev) => Math.min(prev + 1, steps.length));
   };
+
   const handleBack = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
-  const handleSubmit = async (event) => {
+
+  const handleSubmit = (event) => {
     event.preventDefault();
+
     if (step < steps.length) {
-      await handleNext();
+      handleNext();
       return;
     }
-    if (!(await validateAll())) {
+
+    if (!validateAll()) {
       return;
     }
+
     const createdBy = {
       id: currentUser.id,
       name: currentUser.name,
       email: currentUser.email,
     };
-    // Use uploaded file (base64) or URL
-    const identityDocument = formValues.identityDocumentUpload || formValues.identityDocumentUrl || "";
+
     addProject({
       title: formValues.title,
       description: formValues.description,
@@ -162,21 +162,24 @@ export default function SubmitProject() {
       ownerName: formValues.ownerName,
       ownerEmail: formValues.ownerEmail,
       ownerPhone: formValues.ownerPhone,
-      identityDocument,
-      identityDocumentFileName: formValues.identityDocumentFileName,
+      identityDocument: formValues.identityDocument,
       verificationStatus: "submitted",
       verificationNotes: "",
       criteriaMet: formValues.criteriaMet,
       fundUsage: [],
       status: "review",
     });
+
     showToast("Project submitted for verification.", "success");
     setFormValues(buildInitialState(currentUser));
     setStep(1);
     navigate("/user-dashboard");
   };
+
   return (
-    <div className="page submit-project-page">
+    <div 
+      className={`page submit-project-page ${styles.submitPage}`}
+    >
       <section className="page-header">
         <h1>Submit a project</h1>
         <p>
@@ -187,109 +190,19 @@ export default function SubmitProject() {
 
       <div className="submit-project-wrapper">
         <div className="submit-steps">
-          <div className="submit-step dormant">
-            <span className="submit-step-index">1</span>
-            <span className="submit-step-label">Identity verification</span>
-          </div>
           {steps.map((stepItem) => (
             <div
               key={stepItem.index}
-              className={`submit-step${step >= stepItem.index ? " active" : ""}`}
+              className={`submit-step${step >= stepItem.index ? " active" : ""}${step > stepItem.index ? " completed" : ""}`}
             >
-              <span className="submit-step-index">{stepItem.index + 1}</span>
+              <span className="submit-step-index">{stepItem.index}</span>
               <span className="submit-step-label">{stepItem.label}</span>
             </div>
           ))}
         </div>
 
         <form className="submit-card" onSubmit={handleSubmit}>
-          {IDENTITY_VERIFICATION_ENABLED && step === 1 && (
-            <div className="submit-section">
-              <h2>Identity verification</h2>
-              <p className="submit-hint">
-                Upload a scan/photo of your government-issued ID or passport.
-              </p>
-
-              <div className="document-upload-area">
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileUpload}
-                  accept="image/jpeg,image/png,image/gif,application/pdf"
-                  style={{ display: "none" }}
-                />
-
-                {formValues.identityDocumentUpload ? (
-                  <div className="document-preview">
-                    {formValues.identityDocumentUpload.startsWith("data:image") ? (
-                      <img
-                        src={formValues.identityDocumentUpload}
-                        alt="Document preview"
-                        className="document-preview-image"
-                      />
-                    ) : (
-                      <div className="document-preview-file">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                        </svg>
-                        <span>{formValues.identityDocumentFileName}</span>
-                      </div>
-                    )}
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => {
-                        setFormValues((prev) => ({
-                          ...prev,
-                          identityDocumentUpload: "",
-                          identityDocumentFileName: "",
-                        }));
-                      }}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    className="document-upload-btn"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="17 8 12 3 7 8" />
-                      <line x1="12" y1="3" x2="12" y2="15" />
-                    </svg>
-                    <span>Click to upload document</span>
-                    <span className="upload-hint">JPEG, PNG, GIF or PDF (max 5MB)</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="form-divider">
-                <span>or provide a URL</span>
-              </div>
-
-              <label className="form-field">
-                <span className="form-label">
-                  Document URL (optional)
-                </span>
-                <input
-                  type="url"
-                  name="identityDocumentUrl"
-                  value={formValues.identityDocumentUrl}
-                  onChange={(event) =>
-                    updateValue("identityDocumentUrl", event.target.value)
-                  }
-                  placeholder="https://secure-file-link.com/document"
-                  disabled={!!formValues.identityDocumentUpload}
-                />
-              </label>
-            </div>
-          )}
-
-          {step === (IDENTITY_VERIFICATION_ENABLED ? 2 : 1) && (
+          {step === 1 && (
             <div className="submit-section">
               <h2>Personal information</h2>
               <div className="form-grid">
@@ -299,9 +212,7 @@ export default function SubmitProject() {
                     type="text"
                     name="ownerName"
                     value={formValues.ownerName}
-                    onChange={(event) =>
-                      updateValue("ownerName", event.target.value)
-                    }
+                    onChange={(event) => updateValue("ownerName", event.target.value)}
                     placeholder="Jane Doe"
                     required
                   />
@@ -321,7 +232,7 @@ export default function SubmitProject() {
                   />
                 </label>
 
-                <label className="form-field form-field-wide">
+                <label className="form-field">
                   <span className="form-label">Phone number *</span>
                   <input
                     type="tel"
@@ -338,7 +249,7 @@ export default function SubmitProject() {
             </div>
           )}
 
-          {step === (IDENTITY_VERIFICATION_ENABLED ? 3 : 2) && (
+          {step === 2 && (
             <div className="submit-section">
               <h2>Project details</h2>
               <div className="form-grid">
@@ -348,9 +259,7 @@ export default function SubmitProject() {
                     type="text"
                     name="title"
                     value={formValues.title}
-                    onChange={(event) =>
-                      updateValue("title", event.target.value)
-                    }
+                    onChange={(event) => updateValue("title", event.target.value)}
                     placeholder="Neighborhood Learning Lab"
                     required
                   />
@@ -396,9 +305,7 @@ export default function SubmitProject() {
                     type="number"
                     name="goal"
                     value={formValues.goal}
-                    onChange={(event) =>
-                      updateValue("goal", event.target.value)
-                    }
+                    onChange={(event) => updateValue("goal", event.target.value)}
                     placeholder="12000"
                     min="0"
                     required
@@ -411,17 +318,13 @@ export default function SubmitProject() {
                     type="url"
                     name="imageUrl"
                     value={formValues.imageUrl}
-                    onChange={(event) =>
-                      updateValue("imageUrl", event.target.value)
-                    }
+                    onChange={(event) => updateValue("imageUrl", event.target.value)}
                     placeholder="https://images.example.com/cover.jpg"
                   />
                 </label>
 
                 <label className="form-field">
-                  <span className="form-label">
-                    Gallery URLs (comma-separated)
-                  </span>
+                  <span className="form-label">Gallery URLs (comma-separated)</span>
                   <input
                     type="text"
                     name="galleryUrls"
@@ -452,7 +355,30 @@ export default function SubmitProject() {
             </div>
           )}
 
-          {step === (IDENTITY_VERIFICATION_ENABLED ? 4 : 3) && (
+          {step === 3 && (
+            <div className="submit-section">
+              <h2>Identity verification</h2>
+              <p className="submit-hint">
+                Uploads are coming soon. For now, paste a secure link to your
+                government ID or passport scan.
+              </p>
+              <label className="form-field">
+                <span className="form-label">Government ID / Passport URL *</span>
+                <input
+                  type="url"
+                  name="identityDocument"
+                  value={formValues.identityDocument}
+                  onChange={(event) =>
+                    updateValue("identityDocument", event.target.value)
+                  }
+                  placeholder="https://secure-file-link.com/document"
+                  required
+                />
+              </label>
+            </div>
+          )}
+
+          {step === 4 && (
             <div className="submit-section submit-review">
               <h2>Review your submission</h2>
               <p className="submit-hint">
@@ -460,22 +386,6 @@ export default function SubmitProject() {
               </p>
 
               <div className="review-grid">
-                {IDENTITY_VERIFICATION_ENABLED && (
-                  <div>
-                    <p className="review-label">Identity document</p>
-                    <p className="review-value">
-                      {formValues.identityDocumentFileName ||
-                        formValues.identityDocumentUrl ||
-                        "Not provided"}
-                    </p>
-                    <p className="review-value">
-                      {formValues.identityDocumentType}
-                      {formValues.documentNumber
-                        ? ` · ${formValues.documentNumber}`
-                        : ""}
-                    </p>
-                  </div>
-                )}
                 <div>
                   <p className="review-label">Owner name</p>
                   <p className="review-value">{formValues.ownerName}</p>
@@ -496,6 +406,10 @@ export default function SubmitProject() {
                   <p className="review-label">Funding goal</p>
                   <p className="review-value">KSh {formValues.goal}</p>
                 </div>
+                <div>
+                  <p className="review-label">Identity document</p>
+                  <p className="review-value">{formValues.identityDocument}</p>
+                </div>
                 <div className="review-block">
                   <p className="review-label">Description</p>
                   <p className="review-value">{formValues.description}</p>
@@ -505,8 +419,7 @@ export default function SubmitProject() {
                   <ul>
                     {projectCriteria.map((criteria) => (
                       <li key={criteria.key}>
-                        {formValues.criteriaMet[criteria.key] ? "✓" : "•"}{" "}
-                        {criteria.label}
+                        {formValues.criteriaMet[criteria.key] ? "✓" : "•"} {criteria.label}
                       </li>
                     ))}
                   </ul>
@@ -515,33 +428,38 @@ export default function SubmitProject() {
             </div>
           )}
 
-          <div className="form-actions submit-actions">
+          <div className={styles.submitActions}>
             <button
               type="button"
-              className="btn btn-secondary"
               onClick={() => navigate("/user-dashboard")}
+              className={styles.btnSecondary}
             >
               Cancel
             </button>
+
             {step > 1 && (
               <button
                 type="button"
-                className="btn btn-secondary"
                 onClick={handleBack}
+                className={styles.btnSecondary}
               >
                 Back
               </button>
             )}
+
             {step < steps.length ? (
-              <button
-                type="button"
-                className="btn btn-primary"
+              <button 
+                type="button" 
                 onClick={handleNext}
+                className={styles.btnPrimary}
               >
                 Continue
               </button>
             ) : (
-              <button type="submit" className="btn btn-primary">
+              <button 
+                type="submit"
+                className={styles.btnPrimary}
+              >
                 Submit for review
               </button>
             )}

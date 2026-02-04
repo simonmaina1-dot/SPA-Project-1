@@ -6,7 +6,6 @@ import useForm from "../hooks/useForm";
 import { ToastContext } from "../context/ToastContext";
 import Modal from "../components/Modal/Modal";
 
-
 const initialValues = {
   name: "",
   email: "",

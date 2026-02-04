@@ -7,9 +7,12 @@ import ProjectDetails from "./pages/ProjectDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import Donate from "./pages/Donate";
 import UserDashboard from "./pages/UserDashboard/UserDashboard";
-import SubmitProject from "./pages/SubmitProject";
+import SubmitProjectOverview from "./pages/SubmitProjectOverview";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import About from "./pages/About/About";
+import Projects from "./pages/Projects/Projects";
+import Account from "./pages/Account/Account";
 import "./App.css";
 
 function NotFound() {
@@ -18,7 +21,7 @@ function NotFound() {
       <section className="empty-state">
         <h2>Page not found</h2>
         <p>The link you followed does not exist yet.</p>
-        <Link to="/" className="btn btn-primary">
+        <Link to="/" className="btn btn--primary">
           Go to home
         </Link>
       </section>
@@ -36,12 +39,13 @@ export default function App() {
       <main className={`main-content${hideMainNav ? " main-content--flush" : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/about" element={<About />} />
           <Route path="/add" element={<AddProject />} />
-          <Route path="/submit-project" element={<SubmitProject />} />
+          <Route path="/submit-project" element={<SubmitProjectOverview />} />
           <Route path="/projects/:projectId" element={<ProjectDetails />} />
           <Route path="/donate/:projectId" element={<Donate />} />
-          <Route path="/account" element={<Navigate to="/user-dashboard" replace />} />
+          <Route path="/account" element={<Account />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />

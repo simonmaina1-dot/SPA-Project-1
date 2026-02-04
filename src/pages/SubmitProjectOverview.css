@@ -1,0 +1,363 @@
+/* ==========================================
+   SUBMIT PROJECT OVERVIEW STYLES
+   ========================================== */
+
+.submit-overview-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0fdfa 100%);
+  padding: 0;
+}
+
+/* Header */
+.submit-overview-header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.header-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.header-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Steps Progress */
+.steps-container {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1.5rem 1rem;
+}
+
+.steps-progress {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  position: relative;
+}
+
+.step:last-child {
+  flex: 0 0 auto;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.step.active .step-number {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: white;
+}
+
+.step.completed .step-number {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: white;
+}
+
+.step-check {
+  width: 20px;
+  height: 20px;
+}
+
+.step-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.step.active .step-title {
+  color: #111827;
+}
+
+.step.completed .step-title {
+  color: #22c55e;
+}
+
+.step-line {
+  flex: 1;
+  height: 3px;
+  background: #e5e7eb;
+  margin: 0 0.5rem;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.step-line.filled {
+  background: #22c55e;
+}
+
+/* Main Content */
+.submit-overview-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.step-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.step-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #e5e7eb;
+  transition: background 0.3s ease;
+}
+
+.step-card.active-card {
+  border-color: #22c55e;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(34, 197, 94, 0.15);
+}
+
+.step-card.active-card::before {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.card-icon {
+  width: 72px;
+  height: 72px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.step-card.active-card .card-icon {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.card-icon svg {
+  width: 36px;
+  height: 36px;
+  color: #9ca3af;
+  transition: color 0.3s ease;
+}
+
+.step-card.active-card .card-icon svg {
+  color: white;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.75rem 0;
+}
+
+.card-description {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.completed-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.completed-text {
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.btn-edit {
+  padding: 0.5rem 1.25rem;
+  background: white;
+  border: 1px solid #22c55e;
+  border-radius: 8px;
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+  background: #f0fdf4;
+}
+
+/* Primary Button */
+.btn-primary {
+  display: inline-block;
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* Back Button */
+.back-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  color: #374151;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+.btn-back-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .submit-overview-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+  }
+
+  .step-card {
+    padding: 1.5rem;
+  }
+
+  .steps-progress {
+    gap: 0.25rem;
+  }
+
+  .step-title {
+    font-size: 0.75rem;
+  }
+
+  .step-number {
+    width: 36px;
+    height: 36px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .submit-overview-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .steps-progress {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .step {
+    flex: 0 0 calc(50% - 0.25rem);
+  }
+
+  .step:last-child {
+    flex: 0 0 100%;
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+
+  .step-line {
+    display: none;
+  }
+
+  .card-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .card-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+}

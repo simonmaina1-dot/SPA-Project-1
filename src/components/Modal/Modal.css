@@ -46,6 +46,21 @@
   opacity: 1;
 }
 
+/* Modal Header */
+.modal-header {
+  padding: 1.5rem 2rem 0.5rem;
+  text-align: center;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
 /* Form Container */
 .project-form {
   padding: 2rem;
@@ -85,6 +100,21 @@
   overflow-y: auto;
 }
 
+/* Add Project Button in Modal */
+.modal-add-project-btn-container {
+  padding: 1rem 2rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-add-project-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -109,6 +139,21 @@
   flex: 2;
 }
 
+/* Empty input group for alignment */
+.input-group-empty {
+  visibility: hidden;
+}
+
+/* Image URLs group */
+.image-urls-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row-images {
+  margin-top: 1.5rem;
+}
+
 .input-group label {
   font-weight: 500;
   font-size: 0.875rem;
@@ -128,12 +173,33 @@
   border-radius: 12px;
   padding: 1rem 1rem;
   font-size: 1rem;
-  color: #111827;
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827 !important;
   border: 0;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease-in-out;
   font-family: inherit;
   box-sizing: border-box;
+}
+
+/* Add Project Form Inputs - Force text visibility */
+.add-project-form input[type="text"],
+.add-project-form input[type="number"],
+.add-project-form input[type="url"],
+.add-project-form textarea,
+.add-project-form select {
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827 !important;
+  background: white !important;
+  opacity: 1 !important;
+}
+
+/* Project modal form inputs */
+.project-form input,
+.project-form textarea,
+.project-form select {
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827 !important;
 }
 
 .ios-input::placeholder,
@@ -152,7 +218,7 @@
 .ios-select:focus {
   outline: none;
   background: white;
-  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.4), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.4), inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .ios-input.error,
@@ -171,7 +237,7 @@
 
 /* iOS Textarea */
 .ios-textarea {
-  min-height: 150px;
+  min-height: 180px;
   resize: none;
   line-height: 1.6;
 }
@@ -358,6 +424,14 @@
     border-radius: 0;
   }
 
+  .modal-header {
+    padding: 1.25rem 1.5rem 0.5rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1rem;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
     gap: 1.25rem;
@@ -392,5 +466,9 @@
 
   .ios-textarea {
     min-height: 120px;
+  }
+
+  .form-row-images {
+    grid-template-columns: 1fr;
   }
 }

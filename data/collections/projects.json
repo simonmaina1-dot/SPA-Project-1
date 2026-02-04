@@ -11,10 +11,51 @@
       "2.jpg"
     ],
     "goal": 12000,
-    "currentAmount": 6800,
-    "donorCount": 42,
+    "currentAmount": 10307,
+    "donorCount": 45,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-153",
+        "amount": 885,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-02-21",
+        "createdAt": "2025-02-21T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-837",
+        "amount": 851,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-02-01",
+        "createdAt": "2025-02-01T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-842",
+        "amount": 951,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-06-07",
+        "createdAt": "2025-06-07T15:07:28.483Z"
+      }
+    ],
+    "ownerId": "",
+    "ownerName": "",
+    "ownerEmail": "",
+    "ownerPhone": "",
+    "identityDocument": "",
+    "verificationNotes": "",
+    "adminReviewer": null,
+    "reviewedAt": null,
+    "criteriaMet": {
+      "communityImpact": false,
+      "budgetClarity": false,
+      "timelineReady": false,
+      "stakeholderSupport": false
+    },
+    "galleryUrls": []
   },
   {
     "id": "p-1002",
@@ -29,10 +70,44 @@
       "3.jpg"
     ],
     "goal": 30000,
-    "currentAmount": 18500,
-    "donorCount": 96,
+    "currentAmount": 27267,
+    "donorCount": 104,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-836",
+        "amount": 2450,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-04-24",
+        "createdAt": "2025-04-24T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-954",
+        "amount": 650,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-03-31",
+        "createdAt": "2025-03-31T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-2",
+        "amount": 3083,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2025-06-02",
+        "createdAt": "2025-06-02T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-562",
+        "amount": 3631,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-11-24",
+        "createdAt": "2025-11-24T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1003",
@@ -46,8 +121,126 @@
       "2.jpg"
     ],
     "goal": 18000,
-    "currentAmount": 17560,
-    "donorCount": 74,
+    "currentAmount": 26150,
+    "donorCount": 83,
+    "status": "funded",
+    "verificationStatus": "approved",
+    "ownerId": "",
+    "ownerName": "",
+    "ownerEmail": "",
+    "ownerPhone": "",
+    "identityDocument": "",
+    "verificationNotes": "",
+    "adminReviewer": null,
+    "reviewedAt": null,
+    "criteriaMet": {
+      "communityImpact": false,
+      "budgetClarity": false,
+      "timelineReady": false,
+      "stakeholderSupport": false
+    },
+    "fundUsage": []
+  },
+  {
+    "id": "p-1004",
+    "title": "After-School Arts Collective",
+    "description": "Studio space, supplies, and mentorship for emerging community artists.",
+    "category": "arts",
+    "imageUrl": "https://images.pexels.com/photos/8382386/pexels-photo-8382386.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-8382386.jpg&fm=jpg",
+    "imageFile": "cover.jpg",
+    "galleryFiles": [
+      "1.jpg",
+      "2.jpg"
+    ],
+    "goal": 9500,
+    "currentAmount": 6876,
+    "donorCount": 31,
+    "status": "active",
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-229",
+        "amount": 194,
+        "category": "labor",
+        "note": "Reported usage",
+        "date": "2024-11-22",
+        "createdAt": "2024-11-22T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-1",
+        "amount": 543,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-02-14",
+        "createdAt": "2025-02-14T15:07:28.483Z"
+      }
+    ]
+  },
+  {
+    "id": "p-1005",
+    "title": "Clean Water Refill Station",
+    "description": "Install a public water refill kiosk to cut plastic waste and improve access.",
+    "category": "community",
+    "imageUrl": "https://images.pexels.com/photos/1362909/pexels-photo-1362909.jpeg?cs=srgb&dl=pexels-abhishek-goel-153437-1362909.jpg&fm=jpg",
+    "imageFile": "cover.jpg",
+    "galleryFiles": [
+      "1.jpg",
+      "2.jpg"
+    ],
+    "goal": 15000,
+    "currentAmount": 9583,
+    "donorCount": 35,
+    "status": "active",
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-201",
+        "amount": 624,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2024-09-30",
+        "createdAt": "2024-09-30T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-817",
+        "amount": 448,
+        "category": "labor",
+        "note": "Reported usage",
+        "date": "2025-09-21",
+        "createdAt": "2025-09-21T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-410",
+        "amount": 320,
+        "category": "labor",
+        "note": "Reported usage",
+        "date": "2025-09-30",
+        "createdAt": "2025-09-30T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-960",
+        "amount": 1418,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-06-20",
+        "createdAt": "2025-06-20T15:07:28.483Z"
+      }
+    ]
+  },
+  {
+    "id": "p-1006",
+    "title": "Neighborhood Food Pantry Fridge",
+    "description": "A solar-powered community fridge stocked weekly with fresh groceries.",
+    "category": "community",
+    "imageUrl": "https://images.pexels.com/photos/6647115/pexels-photo-6647115.jpeg?cs=srgb&dl=pexels-rdne-6647115.jpg&fm=jpg",
+    "imageFile": "cover.jpg",
+    "galleryFiles": [
+      "1.jpg",
+      "2.jpg"
+    ],
+    "goal": 8000,
+    "currentAmount": 13271,
+    "donorCount": 59,
     "status": "active",
     "verificationStatus": "approved",
     "ownerId": "",
@@ -68,57 +261,6 @@
     "galleryUrls": []
   },
   {
-    "id": "p-1004",
-    "title": "After-School Arts Collective",
-    "description": "Studio space, supplies, and mentorship for emerging community artists.",
-    "category": "arts",
-    "imageUrl": "https://images.pexels.com/photos/8382386/pexels-photo-8382386.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-8382386.jpg&fm=jpg",
-    "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
-    "goal": 9500,
-    "currentAmount": 4100,
-    "donorCount": 28,
-    "status": "active",
-    "verificationStatus": "approved"
-  },
-  {
-    "id": "p-1005",
-    "title": "Clean Water Refill Station",
-    "description": "Install a public water refill kiosk to cut plastic waste and improve access.",
-    "category": "community",
-    "imageUrl": "https://images.pexels.com/photos/1362909/pexels-photo-1362909.jpeg?cs=srgb&dl=pexels-abhishek-goel-153437-1362909.jpg&fm=jpg",
-    "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
-    "goal": 15000,
-    "currentAmount": 5200,
-    "donorCount": 31,
-    "status": "active",
-    "verificationStatus": "approved"
-  },
-  {
-    "id": "p-1006",
-    "title": "Neighborhood Food Pantry Fridge",
-    "description": "A solar-powered community fridge stocked weekly with fresh groceries.",
-    "category": "community",
-    "imageUrl": "https://images.pexels.com/photos/6647115/pexels-photo-6647115.jpeg?cs=srgb&dl=pexels-rdne-6647115.jpg&fm=jpg",
-    "imageFile": "cover.jpg",
-    "galleryFiles": [
-      "1.jpg",
-      "2.jpg"
-    ],
-    "goal": 8000,
-    "currentAmount": 7600,
-    "donorCount": 54,
-    "status": "active",
-    "verificationStatus": "approved"
-  },
-  {
     "id": "p-1007",
     "title": "Community Tree Canopy Initiative",
     "description": "Plant 500 shade trees and fund a year of community-led care and watering.",
@@ -128,10 +270,28 @@
       "https://images.pexels.com/photos/7656721/pexels-photo-7656721.jpeg?cs=srgb&dl=pexels-thirdman-7656721.jpg&fm=jpg"
     ],
     "goal": 22000,
-    "currentAmount": 6400,
-    "donorCount": 36,
-    "status": "active",
-    "verificationStatus": "approved"
+    "currentAmount": 31729,
+    "donorCount": 24,
+    "status": "funded",
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-738",
+        "amount": 1516,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2024-11-20",
+        "createdAt": "2024-11-20T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-333",
+        "amount": 1841,
+        "category": "logistics",
+        "note": "Reported usage",
+        "date": "2025-05-24",
+        "createdAt": "2025-05-24T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1008",
@@ -146,10 +306,36 @@
       "3.jpg"
     ],
     "goal": 6000,
-    "currentAmount": 2500,
-    "donorCount": 19,
+    "currentAmount": 4253,
+    "donorCount": 26,
     "status": "active",
-    "verificationStatus": "approved"
+    "verificationStatus": "approved",
+    "fundUsage": [
+      {
+        "id": "fu-1769785648486-879",
+        "amount": 319,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-12-09",
+        "createdAt": "2025-12-09T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-615",
+        "amount": 333,
+        "category": "supplies",
+        "note": "Reported usage",
+        "date": "2026-01-20",
+        "createdAt": "2026-01-20T15:07:28.483Z"
+      },
+      {
+        "id": "fu-1769785648486-260",
+        "amount": 762,
+        "category": "operations",
+        "note": "Reported usage",
+        "date": "2025-02-21",
+        "createdAt": "2025-02-21T15:07:28.483Z"
+      }
+    ]
   },
   {
     "id": "p-1009",
@@ -161,34 +347,9 @@
       "https://images.pexels.com/photos/33920035/pexels-photo-33920035.jpeg?cs=srgb&dl=pexels-zeal-creative-studios-58866141-33920035.jpg&fm=jpg"
     ],
     "goal": 25000,
-    "currentAmount": 8200,
-    "donorCount": 45,
+    "currentAmount": 15506,
+    "donorCount": 51,
     "status": "active",
-    "verificationStatus": "approved"
-  },
-  {
-    "id": "p-1769763147677",
-    "title": "test",
-    "description": "testing dashboard",
-    "category": "community",
-    "imageUrl": "",
-    "galleryUrls": [],
-    "galleryCount": 0,
-    "goal": 456000,
-    "currentAmount": 0,
-    "donorCount": 0,
-    "status": "active",
-    "createdAt": "2026-01-30T08:52:27.677Z",
-    "createdBy": {
-      "id": "owner-simon",
-      "name": "Simon Maina",
-      "email": "mainawaititu2021@gmail.com"
-    },
-    "ownerId": "owner-simon",
-    "ownerName": "Simon Maina",
-    "ownerEmail": "mainawaititu2021@gmail.com",
-    "ownerPhone": "",
-    "identityDocument": "",
     "verificationStatus": "approved",
     "verificationNotes": "",
     "criteriaMet": {
@@ -210,8 +371,8 @@
     "galleryUrls": [],
     "galleryCount": 0,
     "goal": 12133132,
-    "currentAmount": 0,
-    "donorCount": 0,
+    "currentAmount": 3545642,
+    "donorCount": 8,
     "status": "active",
     "createdAt": "2026-01-30T08:54:28.694Z",
     "createdBy": {
@@ -231,6 +392,83 @@
       "budgetClarity": true,
       "timelineReady": true,
       "stakeholderSupport": true
+    },
+    "fundUsage": [],
+    "adminReviewer": null,
+    "reviewedAt": null
+  },
+  {
+    "id": "p-1769792428289",
+    "title": "Clean Water for Rural Schools",
+    "description": "We aim to provide safe and clean drinking water to rural schools in our region. Donations will help install water filters, repair broken wells, and educate students on hygiene.",
+    "category": "community",
+    "imageUrl": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80",
+    "galleryUrls": [
+      "https://images.unsplash.com/photo-1517430816045-df4b7de1d0c4?auto=format&fit=crop&w=900&q=80"
+    ],
+    "galleryCount": 0,
+    "goal": 900000,
+    "currentAmount": 263005,
+    "donorCount": 3,
+    "status": "active",
+    "createdAt": "2026-01-30T17:00:28.288Z",
+    "createdBy": {
+      "id": "u-1769787400680",
+      "name": "ian koech",
+      "email": "iankip5@gmail.com"
+    },
+    "ownerId": "u-1769787400680",
+    "ownerName": "ian koech",
+    "ownerEmail": "iankip5@gmail.com",
+    "ownerPhone": "0723345668",
+    "identityDocument": "https://www.freecodecamp.org/",
+    "verificationStatus": "approved",
+    "verificationNotes": "",
+    "criteriaMet": {
+      "communityImpact": true,
+      "budgetClarity": true,
+      "timelineReady": true,
+      "stakeholderSupport": true
+    },
+    "fundUsage": [
+      {
+        "id": "fu-1769792480117",
+        "amount": 4900,
+        "category": "supplies",
+        "note": "ef",
+        "date": "2026-01-30",
+        "createdAt": "2026-01-30T17:01:20.117Z"
+      }
+    ],
+    "adminReviewer": null,
+    "reviewedAt": null
+  },
+  {
+    "id": "p-1770123338802",
+    "title": "test",
+    "description": "weducation sector",
+    "category": "Education",
+    "imageUrl": "",
+    "galleryUrls": [],
+    "galleryCount": 0,
+    "goal": 0,
+    "currentAmount": 0,
+    "donorCount": 0,
+    "status": "review",
+    "createdAt": "2026-02-03T12:55:38.802Z",
+    "createdBy": null,
+    "ownerId": "",
+    "ownerName": "",
+    "ownerEmail": "",
+    "ownerPhone": "",
+    "identityDocument": "",
+    "verificationStatus": "submitted",
+    "verificationNotes": "",
+    "criteriaMet": {
+      "communityImpact": false,
+      "budgetClarity": false,
+      "timelineReady": false,
+      "stakeholderSupport": false
     },
     "fundUsage": [],
     "adminReviewer": null,

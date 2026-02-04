@@ -18,7 +18,6 @@ export default function AdminProjectManagement({
   onConfirmDelete,
   onCancelDelete,
   getProjectTitle,
-  onOpenAddModal,
 }) {
   return (
     <>
@@ -31,15 +30,7 @@ export default function AdminProjectManagement({
             </p>
           </div>
           <div className="admin-section-actions">
-            {viewMode === "table" && onOpenAddModal && (
-              <button
-                type="button"
-                className="add-project-btn"
-                onClick={onOpenAddModal}
-              >
-                + Add Project
-              </button>
-            )}
+            {/* Add Project button removed - using modal instead */}
             {viewMode !== "table" && (
               <button
                 type="button"

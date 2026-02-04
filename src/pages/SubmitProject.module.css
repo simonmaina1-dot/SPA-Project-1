@@ -1,0 +1,192 @@
+/* Page Background - Override App.css */
+.submitPage {
+  background: linear-gradient(180deg, #E8F5E9 0%, #F1F8F4 50%, #FFFFFF 100%) !important;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* Submit Steps - Row Layout with Bluish-Green Boxes */
+.submit-project-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.submit-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  padding: 0 16px;
+}
+
+.submit-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.submit-step-index {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #666;
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  border: 3px solid #e0e0e0;
+}
+
+.submit-step.active .submit-step-index {
+  background: linear-gradient(135deg, #00D563 0%, #00B359 100%);
+  color: white;
+  border-color: #00D563;
+  box-shadow: 0 4px 12px rgba(0, 213, 99, 0.4);
+  transform: scale(1.1);
+}
+
+.submit-step.completed .submit-step-index {
+  background: linear-gradient(135deg, #00D563 0%, #00B359 100%);
+  color: white;
+  border-color: #00D563;
+}
+
+.submit-step-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #666;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.submit-step.active .submit-step-label {
+  color: #00D563;
+  font-weight: 700;
+}
+
+.submit-step.completed .submit-step-label {
+  color: #00B359;
+}
+
+/* Connect steps with a line */
+.submit-steps::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40px;
+  height: 3px;
+  background: #e0e0e0;
+  z-index: 0;
+}
+
+.submit-steps {
+  position: relative;
+}
+
+/* Progress line */
+.submit-steps::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #00D563 0%, #00B359 100%);
+  z-index: 1;
+  transition: width 0.5s ease;
+  width: calc((100% / 4) * (var(--step-progress, 0)));
+}
+
+.submit-step {
+  position: relative;
+  z-index: 2;
+}
+
+/* Button Container */
+.submitActions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+/* Secondary Buttons (Cancel, Back) */
+.btnSecondary {
+  padding: 12px 32px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btnSecondary:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.btnSecondary:active {
+  transform: scale(0.98);
+}
+
+/* Primary Buttons (Continue, Submit) */
+.btnPrimary {
+  padding: 12px 40px;
+  background: #00D563;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 213, 99, 0.2);
+}
+
+.btnPrimary:hover {
+  background: #00C157;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 213, 99, 0.3);
+}
+
+.btnPrimary:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .submitActions {
+    flex-direction: column;
+  }
+  
+  .btnSecondary,
+  .btnPrimary {
+    width: 100%;
+  }
+
+  .submit-steps {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .submit-step {
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .submit-step-label {
+    text-align: left;
+    font-size: 1rem;
+  }
+}
