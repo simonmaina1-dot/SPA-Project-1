@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import "./About.css";
 
 export default function About() {
   const [expandedCard, setExpandedCard] = useState(null);

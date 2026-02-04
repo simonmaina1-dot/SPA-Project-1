@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import ProjectDetailsModal from '../components/ProjectDetailsModal/ProjectDetailsModal';
 import IdentityVerificationForm from '../components/IdentityVerificationForm/IdentityVerificationForm';
 import ReviewModal from '../components/ReviewModal/ReviewModal';
-import './SubmitProjectOverview.css';
 
 const STEPS = [
   { id: 1, title: 'Project Details', icon: 'clipboard' },

@@ -1,4 +1,3 @@
-import './ExpandableCards.css';
 
 /**
  * FundingHealthCard Component

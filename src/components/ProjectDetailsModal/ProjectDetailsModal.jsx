@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { ToastContext } from '../../context/ToastContext';
-import './ProjectDetailsModal.css';
 
 // X Icon Component
 function XIcon({ className, onClick }) {

@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from "react";
-import "./FundUtilizationSection.css";
 import Modal from "../Modal/Modal";
 
 const sourceLabels = {

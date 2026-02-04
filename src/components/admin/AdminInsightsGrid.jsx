@@ -2,7 +2,6 @@ import FundingHealthCard from "./FundingHealthCard";
 import CategoryFocusCard from "./CategoryFocusCard";
 import NeedsAttentionCard from "./NeedsAttentionCard";
 import TopPerformersCard from "./TopPerformersCard";
-import "./ExpandableCards.css";
 
 export default function AdminInsightsGrid({
   metrics,

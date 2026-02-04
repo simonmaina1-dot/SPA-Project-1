@@ -1,4 +1,3 @@
-import './ExpandableCards.css';
 
 /**
  * ExclamationTriangleIcon - Warning icon

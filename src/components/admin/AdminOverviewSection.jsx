@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import './AdminOverviewSection.css';
 
 // Type definitions
 /**

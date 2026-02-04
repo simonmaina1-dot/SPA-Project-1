@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import useAuth from "../../hooks/useAuth";
-import "./Navbar.css";
 
 const navItems = [
   { to: "/#featured", label: "Featured Projects", hash: "featured" },

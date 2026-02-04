@@ -1,5 +1,4 @@
 import useAuth from "../../hooks/useAuth";
-import "./Account.css";
 
 export default function Account() {
   const { currentUser, signOut } = useAuth();

@@ -1,4 +1,3 @@
-import './ExpandableCards.css';
 
 /**
  * TrophyIcon - Trophy icon for top performers

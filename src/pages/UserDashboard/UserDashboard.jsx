@@ -5,7 +5,6 @@ import useAuth from "../../hooks/useAuth";
 import useDonations from "../../hooks/useDonations";
 import useProjects from "../../hooks/useProjects";
 import { ToastContext } from "../../context/ToastContext";
-import "./UserDashboard.css";
 
 const formatDate = (value) => {
   if (!value) return "Unknown date";

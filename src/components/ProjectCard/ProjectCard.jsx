@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import useProjects from "../../hooks/useProjects";
-import "./ProjectCard.css";
 
 export default function ProjectCard({ project, onClick, featured = true }) {
   const { formatCurrency } = useProjects();

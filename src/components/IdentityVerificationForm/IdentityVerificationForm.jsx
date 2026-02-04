@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react';
 import { ToastContext } from '../../context/ToastContext';
-import './IdentityVerificationForm.css';
 
 // X Icon Component
 function XIcon({ className, onClick }) {
