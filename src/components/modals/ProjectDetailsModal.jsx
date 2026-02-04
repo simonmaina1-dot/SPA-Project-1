@@ -465,7 +465,7 @@ const ProjectDetailsModal = ({
                   <span className="error-message">{errors.description}</span>
                 ) : (
                   <span className="char-count">
-                    {formData.description.length} characters (minimum 50)
+                    {formData.description.length} characters (min. 50)
                   </span>
                 )}
               </div>
