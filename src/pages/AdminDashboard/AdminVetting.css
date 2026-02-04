@@ -33,6 +33,7 @@
   color: white;
   flex-wrap: wrap;
   gap: var(--spacing-md);
+  border-radius: 12px;
 }
 
 .vetting-header-left {
@@ -349,6 +350,7 @@
 }
 
 .vetting-empty svg {
+  margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
   opacity: 0.4;
 }
