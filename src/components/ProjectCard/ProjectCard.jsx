@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom";
-<<<<<<<< HEAD:src/components/common/ProjectCard.jsx
-import { useEffect, useRef, useState } from "react";
-import useProjects from "../../hooks/useProjects";
-========
 import { useEffect, useState, useRef } from "react";
 import useProjects from "../../hooks/useProjects";
 import "./ProjectCard.css";
->>>>>>>> origin/feat/details:src/components/ProjectCard/ProjectCard.jsx
 
 export default function ProjectCard({ project, onClick, featured = true }) {
   const { formatCurrency } = useProjects();
@@ -52,14 +47,7 @@ export default function ProjectCard({ project, onClick, featured = true }) {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef(null);
 
-<<<<<<<< HEAD:src/components/common/ProjectCard.jsx
-  const intervalRef = useRef(null);
-  const delayRef = useRef(null);
-
-  // Auto-slide with staggered timing for each card
-========
   // Intersection Observer - only run slideshow when card is visible
->>>>>>>> origin/feat/details:src/components/ProjectCard/ProjectCard.jsx
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -87,61 +75,9 @@ export default function ProjectCard({ project, onClick, featured = true }) {
 
     const randomDelay = Math.random() * 5000;
 
-    delayRef.current = window.setTimeout(() => {
-      intervalRef.current = window.setInterval(() => {
+    const delayTimer = setTimeout(() => {
+      const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
-<<<<<<<< HEAD:src/components/common/ProjectCard.jsx
-      }, 5500);
-    }, randomDelay);
-
-    return () => {
-      if (delayRef.current) {
-        clearTimeout(delayRef.current);
-      }
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [galleryImages.length]);
-
-  const handleImageLoad = (index) => {
-    setLoadedIndexes((prev) => {
-      const next = new Set(prev);
-      next.add(index);
-      return next;
-    });
-    setHasAnyImageLoaded(true);
-  };
-
-  const handleImageError = (index, src) => {
-    console.warn(`Image failed to load ${index} for ${project.id}:`, src);
-    setImageErrors((prev) => {
-      const next = new Set(prev);
-      next.add(index);
-      return next;
-    });
-  };
-
-  // Check if current image has error - auto-switch to next working image
-  useEffect(() => {
-    if (galleryImages.length <= 1 || !hasAnyImageLoaded) return;
-
-    const checkAndSwitch = () => {
-      if (imageErrors.has(currentIndex)) {
-        // Find next working image
-        for (let i = 1; i < galleryImages.length; i++) {
-          const nextIndex = (currentIndex + i) % galleryImages.length;
-          if (!imageErrors.has(nextIndex) && loadedIndexes.has(nextIndex)) {
-            setCurrentIndex(nextIndex);
-            return;
-          }
-        }
-      }
-    };
-
-    checkAndSwitch();
-  }, [currentIndex, galleryImages.length, imageErrors, loadedIndexes, hasAnyImageLoaded]);
-========
       }, 4000); // Change every 4 seconds
 
       return () => clearInterval(interval);
@@ -149,7 +85,6 @@ export default function ProjectCard({ project, onClick, featured = true }) {
 
     return () => clearTimeout(delayTimer);
   }, [galleryImages.length, isVisible]);
->>>>>>>> origin/feat/details:src/components/ProjectCard/ProjectCard.jsx
 
   // Status badge class based on project status
   const getStatusBadgeClass = (status) => {
@@ -231,24 +166,6 @@ export default function ProjectCard({ project, onClick, featured = true }) {
 
         {/* Enhanced funding info - ALWAYS VISIBLE */}
         <div className="project-card-details">
-<<<<<<<< HEAD:src/components/common/ProjectCard.jsx
-          <div className="project-funding-card">
-            <div className="project-funding-info">
-              <div className="funding-row">
-                <span className="funding-label">Raised</span>
-                <span className="funding-value">
-                  {formatCurrency(project.currentAmount)}
-                </span>
-              </div>
-              <div className="funding-row">
-                <span className="funding-label">Goal</span>
-                <span className="funding-value">{formatCurrency(project.goal)}</span>
-              </div>
-              <div className="funding-row">
-                <span className="funding-label">Donors</span>
-                <span className="funding-value">{project.donorCount || 0}</span>
-              </div>
-========
           <div className="project-funding-info">
             <div className="funding-row">
               <span className="funding-label">RAISED</span>
@@ -261,7 +178,6 @@ export default function ProjectCard({ project, onClick, featured = true }) {
             <div className="funding-row">
               <span className="funding-label">DONORS</span>
               <span className="funding-value">{project.donorCount || 0}</span>
->>>>>>>> origin/feat/details:src/components/ProjectCard/ProjectCard.jsx
             </div>
           </div>
 
