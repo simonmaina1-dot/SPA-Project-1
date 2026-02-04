@@ -1,4 +1,4 @@
-import Modal from "../modals/Modal";
+import Modal from "../../modals/Modal";
 
 export default function AdminProjectManagement({
   projects,

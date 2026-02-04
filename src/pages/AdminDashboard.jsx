@@ -5,10 +5,10 @@ import useFeedback from "../hooks/useFeedback";
 import useDonations from "../hooks/useDonations";
 import { ToastContext } from "../context/ToastContext";
 import useAuth from "../hooks/useAuth";
-import AdminAccessGuard from "../components/admin/AdminAccessGuard";
-import AdminNavbar from "../components/admin/AdminNavbar";
-import AdminDashboardHeader from "../components/admin/AdminDashboardHeader";
-import AdminDashboardGrid from "../components/admin/AdminDashboardGrid";
+import AdminAccessGuard from "../components/admin/auth/AdminAccessGuard";
+import AdminNavbar from "../components/admin/layout/AdminNavbar";
+import AdminDashboardHeader from "../components/admin/layout/AdminDashboardHeader";
+import AdminDashboardGrid from "../components/admin/layout/AdminDashboardGrid";
 import Modal from "../components/modals/Modal";
 
 export default function AdminDashboard() {

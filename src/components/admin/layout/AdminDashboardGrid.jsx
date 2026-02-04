@@ -1,10 +1,10 @@
-import AdminSnapshotCard from "./AdminSnapshotCard";
-import AdminRecentActivity from "./AdminRecentActivity";
-import AdminProjectManagement from "./AdminProjectManagement";
-import AdminInsightsGrid from "./AdminInsightsGrid";
-import AdminFeedbackList from "./AdminFeedbackList";
-import AdminVettingQueue from "./AdminVettingQueue";
-import FundUtilizationSection from "./FundUtilizationSection";
+import AdminSnapshotCard from "../dashboard/AdminSnapshotCard";
+import AdminRecentActivity from "../dashboard/AdminRecentActivity";
+import AdminProjectManagement from "../projects/AdminProjectManagement";
+import AdminInsightsGrid from "../dashboard/AdminInsightsGrid";
+import AdminFeedbackList from "../projects/AdminFeedbackList";
+import AdminVettingQueue from "../projects/AdminVettingQueue";
+import FundUtilizationSection from "../finance/FundUtilizationSection";
 
 export default function AdminDashboardGrid({
   projects,

@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import Modal from "../modals/Modal";
+import Modal from "../../modals/Modal";
 
 const sourceLabels = {
   card: "Card",

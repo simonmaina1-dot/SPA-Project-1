@@ -1,10 +1,10 @@
 import { useState, useMemo, useCallback } from "react";
-import Modal from "../modals/Modal";
+import Modal from "../../modals/Modal";
 import {
   useVettingQueue,
   useVettingActions,
   useVettingFormatters,
-} from "../../hooks/useVettingQueue";
+} from "../../../hooks/useVettingQueue";
 
 // Utility function for Ksh currency formatting
 const formatKsh = (amount) => {

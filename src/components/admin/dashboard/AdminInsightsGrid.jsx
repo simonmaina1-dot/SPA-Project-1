@@ -1,4 +1,4 @@
-import FundingHealthCard from "./FundingHealthCard";
+import FundingHealthCard from "../finance/FundingHealthCard";
 import CategoryFocusCard from "./CategoryFocusCard";
 import NeedsAttentionCard from "./NeedsAttentionCard";
 import TopPerformersCard from "./TopPerformersCard";
