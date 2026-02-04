@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 .vercel
 docs/code-defense-instructor.md
+db.json

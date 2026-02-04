@@ -231,7 +231,7 @@ const ProjectDetailsModal = ({
       return;
     }
 
-    if (!/^https?:\\/\\//i.test(trimmedUrl)) {
+    if (!/^https?:\/\//i.test(trimmedUrl)) {
       showToast("Image URL must start with http:// or https://", "warning");
       return;
     }
@@ -502,7 +502,7 @@ const ProjectDetailsModal = ({
                   <span className="error-message">{errors.description}</span>
                 ) : (
                   <span className="char-count">
-                    {formData.description.length} characters (min. 50)
+                    Min. 50 ({formData.description.length} characters)
                   </span>
                 )}
               </div>

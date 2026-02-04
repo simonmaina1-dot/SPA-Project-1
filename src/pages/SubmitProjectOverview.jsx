@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProjectDetailsModal from '../components/modals/ProjectDetailsModal';
 import IdentityVerificationForm from '../components/forms/IdentityVerificationForm';
 import ReviewModal from '../components/modals/ReviewModal';
+import useAuth from '../hooks/useAuth';
 
 const STEPS = [
   { id: 1, title: 'Project Details', icon: 'clipboard' },
@@ -12,14 +13,43 @@ const STEPS = [
 
 const SubmitProjectOverview = () => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [showProjectDetails, setShowProjectDetails] = useState(false);
   const [showIdentityVerification, setShowIdentityVerification] = useState(false);
   const [showReview, setShowReview] = useState(false);
+  const [isIdentityVerified, setIsIdentityVerified] = useState(false);
   const [formData, setFormData] = useState({
     projectDetails: null,
     identityVerification: null,
   });
+
+  const identityStorageKey = useMemo(() => {
+    if (!currentUser) return null;
+    return `identityVerification:${currentUser.id || currentUser.email}`;
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!identityStorageKey) {
+      setIsIdentityVerified(false);
+      return;
+    }
+    const stored = localStorage.getItem(identityStorageKey);
+    if (!stored) {
+      setIsIdentityVerified(false);
+      return;
+    }
+    try {
+      const parsed = JSON.parse(stored);
+      setFormData((prev) => ({
+        ...prev,
+        identityVerification: prev.identityVerification || parsed,
+      }));
+      setIsIdentityVerified(true);
+    } catch {
+      setIsIdentityVerified(false);
+    }
+  }, [identityStorageKey]);
 
   const handleOpenProjectDetails = () => {
     setCurrentStep(1);
@@ -29,12 +59,22 @@ const SubmitProjectOverview = () => {
   const handleSaveProjectDetails = useCallback((data) => {
     setFormData((prev) => ({ ...prev, projectDetails: data }));
     setShowProjectDetails(false);
+    if (isIdentityVerified) {
+      setCurrentStep(3);
+      setShowReview(true);
+      return;
+    }
     setCurrentStep(2);
     setShowIdentityVerification(true);
-  }, []);
+  }, [isIdentityVerified]);
 
   // Handlers for identity verification
   const handleOpenIdentityVerification = () => {
+    if (isIdentityVerified) {
+      setCurrentStep(3);
+      setShowReview(true);
+      return;
+    }
     setCurrentStep(2);
     setShowIdentityVerification(true);
   };
@@ -44,7 +84,11 @@ const SubmitProjectOverview = () => {
     setShowIdentityVerification(false);
     setCurrentStep(3);
     setShowReview(true);
-  }, []);
+    if (identityStorageKey) {
+      localStorage.setItem(identityStorageKey, JSON.stringify(data));
+    }
+    setIsIdentityVerified(true);
+  }, [identityStorageKey]);
 
   // Handlers for review modal
   const handleOpenReview = () => {
@@ -72,7 +116,7 @@ const SubmitProjectOverview = () => {
         handleOpenProjectDetails();
         return;
       }
-      if (!formData.identityVerification) {
+      if (!formData.identityVerification && !isIdentityVerified) {
         handleOpenIdentityVerification();
         return;
       }
@@ -221,7 +265,9 @@ const SubmitProjectOverview = () => {
 
         {/* Step 2: Identity Verification Card */}
         <div
-          className={`step-card ${currentStep === 2 ? 'active-card' : ''}`}
+          className={`step-card ${currentStep === 2 ? 'active-card' : ''} ${
+            isIdentityVerified ? 'step-card-verified' : ''
+          }`}
           role="button"
           tabIndex={0}
           onClick={() => handleStepSelect(2)}
@@ -246,7 +292,11 @@ const SubmitProjectOverview = () => {
           <p className="card-description">
             Verify your identity to build trust with potential donors.
           </p>
-          {currentStep === 2 ? (
+          {isIdentityVerified ? (
+            <div className="completed-info">
+              <span className="completed-text">✓ Verified</span>
+            </div>
+          ) : currentStep === 2 ? (
             <button
               type="button"
               className="btn-primary"

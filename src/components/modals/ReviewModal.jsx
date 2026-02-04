@@ -72,6 +72,7 @@ const ReviewModal = ({
   isSubmitting = false
 }) => {
   const [missingFields, setMissingFields] = useState([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Initialize with empty object if formValues is undefined
   const formData = formValues || {};
@@ -132,14 +133,13 @@ const ReviewModal = ({
     if (!isFormComplete) {
       return;
     }
+    setShowConfirmModal(true);
+  };
 
-    const confirmSubmit = window.confirm(
-      'Are you sure you want to submit your project for review? You won\'t be able to edit it after submission.'
-    );
-
-    if (confirmSubmit) {
-      onSubmit();
-    }
+  const handleConfirmSubmit = () => {
+    if (!isFormComplete || isSubmitting) return;
+    onSubmit();
+    setShowConfirmModal(false);
   };
 
   const formatCurrency = (amount) => {
@@ -403,6 +403,35 @@ const ReviewModal = ({
           </div>
         </div>
       </div>
+
+      {showConfirmModal && (
+        <div className="review-confirm-overlay" onClick={() => setShowConfirmModal(false)}>
+          <div className="review-confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Submit project for review?</h3>
+            <p>
+              Are you sure you want to submit your project for review?
+              You won&apos;t be able to edit it after submission.
+            </p>
+            <div className="review-confirm-actions">
+              <button
+                type="button"
+                className="review-confirm-cancel"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="review-confirm-submit"
+                onClick={handleConfirmSubmit}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

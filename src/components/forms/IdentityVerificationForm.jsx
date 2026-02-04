@@ -74,6 +74,24 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
       case 'idNumber':
         if (!value || !value.trim()) {
           error = 'ID number is required';
+        } else {
+          const normalized = value.trim();
+          const patterns = {
+            national_id: /^[0-9]{7,8}$/,
+            passport: /^[A-Za-z0-9]{6,9}$/,
+            drivers_license: /^[0-9]{8}$/,
+            voters_card: /^[A-Za-z0-9]{6,12}$/
+          };
+          const messages = {
+            national_id: 'National ID must be 7–8 digits',
+            passport: 'Passport must be 6–9 letters or numbers',
+            drivers_license: "Driver's license must be 8 digits",
+            voters_card: 'Voter VIN must be 6–12 letters or numbers'
+          };
+          const pattern = patterns[formData.idType];
+          if (pattern && !pattern.test(normalized)) {
+            error = messages[formData.idType] || 'Invalid ID number';
+          }
         }
         break;
       case 'idType':
@@ -84,8 +102,8 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
       case 'phoneNumber':
         if (!value || !value.trim()) {
           error = 'Phone number is required';
-        } else if (!/^\+?[\d\s-]{10,}$/.test(value)) {
-          error = 'Please enter a valid phone number';
+        } else if (!/^(?:\+254|254|0)(?:7|1)\d{8}$/.test(value.trim())) {
+          error = 'Use 07xxxxxxxx, 01xxxxxxxx, 2547xxxxxxxx, or +2547xxxxxxxx';
         }
         break;
       case 'email':
@@ -114,6 +132,9 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
 
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: '' }));
+    }
+    if (field === 'idType' && errors.idNumber) {
+      setErrors((prev) => ({ ...prev, idNumber: '' }));
     }
   };
 
@@ -385,7 +406,7 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
               <label className="form-label">
                 Upload ID Document <span className="optional">(Optional)</span>
               </label>
-              <div className="upload-area" onClick={() => document.getElementById('id-upload')?.click()}>
+              <div className="upload-area">
                 <input
                   id="id-upload"
                   type="file"

@@ -23,7 +23,10 @@ export const urlField = Yup.string()
   .required("This field is required");
 
 export const phoneField = Yup.string()
-  .matches(/^\+?[0-9]{7,15}$/, "Invalid phone number")
+  .matches(
+    /^(?:\+254|254|0)(?:7|1)\d{8}$/,
+    "Use 07xxxxxxxx, 01xxxxxxxx, 2547xxxxxxxx, or +2547xxxxxxxx"
+  )
   .required("Phone number is required");
 
 export const titleField = Yup.string()

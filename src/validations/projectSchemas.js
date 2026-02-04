@@ -18,8 +18,8 @@ export const personalInfoSchema = Yup.object({
 
   ownerPhone: Yup.string()
     .matches(
-      /^(\+?\d{10,15})$/,
-      "Phone number must be valid (10–15 digits, may start with +)"
+      /^(?:\+254|254|0)(?:7|1)\d{8}$/,
+      "Use 07xxxxxxxx, 01xxxxxxxx, 2547xxxxxxxx, or +2547xxxxxxxx"
     )
     .required("Phone number is required"),
 });

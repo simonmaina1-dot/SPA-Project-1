@@ -103,10 +103,12 @@ export function AuthProvider({ children }) {
   const signInAdmin = useCallback(
     (email, password) => {
       const normalizedEmail = normalizeEmail(email);
-      const user = adminUsers.find(
+      const normalizedPassword = password.trim();
+      const adminSource = adminUsers.length ? adminUsers : seedAdmins;
+      const user = adminSource.find(
         (admin) =>
           admin.email.toLowerCase() === normalizedEmail &&
-          admin.password === password
+          admin.password === normalizedPassword
       );
 
       if (!user) {
@@ -128,10 +130,12 @@ export function AuthProvider({ children }) {
   const signInUser = useCallback(
     (email, password) => {
       const normalizedEmail = normalizeEmail(email);
-      const user = users.find(
+      const normalizedPassword = password.trim();
+      const userSource = users.length ? users : seedUsers;
+      const user = userSource.find(
         (account) =>
           account.email.toLowerCase() === normalizedEmail &&
-          account.password === password
+          account.password === normalizedPassword
       );
 
       if (!user) {
