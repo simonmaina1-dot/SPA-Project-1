@@ -21,8 +21,8 @@ const SubmitProjectOverview = () => {
     identityVerification: null,
   });
 
-  // Handlers for project details modal
   const handleOpenProjectDetails = () => {
+    setCurrentStep(1);
     setShowProjectDetails(true);
   };
 
@@ -35,6 +35,7 @@ const SubmitProjectOverview = () => {
 
   // Handlers for identity verification
   const handleOpenIdentityVerification = () => {
+    setCurrentStep(2);
     setShowIdentityVerification(true);
   };
 
@@ -47,7 +48,36 @@ const SubmitProjectOverview = () => {
 
   // Handlers for review modal
   const handleOpenReview = () => {
+    setCurrentStep(3);
     setShowReview(true);
+  };
+
+  const handleStepSelect = (stepId) => {
+    if (stepId === 1) {
+      handleOpenProjectDetails();
+      return;
+    }
+
+    if (stepId === 2) {
+      if (!formData.projectDetails) {
+        handleOpenProjectDetails();
+        return;
+      }
+      handleOpenIdentityVerification();
+      return;
+    }
+
+    if (stepId === 3) {
+      if (!formData.projectDetails) {
+        handleOpenProjectDetails();
+        return;
+      }
+      if (!formData.identityVerification) {
+        handleOpenIdentityVerification();
+        return;
+      }
+      handleOpenReview();
+    }
   };
 
   const handleSubmitProject = useCallback(() => {
@@ -144,8 +174,8 @@ const SubmitProjectOverview = () => {
           className={`step-card ${currentStep === 1 ? 'active-card' : ''}`}
           role="button"
           tabIndex={0}
-          onClick={handleOpenProjectDetails}
-          onKeyDown={(e) => e.key === 'Enter' && handleOpenProjectDetails()}
+          onClick={() => handleStepSelect(1)}
+          onKeyDown={(e) => e.key === 'Enter' && handleStepSelect(1)}
         >
           <div className="card-icon">
             <svg
@@ -171,7 +201,7 @@ const SubmitProjectOverview = () => {
             <button
               type="button"
               className="btn-primary"
-              onClick={handleOpenProjectDetails}
+              onClick={() => handleStepSelect(1)}
             >
               Start
             </button>
@@ -181,7 +211,7 @@ const SubmitProjectOverview = () => {
               <button
                 type="button"
                 className="btn-edit"
-                onClick={handleOpenProjectDetails}
+                onClick={() => handleStepSelect(1)}
               >
                 Edit
               </button>
@@ -194,16 +224,8 @@ const SubmitProjectOverview = () => {
           className={`step-card ${currentStep === 2 ? 'active-card' : ''}`}
           role="button"
           tabIndex={0}
-          onClick={
-            currentStep >= 2 || formData.projectDetails
-              ? handleOpenIdentityVerification
-              : undefined
-          }
-          onKeyDown={(e) =>
-            e.key === 'Enter' &&
-            (currentStep >= 2 || formData.projectDetails) &&
-            handleOpenIdentityVerification()
-          }
+          onClick={() => handleStepSelect(2)}
+          onKeyDown={(e) => e.key === 'Enter' && handleStepSelect(2)}
         >
           <div className="card-icon">
             <svg
@@ -228,7 +250,7 @@ const SubmitProjectOverview = () => {
             <button
               type="button"
               className="btn-primary"
-              onClick={handleOpenIdentityVerification}
+              onClick={() => handleStepSelect(2)}
             >
               Continue
             </button>
@@ -238,7 +260,7 @@ const SubmitProjectOverview = () => {
               <button
                 type="button"
                 className="btn-edit"
-                onClick={handleOpenIdentityVerification}
+                onClick={() => handleStepSelect(2)}
               >
                 Edit
               </button>
@@ -247,7 +269,7 @@ const SubmitProjectOverview = () => {
             <button
               type="button"
               className="btn-primary"
-              onClick={handleOpenIdentityVerification}
+              onClick={() => handleStepSelect(2)}
             >
               Continue
             </button>
@@ -259,16 +281,8 @@ const SubmitProjectOverview = () => {
           className={`step-card ${currentStep === 3 ? 'active-card' : ''}`}
           role="button"
           tabIndex={0}
-          onClick={
-            currentStep >= 3 || formData.identityVerification
-              ? handleOpenReview
-              : undefined
-          }
-          onKeyDown={(e) =>
-            e.key === 'Enter' &&
-            (currentStep >= 3 || formData.identityVerification) &&
-            handleOpenReview()
-          }
+          onClick={() => handleStepSelect(3)}
+          onKeyDown={(e) => e.key === 'Enter' && handleStepSelect(3)}
         >
           <div className="card-icon">
             <svg
@@ -293,7 +307,7 @@ const SubmitProjectOverview = () => {
             <button
               type="button"
               className="btn-primary"
-              onClick={handleOpenReview}
+              onClick={() => handleStepSelect(3)}
             >
               Review
             </button>
@@ -301,7 +315,7 @@ const SubmitProjectOverview = () => {
             <button
               type="button"
               className="btn-primary"
-              onClick={handleOpenReview}
+              onClick={() => handleStepSelect(3)}
             >
               Review
             </button>

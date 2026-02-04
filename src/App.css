@@ -2345,6 +2345,78 @@ body {
   font-size: 14px;
 }
 
+/* User Menu Dropdown */
+.user-menu-container {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-menu-arrow {
+  transition: transform 0.2s ease;
+}
+
+.user-menu-arrow.open {
+  transform: rotate(180deg);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.15s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #374151;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.user-dropdown-item:hover {
+  background: #f3f4f6;
+}
+
+.user-dropdown-item.logout {
+  color: #dc2626;
+  border-top: 1px solid #e5e7eb;
+}
+
+.user-dropdown-item.logout:hover {
+  background: #fef2f2;
+}
+
 /* Hamburger Menu Button */
 .hamburger {
   display: none;
@@ -4407,13 +4479,100 @@ body {
    ========================================== */
 .feedback-section {
   padding: 64px 24px;
-  background: var(--color-bg);
-  border-top: 1px solid var(--color-border);
+  background: #f3f4f6;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .feedback-section .admin-card {
   width: 100%;
-  max-width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.feedback-section .admin-section-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.feedback-section .admin-card-subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.feedback-section .feedback-form-card {
+  margin-top: 24px;
+}
+
+.feedback-section .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.feedback-section .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feedback-section .form-field-wide {
+  grid-column: 1 / -1;
+}
+
+.feedback-section .form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.feedback-section .form-field input,
+.feedback-section .form-field textarea {
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #f9fafb;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.feedback-section .form-field input:focus,
+.feedback-section .form-field textarea:focus {
+  outline: none;
+  border-color: #1db954;
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.15);
+  background: #ffffff;
+}
+
+.feedback-section .form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.feedback-section .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .feedback-section .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-section .admin-card {
+    padding: 24px;
+  }
 }
 
 .feedback-form {
@@ -5029,4 +5188,51 @@ body {
   .admin-verification-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Project details modal upload */
+.upload-area {
+  position: relative;
+  border: 2px dashed var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: var(--color-primary);
+}
+
+.file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.upload-icon {
+  width: 40px;
+  height: 40px;
+  color: #9ca3af;
+}
+
+.upload-highlight {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.upload-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
 }
