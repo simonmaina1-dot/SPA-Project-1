@@ -141,22 +141,23 @@
 
 /* Primary Buttons (Continue, Submit) */
 .btnPrimary {
-  padding: 12px 40px;
+  padding: 14px 52px;
   background: #00D563;
   border: none;
-  border-radius: 10px;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 1.05rem;
   font-weight: 600;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 213, 99, 0.2);
+  box-shadow: 0 6px 16px rgba(0, 213, 99, 0.28);
+  min-width: 200px;
 }
 
 .btnPrimary:hover {
   background: #00C157;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 213, 99, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 213, 99, 0.35);
 }
 
 .btnPrimary:active {

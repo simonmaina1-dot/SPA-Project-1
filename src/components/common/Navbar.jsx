@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useAuth from "../../hooks/useAuth";
 
 const navItems = [
@@ -15,8 +15,8 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, signOut } = useAuth();
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const userMenuRef = useRef(null);
+  const userName = currentUser?.name?.split(" ")[0] || "User";
+  const userRole = currentUser?.role || "user";
 
   const scrollToElement = useCallback((hash) => {
     const element = document.getElementById(hash);
@@ -91,29 +91,6 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  useEffect(() => {
-    if (!userMenuOpen) return;
-
-    const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setUserMenuOpen(false);
-      }
-    };
-
-    const handleEscape = (event) => {
-      if (event.key === "Escape") {
-        setUserMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [userMenuOpen]);
-
   return (
     <header className={`navbar${scrolled ? " scrolled" : ""}${menuOpen ? " menu-open" : ""}`}>
       <Link to="/" className="nav-brand">
@@ -153,43 +130,35 @@ export default function Navbar() {
             Submit a Project
           </Link>
           {currentUser ? (
-            <div className="user-menu-container" ref={userMenuRef}>
+            <>
+              <Link
+                to={currentUser.isAdmin ? "/admin" : "/user-dashboard"}
+                className="admin-user-badge"
+                onClick={() => setMenuOpen(false)}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>Signed in as {userName} ({userRole})</span>
+              </Link>
               <button
                 type="button"
-                className="btn btn-secondary nav-cta user-menu-trigger"
-                onClick={() => setUserMenuOpen((prev) => !prev)}
-                aria-haspopup="menu"
-                aria-expanded={userMenuOpen}
+                className="btn btn-signout-red"
+                onClick={() => {
+                  signOut();
+                  navigate("/");
+                  setMenuOpen(false);
+                }}
               >
-                {currentUser.name} ({currentUser.role})
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <polyline points="16 17 21 12 16 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Sign out
               </button>
-              {userMenuOpen && (
-                <div className="user-dropdown" role="menu">
-                  <Link
-                    to={currentUser.isAdmin ? "/admin" : "/user-dashboard"}
-                    className="user-dropdown-item"
-                    onClick={() => {
-                      setUserMenuOpen(false);
-                      setMenuOpen(false);
-                    }}
-                  >
-                    Dashboard
-                  </Link>
-                  <button
-                    type="button"
-                    className="user-dropdown-item logout"
-                    onClick={() => {
-                      signOut();
-                      navigate("/");
-                      setUserMenuOpen(false);
-                      setMenuOpen(false);
-                    }}
-                  >
-                    Sign out
-                  </button>
-                </div>
-              )}
-            </div>
+            </>
           ) : (
             <>
               <Link to="/signup" className="btn btn-secondary nav-cta" onClick={() => setMenuOpen(false)}>
