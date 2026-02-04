@@ -373,16 +373,11 @@ textarea:focus {
   background: var(--color-bg);
 }
 
-/* Grid layouts */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
+/* Grid layouts - ALWAYS 3 columns max */
+.projects-grid,
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr) !important;
   gap: 24px;
   max-width: 1400px;
   margin: 0 auto;
@@ -7673,25 +7668,15 @@ body.is-scrolling .funding-progress {
   max-width: 600px;
 }
 
-.featured-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-xl);
-  max-width: 1400px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-  padding: 0 var(--spacing-lg);
-}
-
 /* Responsive featured section */
 @media (max-width: 767.98px) {
   .featured-section h2 {
     font-size: 1.5rem;
   }
 
+  .projects-grid,
   .featured-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     padding: 0 var(--spacing-md);
   }
 }
@@ -13032,12 +13017,9 @@ body.is-scrolling .funding-progress {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
+  .projects-grid,
   .featured-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
@@ -13059,12 +13041,9 @@ body.is-scrolling .funding-progress {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .projects-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
+  .projects-grid,
   .featured-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr) !important;
   }
 
   .navbar {
@@ -13091,12 +13070,9 @@ body.is-scrolling .funding-progress {
     font-size: 4rem;
   }
 
-  .projects-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
+  .projects-grid,
   .featured-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr) !important;
   }
 }
 
@@ -13148,12 +13124,9 @@ body.is-scrolling .funding-progress {
     gap: var(--spacing-sm);
   }
 
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
+  .projects-grid,
   .featured-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .app-footer {
@@ -13169,8 +13142,9 @@ body.is-scrolling .funding-progress {
     font-size: 1.75rem;
   }
 
-  .projects-grid {
-    grid-template-columns: 1fr;
+  .projects-grid,
+  .featured-grid {
+    grid-template-columns: 1fr !important;
   }
 
   .project-card {
