@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import useProjects from "../../hooks/useProjects";
-import ProjectCard from "../../components/ProjectCard/ProjectCard";
+import ProjectCard from "../../components/projects/ProjectCard";
 
 export default function Projects() {
   const { projects, isLoading } = useProjects();

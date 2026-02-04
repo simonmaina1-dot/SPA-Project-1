@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import Modal from "../Modal/Modal";
+import Modal from "../modals/Modal";
 import {
   useVettingQueue,
   useVettingActions,

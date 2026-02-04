@@ -6,7 +6,7 @@ import { ToastProvider } from "./context/ToastContext.jsx"
 import { AuthProvider } from "./context/AuthContext.jsx"
 import { FeedbackProvider } from "./context/FeedbackContext.jsx"
 import { DonationsProvider } from "./context/DonationsContext.jsx"
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx"
+import ErrorBoundary from "./components/layout/ErrorBoundary.jsx"
 import './index.css'
 import App from './App.jsx'
 

@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
-import ProjectCard from "../components/ProjectCard/ProjectCard";
+import ProjectCard from "../components/projects/ProjectCard";
 import { ToastContext } from "../context/ToastContext";
 import useFeedback from "../hooks/useFeedback";
 import useForm from "../hooks/useForm";

@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProjectDetailsModal from '../components/ProjectDetailsModal/ProjectDetailsModal';
-import IdentityVerificationForm from '../components/IdentityVerificationForm/IdentityVerificationForm';
-import ReviewModal from '../components/ReviewModal/ReviewModal';
+import ProjectDetailsModal from '../components/modals/ProjectDetailsModal';
+import IdentityVerificationForm from '../components/forms/IdentityVerificationForm';
+import ReviewModal from '../components/modals/ReviewModal';
 
 const STEPS = [
   { id: 1, title: 'Project Details', icon: 'clipboard' },

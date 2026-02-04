@@ -9,7 +9,7 @@ import AdminAccessGuard from "../components/admin/AdminAccessGuard";
 import AdminNavbar from "../components/admin/AdminNavbar";
 import AdminDashboardHeader from "../components/admin/AdminDashboardHeader";
 import AdminDashboardGrid from "../components/admin/AdminDashboardGrid";
-import Modal from "../components/Modal/Modal";
+import Modal from "../components/modals/Modal";
 
 export default function AdminDashboard() {
   const {
