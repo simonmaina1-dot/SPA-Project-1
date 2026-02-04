@@ -6088,6 +6088,17 @@ body {
   margin: 0;
 }
 
+.upload-link-row {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.upload-link-row .form-input {
+  flex: 1;
+}
+
 .image-preview-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

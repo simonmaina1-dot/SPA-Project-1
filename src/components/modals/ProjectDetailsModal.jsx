@@ -88,6 +88,7 @@ const ProjectDetailsModal = ({
   });
   
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [imageUrlInput, setImageUrlInput] = useState("");
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [pendingClose, setPendingClose] = useState(false);
@@ -108,6 +109,7 @@ const ProjectDetailsModal = ({
       setErrors({});
       setTouched({});
       setPendingClose(false);
+      setImageUrlInput("");
     }
   }, [isOpen, initialData]);
 
@@ -214,6 +216,38 @@ const ProjectDetailsModal = ({
       };
       reader.readAsDataURL(file);
     });
+  };
+
+  const handleAddImageUrl = (event) => {
+    event.preventDefault();
+    const trimmedUrl = imageUrlInput.trim();
+    if (!trimmedUrl) {
+      showToast("Paste an image URL first.", "warning");
+      return;
+    }
+
+    if (uploadedImages.length + 1 > MAX_IMAGES) {
+      showToast(`Maximum ${MAX_IMAGES} images allowed`, "warning");
+      return;
+    }
+
+    if (!/^https?:\\/\\//i.test(trimmedUrl)) {
+      showToast("Image URL must start with http:// or https://", "warning");
+      return;
+    }
+
+    setUploadedImages((prev) => [
+      ...prev,
+      {
+        url: trimmedUrl,
+        preview: trimmedUrl,
+        name: trimmedUrl.split("/").pop() || "Image",
+        size: 0,
+        isRemote: true,
+      },
+    ]);
+    setImageUrlInput("");
+    setPendingClose(false);
   };
 
   const handleFileInputChange = (e) => {
@@ -513,6 +547,19 @@ const ProjectDetailsModal = ({
                   </p>
                 </div>
               </div>
+
+              <form className="upload-link-row" onSubmit={handleAddImageUrl}>
+                <input
+                  type="url"
+                  value={imageUrlInput}
+                  onChange={(event) => setImageUrlInput(event.target.value)}
+                  placeholder="https://images.example.com/photo.jpg"
+                  className="form-input"
+                />
+                <button type="submit" className="btn btn-secondary btn-small">
+                  Add link
+                </button>
+              </form>
 
               {/* Image Previews */}
               {uploadedImages.length > 0 && (
