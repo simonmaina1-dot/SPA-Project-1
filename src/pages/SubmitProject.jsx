@@ -4,7 +4,7 @@ import useAuth from "../hooks/useAuth";
 import useProjects from "../hooks/useProjects";
 import { ToastContext } from "../context/ToastContext";
 import { defaultCriteriaMet, projectCriteria } from "../data/projectCriteria";
-import styles from "./SubmitProject.module.css";
+import styles from "../SubmitProject.module.css";
 
 const buildInitialState = (currentUser) => ({
   identityDocument: "",
