@@ -486,10 +486,8 @@ const ProjectDetailsModal = ({
                 onDragLeave={handleDragLeave}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
-                onClick={handleUploadClick}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && handleUploadClick()}
                 aria-label="Click or drag files to upload"
               >
                 <input
