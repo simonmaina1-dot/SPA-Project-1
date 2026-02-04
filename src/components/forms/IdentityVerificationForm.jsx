@@ -19,6 +19,25 @@ function XIcon({ className, onClick }) {
   );
 }
 
+function PhotoIcon({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className={className}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+      />
+    </svg>
+  );
+}
+
 const ID_TYPES = [
   { value: 'national_id', label: 'National ID' },
   { value: 'passport', label: 'Passport' },
@@ -137,6 +156,13 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
   const handleRemoveId = () => {
     setPendingClose(false);
     setUploadedId(null);
+  };
+
+  const isImageUpload = uploadedId?.file?.type?.startsWith('image/');
+  const formatFileSize = (bytes = 0) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   // Validate entire form
@@ -369,20 +395,7 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
                   aria-hidden="true"
                 />
                 <div className="upload-content">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="upload-icon"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9v1.5c0 .621-.504 1.125-1.125 1.125H9v6m4.5 0H18.75"
-                    />
-                  </svg>
+                  <PhotoIcon className="upload-icon" />
                   <p className="upload-text">
                     <span className="upload-highlight">Click to upload</span> your ID
                   </p>
@@ -390,7 +403,28 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
                 </div>
               </div>
 
-              {uploadedId && (
+              {uploadedId && isImageUpload ? (
+                <div className="image-preview-grid">
+                  <div className="image-preview-item">
+                    <img
+                      src={uploadedId.preview}
+                      alt={uploadedId.name}
+                      className="image-preview-img"
+                    />
+                    <button
+                      type="button"
+                      className="image-delete-btn"
+                      onClick={handleRemoveId}
+                      aria-label="Remove uploaded ID"
+                    >
+                      <XIcon className="w-4 h-4" />
+                    </button>
+                    <span className="image-size">
+                      {formatFileSize(uploadedId.size)}
+                    </span>
+                  </div>
+                </div>
+              ) : uploadedId ? (
                 <div className="uploaded-file">
                   <div className="file-icon">
                     <svg
@@ -428,7 +462,7 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
                     </svg>
                   </button>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
 
