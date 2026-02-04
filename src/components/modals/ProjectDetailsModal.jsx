@@ -90,6 +90,7 @@ const ProjectDetailsModal = ({
   const [uploadedImages, setUploadedImages] = useState([]);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [pendingClose, setPendingClose] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -106,6 +107,7 @@ const ProjectDetailsModal = ({
       setUploadedImages(resolvedInitial.images || []);
       setErrors({});
       setTouched({});
+      setPendingClose(false);
     }
   }, [isOpen, initialData]);
 
@@ -123,6 +125,7 @@ const ProjectDetailsModal = ({
   const handleChange = useCallback((field) => (e) => {
     const value = e.target.value;
 
+    setPendingClose(false);
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -220,6 +223,7 @@ const ProjectDetailsModal = ({
   };
 
   const handleDeleteImage = (index) => {
+    setPendingClose(false);
     setUploadedImages(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -317,11 +321,10 @@ const ProjectDetailsModal = ({
       formData.description ||
       uploadedImages.length > 0;
 
-    if (hasChanges) {
-      const confirmed = window.confirm(
-        'You have unsaved changes. Are you sure you want to cancel?'
-      );
-      if (!confirmed) return;
+    if (hasChanges && !pendingClose) {
+      showToast('You have unsaved changes. Tap cancel again to discard.', 'warning');
+      setPendingClose(true);
+      return;
     }
 
     onClose();

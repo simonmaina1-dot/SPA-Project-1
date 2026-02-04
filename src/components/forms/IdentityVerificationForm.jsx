@@ -39,6 +39,7 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
   const [uploadedId, setUploadedId] = useState(null);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [pendingClose, setPendingClose] = useState(false);
 
   // Validate a single field
   const validateField = (name, value) => {
@@ -89,6 +90,7 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
   // Handle input change
   const handleInputChange = (field) => (e) => {
     const value = e.target.value;
+    setPendingClose(false);
     setFormData((prev) => ({ ...prev, [field]: value }));
 
     if (errors[field]) {
@@ -107,6 +109,7 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setPendingClose(false);
 
     if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
       showToast('Please upload an image or PDF file', 'error');
@@ -132,6 +135,7 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
 
   // Remove uploaded ID
   const handleRemoveId = () => {
+    setPendingClose(false);
     setUploadedId(null);
   };
 
@@ -183,11 +187,10 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
   const handleCancel = () => {
     const hasChanges = Object.values(formData).some((v) => v) || uploadedId;
 
-    if (hasChanges) {
-      const confirmCancel = window.confirm(
-        'You have unsaved changes. Are you sure you want to cancel?'
-      );
-      if (!confirmCancel) return;
+    if (hasChanges && !pendingClose) {
+      showToast('You have unsaved changes. Tap cancel again to discard.', 'warning');
+      setPendingClose(true);
+      return;
     }
 
     onClose();
