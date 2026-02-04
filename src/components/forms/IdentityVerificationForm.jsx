@@ -425,25 +425,36 @@ const IdentityVerificationForm = ({ isOpen, onClose, onSave }) => {
               </div>
 
               {uploadedId && isImageUpload ? (
-                <div className="image-preview-grid">
-                  <div className="image-preview-item">
-                    <img
-                      src={uploadedId.preview}
-                      alt={uploadedId.name}
-                      className="image-preview-img"
-                    />
-                    <button
-                      type="button"
-                      className="image-delete-btn"
-                      onClick={handleRemoveId}
-                      aria-label="Remove uploaded ID"
-                    >
-                      <XIcon className="w-4 h-4" />
-                    </button>
-                    <span className="image-size">
-                      {formatFileSize(uploadedId.size)}
-                    </span>
+                <div className="uploaded-file uploaded-file--image">
+                  <img
+                    src={uploadedId.preview}
+                    alt={uploadedId.name}
+                    className="uploaded-file-thumb"
+                  />
+                  <div className="file-details">
+                    <span className="file-name">{uploadedId.name}</span>
+                    <span className="file-size">{formatFileSize(uploadedId.size)}</span>
                   </div>
+                  <button
+                    type="button"
+                    className="file-remove"
+                    onClick={handleRemoveId}
+                    aria-label="Remove uploaded ID"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
                 </div>
               ) : uploadedId ? (
                 <div className="uploaded-file">
