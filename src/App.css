@@ -6436,6 +6436,7 @@ body {
 .review-modal-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 1.5rem 2rem;
   background: #f9fafb;
 }
@@ -6447,6 +6448,7 @@ body {
   margin-bottom: 1.5rem;
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 .review-section:last-child {
@@ -6552,6 +6554,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .review-image-preview {
@@ -6571,6 +6574,7 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  max-width: 100%;
 }
 
 .review-image-size {
@@ -6608,6 +6612,7 @@ body {
   padding: 1.5rem 2rem 2rem;
   border-top: 1px solid #e5e7eb;
   background: #ffffff;
+  overflow: hidden;
 }
 
 .review-validation-warning {
